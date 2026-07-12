@@ -17,6 +17,34 @@ Use this log for account-wide context changes.
 - Archived
 - Removed
 
+## 2026-07-12 — HAU-USC repository registration
+
+### Added
+
+- Authoritative repository link for `PROJ-HAU-USC-LOGISTICS`
+- Current default-branch project snapshot and authority boundary
+- Registration entry in recent changes
+
+### Modified
+
+- `projects/PROJECT_REGISTRY.md`
+- `projects/HAU_USC_LOGISTICS.md`
+- `memory/ACTIVE_CONTEXT.md`
+- `memory/RECENT_CHANGES.md`
+- `memory/MEMORY_CHANGELOG.md`
+
+### Superseded
+
+- The placeholder statement that the HAU-USC repository link was still to be confirmed
+
+### Archived
+
+- None
+
+### Removed
+
+- None
+
 ## 2026-07-12 — Version 1 initialization
 
 ### Added
