@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # Context Index
@@ -28,7 +28,11 @@ last_reviewed: 2026-07-12
 | Retrieval protocol | [`protocols/CONTEXT_RETRIEVAL_PROTOCOL.md`](protocols/CONTEXT_RETRIEVAL_PROTOCOL.md) | Minimal-context retrieval process | High | Rare |
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
+| AI-assisted SDD | [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md) | Account-wide specification, implementation, review, testing, security, and Git gates | High for software projects | As engineering workflow improves |
 | Security policy | [`security/DATA_POLICY.md`](security/DATA_POLICY.md) | Allowed and prohibited storage | High | Rare |
 | Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompts | Operational | As workflows improve |
-| Templates | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized entries | Operational | As needed |
+| Memory template | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized persistent-memory entries | Operational | As needed |
+| Feature-spec template | [`templates/FEATURE_SPEC_TEMPLATE.md`](templates/FEATURE_SPEC_TEMPLATE.md) | Standard specification and acceptance record for non-trivial project changes | Operational | As workflow improves |
+| AI task-brief template | [`templates/AI_TASK_BRIEF_TEMPLATE.md`](templates/AI_TASK_BRIEF_TEMPLATE.md) | Scoped implementation instruction with verification and completion evidence | Operational | As workflow improves |
+| Project agent template | [`templates/PROJECT_AGENTS_TEMPLATE.md`](templates/PROJECT_AGENTS_TEMPLATE.md) | Lean repository-level agent rules aligned with the SDD protocol | Operational | As workflow improves |
 | Archive | [`archive/README.md`](archive/README.md) | Historical material rules | Historical only | Rare |
