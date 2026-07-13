@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # Context Index
@@ -28,7 +28,10 @@ last_reviewed: 2026-07-12
 | Retrieval protocol | [`protocols/CONTEXT_RETRIEVAL_PROTOCOL.md`](protocols/CONTEXT_RETRIEVAL_PROTOCOL.md) | Minimal-context retrieval process | High | Rare |
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
+| SDD protocol | [`protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md`](protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md) | Account-wide spec-first workflow for current and future projects | High for project work | Rare |
 | Security policy | [`security/DATA_POLICY.md`](security/DATA_POLICY.md) | Allowed and prohibited storage | High | Rare |
-| Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompts | Operational | As workflows improve |
-| Templates | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized entries | Operational | As needed |
+| Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompt and project-routing instruction | Operational | As workflows improve |
+| Project spec template | [`templates/PROJECT_SPEC_TEMPLATE.md`](templates/PROJECT_SPEC_TEMPLATE.md) | Generic bounded specification template for new projects | Operational | As needed |
+| AGENTS SDD block | [`templates/AGENTS_SDD_BLOCK.md`](templates/AGENTS_SDD_BLOCK.md) | Reusable repository instruction block | Operational | As workflows improve |
+| Templates | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized memory entries | Operational | As needed |
 | Archive | [`archive/README.md`](archive/README.md) | Historical material rules | Historical only | Rare |
