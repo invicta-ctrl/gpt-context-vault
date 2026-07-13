@@ -2,10 +2,18 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # Recent Changes
+
+## 2026-07-13 — Spec-Driven Development adopted
+
+- Adopted Spec-Driven Development as the default workflow for non-trivial work in current and future projects.
+- Added an account-wide SDD protocol, a reusable project specification template, and an `AGENTS.md` instruction block.
+- Required project work to begin with Context Vault routing, then the authoritative repository, repository rules, and an accepted active specification.
+- Confirmed that project repositories remain authoritative for project facts and that the Context Vault remains the routing and account-wide preference layer.
+- Required material scope changes to return the specification to review and required completion evidence to map to acceptance criteria.
 
 ## 2026-07-12 — HAU-USC repository registered
 
