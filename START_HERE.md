@@ -16,11 +16,12 @@ This is the required entrypoint for any assistant using this repository.
 3. Determine whether the request is general, academic, personal, or project-specific.
 4. Retrieve only the minimum files needed.
 5. For project-specific work, consult [`projects/PROJECT_REGISTRY.md`](projects/PROJECT_REGISTRY.md).
-6. Follow the authoritative project repository when one is registered.
-7. Ignore archived and superseded information unless historical context is requested.
-8. Treat Earl's current explicit instruction as the highest authority.
-9. Do not retrieve unrelated personal context.
-10. Do not automatically save anything after merely reading this vault.
+6. When the task needs instruction refinement or model routing, consult [`automation/codex-model-routing/README.md`](automation/codex-model-routing/README.md).
+7. Follow the authoritative project repository when one is registered.
+8. Ignore archived and superseded information unless historical context is requested.
+9. Treat Earl's current explicit instruction as the highest authority.
+10. Do not retrieve unrelated personal context.
+11. Do not automatically save anything after merely reading this vault.
 
 ## Stop condition
 

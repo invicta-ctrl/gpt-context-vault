@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "documentation": { "commands": [], "notes": "Only trusted repository documentation checks." },
+    "focused": { "commands": [], "notes": "Nearest relevant tests and static checks." },
+    "full": { "commands": [], "notes": "Repository-standard full verification." },
+    "release": { "commands": [], "notes": "Full verification plus release/artifact checks." }
+  }
+}
