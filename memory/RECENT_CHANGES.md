@@ -2,10 +2,20 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # Recent Changes
+
+## 2026-07-13 — AI-assisted SDD governance approved
+
+- Reviewed the roadmap.sh Vibe Coding roadmap and adopted its durable engineering safeguards as an account-wide project protocol.
+- Added `protocols/AI_ASSISTED_SDD_PROTOCOL.md` to require context-first routing, written and accepted specifications, focused work units, complete diff review, verification evidence, Git checkpoints, security gates, evidence-based debugging, and reusable workflows.
+- Added templates for feature specifications, scoped AI implementation briefs, and lean project-level `AGENTS.md` files.
+- Strengthened the general project prompt so non-trivial implementation cannot proceed from chat instructions alone or outside accepted scope.
+- Confirmed that AI-generated code must be treated as untrusted until reviewed and verified, with Earl remaining the architect, reviewer, risk owner, and final decision-maker.
+- Classified this amendment as stable, account-wide project governance.
+- Source of authority: Earl's explicit approval in the 2026-07-13 conversation.
 
 ## 2026-07-12 — HAU-USC repository registered
 
