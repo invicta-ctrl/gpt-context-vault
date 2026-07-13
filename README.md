@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # GPT Context Vault
@@ -62,6 +62,12 @@ Routine updates should be reviewed before they are committed:
 7. Update the appropriate index and changelog.
 
 Codex is optional for routine maintenance. Small updates may be prepared in a normal ChatGPT conversation and committed manually.
+
+## Codex instruction refinement and routing
+
+The reusable Codex routing standard lives in [`automation/codex-model-routing/`](automation/codex-model-routing/). It defines how natural instructions are classified, when rough or partial requests receive a read-only structured refinement, how model and reasoning tiers are selected, and when work must safe-stop for ambiguity, authority conflicts, approval, or unsupported capabilities.
+
+Project repositories remain authoritative for technical facts, source code, tests, commands, and current status. A project may adopt the standard through its own `.codex/` configuration and local launcher, but live prompts, refined briefs, route decisions, logs, diffs, secrets, and build artifacts remain local to that project and are not stored in this vault. Model identifiers and capability checks must be verified per installation rather than copied blindly between projects.
 
 ## Privacy model
 
