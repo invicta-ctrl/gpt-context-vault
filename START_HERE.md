@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-13
 ---
 
 # Start Here
@@ -17,10 +17,11 @@ This is the required entrypoint for any assistant using this repository.
 4. Retrieve only the minimum files needed.
 5. For project-specific work, consult [`projects/PROJECT_REGISTRY.md`](projects/PROJECT_REGISTRY.md).
 6. Follow the authoritative project repository when one is registered.
-7. Ignore archived and superseded information unless historical context is requested.
-8. Treat Earl's current explicit instruction as the highest authority.
-9. Do not retrieve unrelated personal context.
-10. Do not automatically save anything after merely reading this vault.
+7. Before non-trivial project implementation, read the project's `AGENTS.md` or equivalent ruleset and its accepted active specification. Follow [`protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md`](protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md).
+8. Ignore archived and superseded information unless historical context is requested.
+9. Treat Earl's current explicit instruction as the highest authority.
+10. Do not retrieve unrelated personal context.
+11. Do not automatically save anything after merely reading this vault.
 
 ## Stop condition
 
@@ -36,11 +37,12 @@ Do not load the entire repository by default.
 ## Authority order
 
 1. Current explicit instruction
-2. Active project's authoritative repository
-3. Active files in this vault
-4. Native ChatGPT memory
-5. Recent session summaries
-6. Archived or superseded information
+2. Active project's authoritative repository, including `AGENTS.md` and governing rules
+3. Accepted active project specification
+4. Active files in this vault
+5. Native ChatGPT memory
+6. Recent session summaries
+7. Archived or superseded information
 
 ## Before writing
 
@@ -51,3 +53,7 @@ When an update is requested, follow:
 - [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md)
 - [`security/REDACTION_CHECKLIST.md`](security/REDACTION_CHECKLIST.md)
 - [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md)
+
+For non-trivial project work, also follow:
+
+- [`protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md`](protocols/SPEC_DRIVEN_DEVELOPMENT_PROTOCOL.md)
