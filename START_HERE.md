@@ -2,12 +2,12 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-15
 ---
 
 # Start Here
 
-This is the required entrypoint for any assistant using this repository.
+This is the required context-retrieval entrypoint after the repository-level [`AGENTS.md`](AGENTS.md) routing rules have been applied.
 
 ## Retrieval procedure
 
