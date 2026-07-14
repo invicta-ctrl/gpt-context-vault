@@ -2,10 +2,22 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-13
+last_reviewed: 2026-07-15
 ---
 
 # Recent Changes
+
+## 2026-07-15 — Intent-first skill routing approved
+
+- Added a root `AGENTS.md` as the Context Vault's account-wide operational routing entrypoint.
+- Hardcoded the requirement to scan available skill descriptions for every request and implicitly apply a matching skill playbook.
+- Added an intent-first routing envelope covering mode, target, matched skills, authority, risk, deliverable, and verification.
+- Standardized generated prompts, goals, task briefs, and delegated instructions around explicit intent, objective, target, authority, scope, constraints, deliverables, verification, and stop conditions.
+- Updated the reusable project `AGENTS.md` template, general context prompt, and AI task-brief template so projects can inherit the same routing behavior.
+- Preserved the authority rule that active project repositories remain authoritative for project facts and implementation state.
+- Required deterministic tools and focused retrieval before lower-cost subagent delegation, with the main agent remaining the default writer.
+- Classified this amendment as stable, account-wide project and agent governance.
+- Source of authority: Earl's explicit instruction in the 2026-07-15 conversation.
 
 ## 2026-07-13 — AI-assisted SDD governance approved
 
