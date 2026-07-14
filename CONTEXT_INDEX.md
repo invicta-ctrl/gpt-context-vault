@@ -2,13 +2,14 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-13
+last_reviewed: 2026-07-15
 ---
 
 # Context Index
 
 | Category | File | Purpose | Authority level | Update frequency |
 |---|---|---|---|---|
+| Agent routing | [`AGENTS.md`](AGENTS.md) | Required intent-first and skill-registry routing for agents | High | As agent workflows improve |
 | Start | [`START_HERE.md`](START_HERE.md) | Required entrypoint and retrieval limits | High | Rare |
 | Current focus | [`CURRENT_FOCUS.md`](CURRENT_FOCUS.md) | Active priorities | Medium | As priorities change |
 | User context | [`profile/USER_CONTEXT.md`](profile/USER_CONTEXT.md) | Minimal working profile | Medium | Rare |
@@ -34,5 +35,5 @@ last_reviewed: 2026-07-13
 | Memory template | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized persistent-memory entries | Operational | As needed |
 | Feature-spec template | [`templates/FEATURE_SPEC_TEMPLATE.md`](templates/FEATURE_SPEC_TEMPLATE.md) | Standard specification and acceptance record for non-trivial project changes | Operational | As workflow improves |
 | AI task-brief template | [`templates/AI_TASK_BRIEF_TEMPLATE.md`](templates/AI_TASK_BRIEF_TEMPLATE.md) | Scoped implementation instruction with verification and completion evidence | Operational | As workflow improves |
-| Project agent template | [`templates/PROJECT_AGENTS_TEMPLATE.md`](templates/PROJECT_AGENTS_TEMPLATE.md) | Lean repository-level agent rules aligned with the SDD protocol | Operational | As workflow improves |
+| Project agent template | [`templates/PROJECT_AGENTS_TEMPLATE.md`](templates/PROJECT_AGENTS_TEMPLATE.md) | Lean repository-level agent rules aligned with SDD, intent routing, and skill invocation | Operational | As workflow improves |
 | Archive | [`archive/README.md`](archive/README.md) | Historical material rules | Historical only | Rare |
