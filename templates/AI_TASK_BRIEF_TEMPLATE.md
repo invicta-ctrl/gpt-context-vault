@@ -2,10 +2,26 @@
 schema_version: 1
 status: template
 scope: projects
-last_reviewed: 2026-07-13
+last_reviewed: 2026-07-15
 ---
 
 # AI Implementation Task Brief Template
+
+## Routing envelope
+
+- Intent:
+- Mode: `answer | plan | execute | review | monitor`
+- Target:
+- Matched skills:
+- Authority:
+- Risk: `low | medium | high | critical`
+- Deliverable:
+- Verification:
+- Stop conditions:
+
+Preserve the owner's original instruction. Infer this routing envelope automatically when safe, and ask only for the smallest genuinely missing decision.
+
+Before formulating the brief, scan the available skill descriptions. When a skill matches the intent, implicitly apply its playbook. Do not invent unavailable skills, and do not allow a skill to override repository authority, accepted specifications, security, or project invariants.
 
 ## Task identity
 
@@ -15,14 +31,16 @@ last_reviewed: 2026-07-13
 - Task ID:
 - Accepted specification:
 - Primary goal:
+- Original owner instruction:
 
 ## Authoritative context to read first
 
-1. Context Vault entrypoint and relevant project registration.
+1. Context Vault `AGENTS.md`, entrypoint, and relevant project registration.
 2. Repository `AGENTS.md` and nested agent instructions.
 3. Accepted specification and amendments.
 4. Current project status and continuation notes.
 5. Relevant architecture, domain rules, tests, and reference files.
+6. Matched skill playbooks required by the routing envelope.
 
 Stop retrieval when the task is adequately grounded. Do not load unrelated context.
 
@@ -71,6 +89,8 @@ Before editing, provide a concise implementation plan that maps each acceptance 
 - Add or update tests with the behavior.
 - For bug fixes, reproduce the defect with a failing regression test before fixing it when practical.
 - Never commit secrets or sensitive data.
+- Keep the main agent as the only writer unless the accepted task explicitly authorizes otherwise.
+- Delegate only bounded, independent work with explicit intent, target, scope, output limit, and verification requirements.
 
 ## Required verification
 
@@ -83,6 +103,7 @@ Run and report the exact commands and results for:
 - build or artifact verification:
 - integration or E2E workflow:
 - security checks:
+- skill-specific verification:
 - any project-specific verification:
 
 Do not continue stacking changes on top of an unexplained failing state.
@@ -105,6 +126,7 @@ Confirm that the final diff contains no unintended:
 
 Return:
 
+- routed intent and matched skills;
 - accepted scope implemented;
 - starting and ending commit or repository state;
 - files changed;
