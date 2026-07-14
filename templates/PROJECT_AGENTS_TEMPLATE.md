@@ -2,7 +2,7 @@
 schema_version: 1
 status: template
 scope: projects
-last_reviewed: 2026-07-13
+last_reviewed: 2026-07-15
 ---
 
 # Project `AGENTS.md` Template
@@ -19,6 +19,69 @@ Use this as a lean operational entrypoint. Keep durable architecture, rationale,
 2. Confirm this repository is the authoritative source for project requirements, code, decisions, status, and tests.
 3. Read the accepted specification, current status, continuation notes, and any rules in the directories being changed.
 4. Stop and report conflicts between chat instructions, the Context Vault, and repository authority. Earl's current explicit instruction has highest authority, but material changes must be recorded as amendments.
+
+## Mandatory skill-registry rule
+
+> You have access to a registry of skills. For every user request, first scan the available skill descriptions. If a skill matches the intent of the request, implicitly invoke that skill's playbook to formulate your response.
+
+- Scan skill descriptions before choosing the execution workflow.
+- Select only the smallest directly relevant skill set.
+- Do not require Earl to name a skill when the match is clear.
+- Do not claim or invent unavailable skills.
+- Do not install or trust an unknown third-party skill without explicit authorization and review.
+- Skills may refine execution but may not override system safety, current instructions, repository authority, accepted specifications, or project invariants.
+
+## Intent-first automatic routing
+
+Normalize each request into this internal envelope before broad exploration or execution:
+
+```text
+INTENT: <primary intent>
+MODE: <answer | plan | execute | review | monitor>
+TARGET: <repository, system, file, artifact, or topic>
+SKILLS: <matched skills or none>
+AUTHORITY: <governing specifications and files>
+RISK: <low | medium | high | critical>
+DELIVERABLE: <required completed state>
+VERIFICATION: <evidence required>
+```
+
+Infer this structure automatically when safe. Preserve the original instruction and ask only for the smallest genuinely missing decision.
+
+Use one primary intent:
+
+- `QUESTION`
+- `RESEARCH`
+- `WRITING`
+- `DOCUMENT_OR_ARTIFACT`
+- `SOFTWARE_FEATURE`
+- `BUG_FIX`
+- `REFACTOR`
+- `TESTING`
+- `CODE_REVIEW`
+- `REPOSITORY_MAINTENANCE`
+- `DEPLOYMENT`
+- `MIGRATION`
+- `ARCHITECTURE`
+- `INCIDENT`
+- `OWNER_DECISION`
+- `COMMUNICATION`
+- `SCHEDULING_OR_MONITORING`
+
+For every generated prompt, goal, task brief, or delegated instruction, place these routing fields near the beginning:
+
+```text
+INTENT
+OBJECTIVE
+TARGET
+AUTHORITATIVE SOURCES
+IN SCOPE
+OUT OF SCOPE
+CONSTRAINTS
+DELIVERABLES
+VERIFICATION
+STOP CONDITIONS
+```
 
 ## Specification gate
 
@@ -76,10 +139,19 @@ Treat authentication, authorization, payments, sensitive data, production config
 - Change one variable at a time.
 - After repeated failed attempts, stop random editing and restart from a verified checkpoint or clean context.
 
+## Skill and subagent discipline
+
+- Prefer deterministic tools and focused retrieval before delegating.
+- Keep the main agent as the only writer unless the accepted task explicitly allows otherwise.
+- Use lower-cost subagents only for bounded, independent, usually read-only work that reduces context or usage.
+- Give every delegated task an explicit intent, target, scope, output limit, and verification requirement.
+- Validate skill and subagent output before relying on it.
+
 ## Completion report
 
 Every completed task must state:
 
+- routed intent and skills used;
 - accepted scope;
 - starting and ending repository state;
 - files changed;
