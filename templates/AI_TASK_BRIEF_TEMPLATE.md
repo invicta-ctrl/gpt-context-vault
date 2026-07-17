@@ -7,7 +7,7 @@ last_reviewed: 2026-07-17
 
 # AI Implementation Task Brief Template
 
-Use this template for one accepted implementation step. When the repository already maintains `.codex/CURRENT.md` and a step packet, prefer referencing those files instead of duplicating their complete contents.
+Use this template for one accepted implementation step. When `.codex/CURRENT.md` and a step packet already exist, reference them instead of duplicating their full contents.
 
 ## Routing envelope
 
@@ -28,12 +28,23 @@ Preserve the owner's original instruction. Infer this envelope when safe and ask
 - Project:
 - Repository:
 - Branch or worktree:
-- Expected starting commit:
+- Verified baseline commit:
 - Task or step ID:
 - Accepted specification:
 - Approved amendments:
 - Primary objective:
 - Original owner instruction:
+
+## Baseline validation
+
+Before reading broadly or editing:
+
+- confirm the verified baseline commit exists and is an ancestor of the current branch `HEAD`;
+- inspect only later commits not already explained as handoff metadata;
+- stop when unexplained later implementation changes affect the active step;
+- confirm the worktree is clean or every existing change is understood and non-overlapping.
+
+A tracked pointer must not attempt to contain the SHA of the same commit containing that pointer.
 
 ## Bounded context to read
 
@@ -43,8 +54,8 @@ Read in this order:
 2. `.codex/CURRENT.md` when present;
 3. the active step packet;
 4. the immediately relevant checkpoint;
-5. only the project-capsule and codebase-map sections listed by the pointer;
-6. only the initial source and test files listed by the pointer;
+5. only project-capsule and codebase-map sections listed by the pointer;
+6. only source and test files listed by the pointer;
 7. matched skill playbooks required by the routing envelope.
 
 Do not begin with a broad repository scan. Do not automatically read every specification, architecture document, status file, completed step, checkpoint, or feature directory.
@@ -60,7 +71,7 @@ An unlisted file may be read only when required by:
 - a repository contradiction;
 - a material security, migration, compatibility, or invariant risk.
 
-Record the file and why the existing context was insufficient. Additional context does not authorize additional implementation scope.
+Record the file and why the listed context was insufficient. Additional context does not authorize additional implementation scope.
 
 ## Exact scope
 
@@ -90,13 +101,11 @@ Record the file and why the existing context was insufficient. Additional contex
 
 ## Established interfaces
 
-List existing interfaces that the step must use or preserve.
-
 - `<interface>`:
 
 ## Assumptions
 
-List only assumptions that affect this step. Verify material assumptions against the bounded repository context before editing.
+List only assumptions that affect this step. Verify material assumptions against bounded repository context before editing.
 
 - 
 
@@ -120,7 +129,7 @@ Do not implement beyond the accepted active step.
 - Do not add dependencies, abstractions, schema changes, public API changes, architecture changes, or unrelated cleanup without an accepted amendment.
 - Add or update tests with behavior changes.
 - For bug fixes, reproduce the defect with a failing regression test first when practical.
-- Never commit secrets or sensitive data.
+- Do not place credentials or private data in the repository.
 - Keep the main agent as the only writer unless the accepted task explicitly authorizes another arrangement.
 - Do not begin the next step automatically.
 
@@ -131,7 +140,7 @@ Do not implement beyond the accepted active step.
 
 ## Required verification
 
-Run and report exact commands and results for the checks applicable to this step:
+Run and report exact commands and results for applicable checks:
 
 - focused tests:
 - full test suite:
@@ -154,23 +163,27 @@ Confirm that the final diff contains no unintended:
 - dependencies;
 - configuration or environment changes;
 - schema or migration changes;
-- authentication or authorization changes;
-- hard-coded secrets;
+- access-control changes;
+- embedded credentials;
 - business-rule or invariant changes;
 - edits outside accepted scope;
-- inaccurate plan, pointer, or checkpoint changes.
+- inaccurate plan, pointer, checkpoint, or commit-reference changes.
 
-## Checkpoint and stop condition
+## Commit, checkpoint, and stop condition
 
-After verification:
+After implementation and verification:
 
-1. write `.codex/checkpoints/<STEP-ID>.md`;
-2. record meaningful file effects, interfaces, decisions, preserved invariants, exact results, acceptance evidence, risks, limitations, amendments, and rollback;
-3. mark the active step complete;
-4. activate the next dependency-satisfied step;
-5. regenerate `.codex/CURRENT.md`;
-6. commit when authorized;
-7. stop without implementing the next step.
+1. move the active step to `VERIFYING`;
+2. create the implementation commit when authorized and capture its SHA;
+3. write `.codex/checkpoints/<STEP-ID>.md` referencing the verified baseline and implementation commit;
+4. record meaningful file effects, interfaces, decisions, preserved invariants, exact results, acceptance evidence, context expansion, risks, amendments, and rollback;
+5. mark the step `COMPLETE`;
+6. activate the next dependency-satisfied step;
+7. regenerate `.codex/CURRENT.md` with `verified_through_commit` set to the known implementation commit;
+8. create a separate handoff metadata commit when authorized;
+9. stop without implementing the next step.
+
+When commits are not authorized, keep the step in `VERIFYING`, use `implementation_commit: pending`, do not activate the next step, and report the pending authorization.
 
 ## Completion report
 
@@ -178,12 +191,14 @@ Return:
 
 - routed intent and matched skills;
 - accepted specification and active step;
-- starting and ending repository state;
+- verified baseline and current repository state;
 - behavior implemented;
 - files changed;
 - context expansion and exact justification;
 - acceptance criteria with evidence;
 - exact verification commands and results;
+- implementation commit or pending authorization;
+- handoff metadata state;
 - amendments;
 - risks and known limitations;
 - rollback information;
