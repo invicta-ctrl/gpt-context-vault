@@ -19,8 +19,10 @@ Use this as a lean operational entrypoint. Keep architecture, rationale, plans, 
 2. Confirm this repository is authoritative for its specifications, code, decisions, status, plans, checkpoints, tests, and evidence.
 3. Read this file and any nested `AGENTS.md` governing the directories being changed.
 4. When `.codex/CURRENT.md` exists, read it before broad project documentation.
-5. Read only the active step's listed packet, checkpoint, capsule or map sections, source files, and tests.
-6. Stop and report material conflicts instead of silently merging them.
+5. Confirm its `verified_through_commit` exists and is an ancestor of the current branch `HEAD`.
+6. Inspect only unexplained commits after that baseline.
+7. Read only the active step's listed packet, checkpoint, capsule or map sections, source files, and tests.
+8. Stop and report material conflicts instead of silently merging them.
 
 Do not begin by scanning or explaining the whole repository.
 
@@ -54,6 +56,8 @@ When `.codex/CURRENT.md` exists:
 - record each added file and the exact reason it was needed;
 - remember that context expansion does not expand implementation scope.
 
+A tracked pointer must reference a known verified implementation commit; it must not attempt to contain the SHA of the same metadata commit containing the pointer.
+
 A broad repository review is allowed only when explicitly accepted, during initial workflow adoption, or when targeted reconciliation cannot restore reliable context.
 
 ## Work-unit rules
@@ -77,29 +81,32 @@ A broad repository review is allowed only when explicitly accepted, during initi
 - Review the complete diff for unintended deletions, dependencies, configuration, interfaces, schemas, access control, sensitive data, invariants, out-of-scope edits, and inaccurate workflow metadata.
 - Do not repeat unchanged verification solely because a new session started; confirm the prior evidence is still fresh and applicable.
 
-## Checkpoint and stop gate
+## Commit, checkpoint, and stop gate
 
-Before declaring the active step complete:
+After implementation and verification:
 
-1. Verify every acceptance criterion.
-2. Write `.codex/checkpoints/<STEP-ID>.md` with meaningful file effects, interfaces, decisions, preserved invariants, exact results, context expansion, risks, amendments, rollback, and the smallest next-step read set.
-3. Mark the step `COMPLETE` in `.plans/IMPLEMENTATION_PLAN.md`.
-4. Activate the next dependency-satisfied step.
-5. Regenerate `.codex/CURRENT.md` for that step.
-6. Commit when authorized.
-7. Stop without implementing the next step.
+1. Move the active step to `VERIFYING`.
+2. Create the implementation commit when authorized and capture its SHA.
+3. Write `.codex/checkpoints/<STEP-ID>.md` with the verified baseline, implementation commit, meaningful file effects, interfaces, decisions, preserved invariants, exact results, context expansion, risks, amendments, rollback, and smallest next-step read set.
+4. Mark the step `COMPLETE`.
+5. Activate the next dependency-satisfied step.
+6. Regenerate `.codex/CURRENT.md` with `verified_through_commit` set to the implementation commit.
+7. Create a separate handoff metadata commit when authorized.
+8. Stop without implementing the next step.
+
+When commits are not authorized, keep the step in `VERIFYING`, record `implementation_commit: pending`, do not activate the next step, and report the pending authorization.
 
 A checkpoint is a compressed technical handoff, not a transcript or raw diff.
 
 ## Git safeguards
 
 - Begin non-trivial work from a known clean state on a dedicated branch or isolated worktree.
-- Confirm the expected starting commit before editing.
+- Confirm the verified baseline commit is an ancestor of the current branch head and explain later commits.
 - Use small descriptive commits after verified milestones.
 - Do not push, merge, rewrite history, delete branches, or perform destructive Git operations without explicit authorization.
 
 ## Completion report
 
-Report the accepted specification and active step, starting and ending state, behavior implemented, files changed, context expansion, acceptance evidence, exact verification results, risks, amendments, rollback, checkpoint path, and next active step without implementing it.
+Report the accepted specification and active step, verified baseline and current state, behavior implemented, files changed, context expansion, acceptance evidence, exact verification results, implementation commit or pending authorization, handoff state, risks, amendments, rollback, checkpoint path, and next active step without implementing it.
 
 A task is not complete merely because code was generated or the interface appears to work.
