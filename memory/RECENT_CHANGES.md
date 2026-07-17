@@ -14,6 +14,8 @@ last_reviewed: 2026-07-17
 - Established project-local `PROJECT_CAPSULE.md`, `CODEBASE_MAP.md`, `IMPLEMENTATION_PLAN.md`, step packets, `.codex/CURRENT.md`, and verified step checkpoints as the continuation chain for Codex.
 - Required bounded initial read sets and allowed context expansion only through direct dependencies, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material risk.
 - Required each completed step to write a compressed technical checkpoint, advance the current pointer, and stop before implementing the next step.
+- Adopted a non-circular Git handoff: a verified implementation commit is followed by a separate metadata commit whose checkpoint and pointer reference the known implementation SHA.
+- Required steps to remain `VERIFYING` and not advance when commit authorization or durable evidence is still pending.
 - Added a copy-ready incremental project setup template, including the optional `continue-step` skill and deterministic workflow-validation script expectations.
 - Updated the account-wide SDD protocol, retrieval protocol, project `AGENTS.md` template, AI task brief, general context prompt, Vault index, and onboarding entrypoint to follow the new bounded-context workflow.
 - Preserved the rule that live project plans, current pointers, checkpoints, codebase maps, diffs, test evidence, and runtime state belong in authoritative project repositories rather than the Context Vault.
