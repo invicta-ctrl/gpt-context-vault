@@ -9,7 +9,7 @@ last_reviewed: 2026-07-17
 
 Use this bundle to adopt [`protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md`](../protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md) in an authoritative project repository.
 
-Copy the relevant sections into repository-local files. Replace every placeholder and delete unused guidance before accepting the setup.
+Copy only the relevant templates into the project repository. Replace every placeholder and remove unused guidance before accepting the setup.
 
 ## Recommended repository structure
 
@@ -46,7 +46,7 @@ project/
 └── tests/
 ```
 
-Only create scripts and directories the project actually needs.
+Only create files, scripts, and directories the project actually needs.
 
 ---
 
@@ -57,14 +57,14 @@ Only create scripts and directories the project actually needs.
 schema_version: 1
 status: active
 last_verified: YYYY-MM-DD
-verified_commit: <commit-sha>
+verified_through_commit: <implementation-commit-sha>
 ---
 
 # Project Capsule
 
 ## Product
 
-<One concise paragraph describing the product, primary users, and outcome.>
+<One concise paragraph describing the product, primary users, and intended outcome.>
 
 ## Current delivery state
 
@@ -116,7 +116,7 @@ Read only when the active step requires them:
 
 ## Capsule maintenance
 
-Update this file only when durable stack, architecture, module boundaries, commands, or invariants change.
+Update this file only when durable stack, architecture, module boundaries, commands, interfaces, or invariants change.
 ````
 
 ---
@@ -128,7 +128,7 @@ Update this file only when durable stack, architecture, module boundaries, comma
 schema_version: 1
 status: active
 last_verified: YYYY-MM-DD
-verified_commit: <commit-sha>
+verified_through_commit: <implementation-commit-sha>
 ---
 
 # Codebase Map
@@ -168,7 +168,7 @@ verified_commit: <commit-sha>
 
 ## Map maintenance
 
-Update this file when entry points, module ownership, dependency direction, public interfaces, or protected paths change.
+Update this file when entry points, module ownership, dependency direction, public interfaces, tests, or protected paths change.
 ````
 
 ---
@@ -182,7 +182,7 @@ status: accepted
 plan_version: 1.0
 accepted_date: YYYY-MM-DD
 accepted_by: Earl
-base_commit: <commit-sha>
+verified_baseline_commit: <commit-sha>
 accepted_specification: docs/specs/accepted/<SPEC>.md
 ---
 
@@ -201,6 +201,7 @@ accepted_specification: docs/specs/accepted/<SPEC>.md
 - Only one step may be `ACTIVE` unless an accepted amendment authorizes isolated parallel work.
 - Each step must have a packet in `.plans/steps/<STEP-ID>.md`.
 - Material plan changes require an accepted amendment.
+- A step becomes `COMPLETE` only after durable verification evidence and, when commits are authorized, a known implementation commit.
 - Completing a step advances the pointer but does not authorize implementation of the next step in the same run.
 
 ## Steps
@@ -228,11 +229,17 @@ schema_version: 1
 status: active
 updated: YYYY-MM-DD
 current_branch: <branch>
-expected_head: <commit-sha>
+verified_through_commit: <latest-verified-implementation-commit-sha>
 active_step: S-001
 ---
 
 # Current Codex Context
+
+## Baseline validation
+
+- Confirm `verified_through_commit` exists and is an ancestor of the current branch `HEAD`.
+- Inspect only commits after that baseline which are not already explained as handoff metadata.
+- Stop when later commits contain unexplained implementation changes relevant to the active step.
 
 ## Required reading order
 
@@ -270,10 +277,10 @@ Read an unlisted file only when required by:
 - a targeted symbol reference;
 - a verification failure;
 - an acceptance criterion;
-- a security, migration, compatibility, or invariant concern;
-- a contradiction between the repository and this pointer.
+- a repository contradiction;
+- a security, migration, compatibility, or invariant concern.
 
-Do not perform a broad repository scan.
+Record the file and reason. Do not perform a broad repository scan.
 
 ## Required verification
 
@@ -282,12 +289,16 @@ Do not perform a broad repository scan.
 
 ## Completion actions
 
-1. Write `.codex/checkpoints/S-001.md`.
-2. Mark S-001 `COMPLETE` in `.plans/IMPLEMENTATION_PLAN.md`.
-3. Activate the next dependency-satisfied step.
-4. Regenerate this file for the next step.
-5. Commit when authorized.
-6. Stop without implementing the next step.
+1. Move S-001 to `VERIFYING` after implementation and verification.
+2. Create the implementation commit when authorized and capture its SHA.
+3. Write `.codex/checkpoints/S-001.md` referencing that implementation commit.
+4. Mark S-001 `COMPLETE`.
+5. Activate the next dependency-satisfied step.
+6. Regenerate this file with `verified_through_commit` set to the known implementation commit.
+7. Create a separate handoff metadata commit when authorized.
+8. Stop without implementing the next step.
+
+When commits are not authorized, keep the step in `VERIFYING`, record `implementation_commit: pending`, do not activate the next step, and report the pending authorization.
 ````
 
 ---
@@ -302,7 +313,7 @@ step_id: S-001
 accepted_specification: docs/specs/accepted/<SPEC>.md
 accepted_amendments: []
 depends_on: []
-starting_commit: <commit-sha>
+verified_baseline_commit: <commit-sha>
 ---
 
 # S-001 — <Step Name>
@@ -373,12 +384,14 @@ starting_commit: <commit-sha>
 
 Record:
 
+- verified baseline and implementation commit;
 - behavior implemented;
 - meaningful file effects;
 - interfaces added or changed;
 - preserved invariants;
 - exact verification results;
 - acceptance-criteria evidence;
+- context expansion and justification;
 - risks, limitations, and amendments;
 - rollback information;
 - smallest recommended read set for the next step.
@@ -395,8 +408,8 @@ status: complete
 step_id: S-001
 completed: YYYY-MM-DD
 branch: <branch>
-starting_commit: <commit-sha>
-ending_commit: <commit-sha-or-pending>
+verified_baseline_commit: <commit-sha>
+implementation_commit: <implementation-commit-sha>
 ---
 
 # S-001 Completion Checkpoint
@@ -451,7 +464,8 @@ ending_commit: <commit-sha-or-pending>
 
 ## Rollback
 
-- 
+- Revert `<implementation-commit-sha>`; or
+- <project-specific recovery procedure>
 
 ## Recommended initial read set for next step
 
@@ -460,6 +474,8 @@ ending_commit: <commit-sha-or-pending>
 - `<source or test file>`
 ````
 
+When an implementation commit has not been authorized, use `status: verifying` and `implementation_commit: pending`; do not mark the step complete or activate the next step.
+
 ---
 
 # Template G — `.agents/skills/continue-step/SKILL.md`
@@ -467,40 +483,63 @@ ending_commit: <commit-sha-or-pending>
 ````md
 ---
 name: continue-step
-description: Continue the single active implementation step from the repository's bounded Codex context without rescanning the whole repository.
+description: Continue the single active implementation step from bounded repository context without rescanning the whole repository.
 ---
 
 # Continue Active Step
 
 1. Read the applicable `AGENTS.md` files.
 2. Read `.codex/CURRENT.md`.
-3. Verify branch, expected HEAD, worktree state, active step, and accepted specification.
-4. Read only the pointer's required files and initial source/test set.
-5. Do not perform a broad repository scan.
-6. Expand context only through direct dependencies, targeted symbol searches, verification failures, acceptance criteria, or material safety and compatibility risks.
-7. Map every acceptance criterion to implementation and verification evidence.
-8. Implement only the active step.
-9. Run focused verification, then the complete required gate.
-10. Review the complete diff.
-11. Write the completion checkpoint.
-12. Advance the implementation plan and `.codex/CURRENT.md`.
-13. Commit when authorized.
-14. Stop without implementing the next step.
+3. Verify branch, worktree state, active step, accepted specification, and that `verified_through_commit` is an ancestor of `HEAD`.
+4. Inspect only unexplained commits after that baseline.
+5. Read only the pointer's required files and initial source or test set.
+6. Do not perform a broad repository scan.
+7. Expand context only through direct dependencies, targeted symbol searches, verification failures, acceptance criteria, repository contradictions, or material risk.
+8. Map every acceptance criterion to implementation and verification evidence.
+9. Implement only the active step.
+10. Run focused verification, then the complete required gate.
+11. Review the complete diff.
+12. Move the step to `VERIFYING`.
+13. When commits are authorized, create the implementation commit and capture its SHA.
+14. Write the checkpoint, advance the plan, and regenerate `.codex/CURRENT.md` using that implementation SHA.
+15. Create the separate handoff metadata commit when authorized.
+16. Stop without implementing the next step.
 
 Report:
 
 - routed intent and matched skills;
 - active step and accepted scope;
-- starting and ending repository state;
+- verified baseline and current repository state;
 - behavior implemented;
 - files changed;
 - context expansion and justification;
 - acceptance-criteria evidence;
 - exact verification results;
+- implementation commit or pending authorization;
 - risks, limitations, amendments, and rollback;
 - checkpoint path;
-- next active step.
+- next active step without implementation.
 ````
+
+---
+
+# Commit and handoff sequence
+
+When commits are authorized:
+
+```text
+active step implementation
+    -> focused and complete verification
+    -> full diff review
+    -> implementation commit
+    -> checkpoint and next-step pointer reference implementation SHA
+    -> handoff metadata commit
+    -> stop
+```
+
+The tracked pointer references the known implementation commit, not the SHA of the metadata commit containing the pointer. This prevents a self-referential commit loop.
+
+When commits are not authorized, remain in `VERIFYING` and do not advance the active step.
 
 ---
 
@@ -526,12 +565,14 @@ The language and command names may differ by project.
 - zero or multiple steps are active unexpectedly;
 - a referenced file does not exist;
 - pointer and plan disagree;
-- expected branch or commit is wrong;
+- the current branch is wrong;
+- `verified_through_commit` is missing or is not an ancestor of `HEAD`;
+- commits after the verified baseline are unexplained;
 - required dependencies or checkpoints are missing;
 - a completed step remains active;
-- a step is advanced without verification evidence.
+- a step advances without verification evidence or a known implementation commit when commits are required.
 
-Scripts must not fabricate acceptance evidence or silently approve amendments.
+Scripts must not fabricate acceptance evidence, commit identifiers, or amendments.
 
 ## Adoption checklist
 
@@ -543,6 +584,8 @@ Scripts must not fabricate acceptance evidence or silently approve amendments.
 - [ ] Exactly one step is active
 - [ ] Active step packet is complete
 - [ ] `.codex/CURRENT.md` lists a bounded initial read set
+- [ ] `verified_through_commit` exists and is an ancestor of the current branch head
+- [ ] Commits after the verified baseline are explained
 - [ ] Baseline checkpoint exists when continuing existing work
 - [ ] Validation commands pass
 - [ ] No project runtime state was copied into the Context Vault
