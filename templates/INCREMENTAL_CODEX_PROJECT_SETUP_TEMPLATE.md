@@ -52,7 +52,7 @@ Only create scripts and directories the project actually needs.
 
 # Template A — `docs/PROJECT_CAPSULE.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: active
@@ -117,13 +117,13 @@ Read only when the active step requires them:
 ## Capsule maintenance
 
 Update this file only when durable stack, architecture, module boundaries, commands, or invariants change.
-```
+````
 
 ---
 
 # Template B — `docs/CODEBASE_MAP.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: active
@@ -169,13 +169,13 @@ verified_commit: <commit-sha>
 ## Map maintenance
 
 Update this file when entry points, module ownership, dependency direction, public interfaces, or protected paths change.
-```
+````
 
 ---
 
 # Template C — `.plans/IMPLEMENTATION_PLAN.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: accepted
@@ -216,13 +216,13 @@ accepted_specification: docs/specs/accepted/<SPEC>.md
 - [ ] Full verification passes
 - [ ] Documentation reconciled
 - [ ] Rollback checkpoint recorded
-```
+````
 
 ---
 
 # Template D — `.codex/CURRENT.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: active
@@ -288,13 +288,13 @@ Do not perform a broad repository scan.
 4. Regenerate this file for the next step.
 5. Commit when authorized.
 6. Stop without implementing the next step.
-```
+````
 
 ---
 
 # Template E — `.plans/steps/<STEP-ID>.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: active
@@ -382,13 +382,13 @@ Record:
 - risks, limitations, and amendments;
 - rollback information;
 - smallest recommended read set for the next step.
-```
+````
 
 ---
 
 # Template F — `.codex/checkpoints/<STEP-ID>.md`
 
-```md
+````md
 ---
 schema_version: 1
 status: complete
@@ -458,13 +458,13 @@ ending_commit: <commit-sha-or-pending>
 - `.plans/steps/<NEXT-STEP>.md`
 - This checkpoint
 - `<source or test file>`
-```
+````
 
 ---
 
 # Template G — `.agents/skills/continue-step/SKILL.md`
 
-```md
+````md
 ---
 name: continue-step
 description: Continue the single active implementation step from the repository's bounded Codex context without rescanning the whole repository.
@@ -500,7 +500,7 @@ Report:
 - risks, limitations, amendments, and rollback;
 - checkpoint path;
 - next active step.
-```
+````
 
 ---
 
