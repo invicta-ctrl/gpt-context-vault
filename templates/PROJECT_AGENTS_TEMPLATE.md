@@ -2,12 +2,12 @@
 schema_version: 1
 status: template
 scope: projects
-last_reviewed: 2026-07-15
+last_reviewed: 2026-07-17
 ---
 
 # Project `AGENTS.md` Template
 
-Use this as a lean operational entrypoint. Keep durable architecture, rationale, and historical decisions in dedicated repository documentation rather than expanding `AGENTS.md` indefinitely.
+Use this as a lean repository-level entrypoint. Keep project history, detailed architecture, plans, checkpoints, and rationale in dedicated files rather than expanding `AGENTS.md` indefinitely.
 
 ---
 
@@ -15,25 +15,20 @@ Use this as a lean operational entrypoint. Keep durable architecture, rationale,
 
 ## Required entry sequence
 
-1. Start with the connected Context Vault and retrieve only the minimum relevant context.
-2. Confirm this repository is the authoritative source for project requirements, code, decisions, status, and tests.
-3. Read the accepted specification, current status, continuation notes, and any rules in the directories being changed.
-4. Stop and report conflicts between chat instructions, the Context Vault, and repository authority. Earl's current explicit instruction has highest authority, but material changes must be recorded as amendments.
+1. Apply the connected Context Vault's root `AGENTS.md` only for account-wide routing and governance.
+2. Confirm this repository is authoritative for project requirements, code, decisions, implementation state, tests, and technical documentation.
+3. Read this file and any nested `AGENTS.md` files governing the directories being changed.
+4. When `.codex/CURRENT.md` exists, read it before broad project documentation.
+5. Read only the active step packet, checkpoint, capsule or map sections, source files, and tests listed by the pointer.
+6. Stop and report material conflicts. Earl's current instruction has highest authority, but accepted scope changes require amendments before implementation.
 
-## Mandatory skill-registry rule
+Do not start by scanning or explaining the entire repository.
 
-> You have access to a registry of skills. For every user request, first scan the available skill descriptions. If a skill matches the intent of the request, implicitly invoke that skill's playbook to formulate your response.
+## Skills and intent
 
-- Scan skill descriptions before choosing the execution workflow.
-- Select only the smallest directly relevant skill set.
-- Do not require Earl to name a skill when the match is clear.
-- Do not claim or invent unavailable skills.
-- Do not install or trust an unknown third-party skill without explicit authorization and review.
-- Skills may refine execution but may not override system safety, current instructions, repository authority, accepted specifications, or project invariants.
+Scan the available skill descriptions and apply only the smallest directly relevant skill set.
 
-## Intent-first automatic routing
-
-Normalize each request into this internal envelope before broad exploration or execution:
+Infer this routing envelope internally:
 
 ```text
 INTENT: <primary intent>
@@ -46,68 +41,61 @@ DELIVERABLE: <required completed state>
 VERIFICATION: <evidence required>
 ```
 
-Infer this structure automatically when safe. Preserve the original instruction and ask only for the smallest genuinely missing decision.
+Skills may refine execution but may not override safety, current instructions, repository authority, accepted specifications, or project invariants.
 
-Use one primary intent:
+## Authority order
 
-- `QUESTION`
-- `RESEARCH`
-- `WRITING`
-- `DOCUMENT_OR_ARTIFACT`
-- `SOFTWARE_FEATURE`
-- `BUG_FIX`
-- `REFACTOR`
-- `TESTING`
-- `CODE_REVIEW`
-- `REPOSITORY_MAINTENANCE`
-- `DEPLOYMENT`
-- `MIGRATION`
-- `ARCHITECTURE`
-- `INCIDENT`
-- `OWNER_DECISION`
-- `COMMUNICATION`
-- `SCHEDULING_OR_MONITORING`
+1. Earl's current explicit instruction
+2. Accepted specification and approved amendments
+3. Repository instructions and invariants
+4. Active step packet and verified checkpoint
+5. Stable project capsule and codebase map
+6. Context Vault governance and preferences
+7. Older summaries and archived material
 
-For every generated prompt, goal, task brief, or delegated instruction, place these routing fields near the beginning:
-
-```text
-INTENT
-OBJECTIVE
-TARGET
-AUTHORITATIVE SOURCES
-IN SCOPE
-OUT OF SCOPE
-CONSTRAINTS
-DELIVERABLES
-VERIFICATION
-STOP CONDITIONS
-```
+A step packet narrows execution scope but cannot override an accepted specification or invariant.
 
 ## Specification gate
 
 - Do not begin non-trivial implementation from chat instructions alone.
 - Locate or prepare a written specification covering scope, exclusions, user flows, data structures, invariants, risks, verification, rollback, and acceptance criteria.
-- Implement only after the specification is marked accepted.
-- Record material scope or behavior changes as amendments before implementation.
+- Implement only after the specification is accepted.
+- Record material scope, behavior, architecture, dependency, interface, schema, security, or acceptance changes as amendments before implementation.
+
+## Incremental context gate
+
+When `.codex/CURRENT.md` exists:
+
+- Treat it as the pointer to the single active step.
+- Use only its listed files as initial context.
+- Do not reread completed steps, old checkpoints, unrelated modules, generated output, or the full documentation set.
+- Expand context only through direct imports or calls, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material risk.
+- Record the additional file and exact reason for reading it.
+- Context expansion does not expand implementation scope.
+
+A broad repository review is allowed only when explicitly accepted, when adopting this workflow for the first time, or when targeted reconciliation cannot restore reliable context.
 
 ## Work-unit discipline
 
-- Work on one focused task or vertical slice at a time.
+- Implement one `ACTIVE` step only.
 - Prefer the smallest clear, modular, reviewable diff.
 - Do not perform unrelated cleanup.
-- Do not add dependencies, abstractions, public API changes, schema changes, or architecture changes without accepted scope.
+- Do not add dependencies, abstractions, public API changes, schema changes, architecture changes, or new behavior without accepted scope.
 - Preserve existing behavior unless the accepted specification explicitly changes it.
+- Keep the main agent as the only writer to the branch unless the accepted task authorizes another arrangement.
+- Do not begin the next step automatically.
 
 ## Testing and verification
 
-- Add or update tests with every behavior change.
+- Map every acceptance criterion to code, tests, and evidence before editing.
+- Add or update tests with behavior changes.
 - For bug fixes, reproduce the defect with a failing regression test first when practical.
-- Run focused tests, the required full suite, linting, type checks, build checks, and artifact verification.
-- Exercise critical workflows with integration or E2E tests.
-- Record exact commands and exact results.
-- Do not stack further work on an unexplained failing state.
+- Run focused checks, the complete required suite, lint, formatting, type checks, build, artifact, integration, E2E, and security checks applicable to the project.
+- Record exact commands and results.
+- Do not stack work on an unexplained failing state.
+- Do not repeat unchanged verification merely because a new session started; confirm that its commit, artifact, environment, and external state remain valid.
 
-## Diff and security review
+## Diff review
 
 Review every final diff for unintended:
 
@@ -119,47 +107,48 @@ Review every final diff for unintended:
 - hard-coded secrets;
 - sensitive-data exposure;
 - domain-invariant changes;
-- edits outside accepted scope.
+- edits outside accepted scope;
+- inaccurate plan, pointer, or checkpoint updates.
 
-Treat authentication, authorization, payments, sensitive data, production configuration, migrations, and destructive operations as high-risk. Require explicit authorization, rollback planning, and additional verification.
+High-risk changes require explicit authorization, rollback planning, and additional verification.
+
+## Checkpoint and handoff
+
+Before declaring the active step complete:
+
+1. Review the complete diff.
+2. Verify every acceptance criterion.
+3. Write `.codex/checkpoints/<STEP-ID>.md` with meaningful file effects, interfaces, decisions, preserved invariants, exact results, risks, amendments, rollback, and the smallest next-step read set.
+4. Mark the step `COMPLETE` in `.plans/IMPLEMENTATION_PLAN.md`.
+5. Activate the next dependency-satisfied step.
+6. Regenerate `.codex/CURRENT.md` for that step.
+7. Commit when authorized.
+8. Stop without implementing the next step.
+
+A checkpoint is a compressed technical handoff, not a transcript or raw diff.
 
 ## Git discipline
 
-- Begin non-trivial work from a clean state on a dedicated branch.
+- Begin non-trivial work from a clean state on a dedicated branch or isolated worktree.
+- Confirm the expected starting commit before editing.
 - Use small descriptive commits after verified milestones.
 - Do not push, merge, rewrite history, delete branches, or perform destructive Git operations without explicit authorization.
-- Use Git checkpoints for recovery instead of relying on AI undo behavior.
-
-## Debugging discipline
-
-- Capture the exact error and reproduction steps.
-- Compare expected and observed behavior.
-- Inspect logs, tests, state, and runtime evidence.
-- Rank likely causes before broad changes.
-- Change one variable at a time.
-- After repeated failed attempts, stop random editing and restart from a verified checkpoint or clean context.
-
-## Skill and subagent discipline
-
-- Prefer deterministic tools and focused retrieval before delegating.
-- Keep the main agent as the only writer unless the accepted task explicitly allows otherwise.
-- Use lower-cost subagents only for bounded, independent, usually read-only work that reduces context or usage.
-- Give every delegated task an explicit intent, target, scope, output limit, and verification requirement.
-- Validate skill and subagent output before relying on it.
+- Use Git checkpoints for recovery rather than relying on AI undo behavior.
 
 ## Completion report
 
 Every completed task must state:
 
 - routed intent and skills used;
-- accepted scope;
+- accepted specification and active step;
 - starting and ending repository state;
-- files changed;
 - behavior implemented;
+- files changed;
+- context expansion and justification;
 - acceptance criteria and evidence;
-- verification commands and exact results;
-- risks, limitations, and amendments;
-- rollback information;
-- recommended next accepted task.
+- exact verification commands and results;
+- risks, limitations, amendments, and rollback;
+- checkpoint path;
+- next active step without implementing it.
 
 A task is not complete merely because code was generated or the interface appears to work.
