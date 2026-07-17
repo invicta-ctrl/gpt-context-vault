@@ -32,9 +32,11 @@ For every non-trivial project task:
 10. Review the complete diff before accepting the change.
 11. Run every required verification command.
 12. Record exact evidence, risks, known limitations, amendments, and rollback information.
-13. Write or update the project-local checkpoint and current-step pointer.
-14. Commit only verified, intentionally scoped changes when authorized.
+13. Move the active step to `VERIFYING` and create the verified implementation commit when authorized.
+14. Complete the project-local checkpoint, plan transition, and current-step pointer through the separate handoff metadata commit required by the incremental context protocol.
 15. Stop before implementing the next step.
+
+When commits are not authorized, keep the step in `VERIFYING`, record the implementation commit as pending, do not activate the next step, and report the pending authorization.
 
 Small, obvious, low-risk edits may use a lightweight specification, but intended behavior, exact scope, and verification must still be explicit.
 
@@ -166,7 +168,8 @@ Do not repeat already completed verification solely because a new agent session 
 
 A completed implementation step must write a project-local checkpoint recording:
 
-- starting and ending repository state;
+- verified baseline commit;
+- implementation commit or explicit pending state;
 - implemented behavior;
 - meaningful file effects;
 - interfaces later steps may rely on;
@@ -178,6 +181,8 @@ A completed implementation step must write a project-local checkpoint recording:
 - rollback information;
 - smallest recommended initial read set for the next step.
 
+The checkpoint, plan transition, current pointer, and any capsule or codebase-map verification metadata that reference the implementation SHA belong in the handoff metadata commit.
+
 A checkpoint must not be a raw transcript, complete diff, or duplicated specification.
 
 ## Git discipline
@@ -185,6 +190,7 @@ A checkpoint must not be a raw transcript, complete diff, or duplicated specific
 - Start from a known clean working state.
 - Use a dedicated branch or isolated worktree for non-trivial work.
 - Make small, descriptive commits after verified milestones.
+- Use the implementation-commit-then-handoff-metadata-commit sequence defined by the incremental context protocol when step metadata references the verified implementation SHA.
 - Use Git history for rollback and recovery.
 - Do not automatically push, merge, rewrite history, delete branches, or perform destructive actions without explicit authorization.
 - Keep each pull request aligned to one accepted scope as closely as practical.
@@ -240,12 +246,14 @@ A completed task must report:
 
 - routed intent and matched skills;
 - accepted scope and active step;
-- starting and ending repository state;
+- verified baseline and current repository state;
 - files changed;
 - behavior implemented;
 - context expansion and justification;
 - verification commands and exact results;
 - acceptance-criteria evidence;
+- implementation commit or pending authorization;
+- handoff metadata state;
 - security or migration review when applicable;
 - risks and known limitations;
 - amendments made;
