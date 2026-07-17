@@ -2,10 +2,25 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-15
+last_reviewed: 2026-07-17
 ---
 
 # Recent Changes
+
+## 2026-07-17 — Incremental Codex context workflow approved
+
+- Reworked the Context Vault into a single-entry routing system: agents begin with root `AGENTS.md` and no longer reread `START_HERE.md` plus the full index when the route is already clear.
+- Added `protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md` to prevent repeated whole-repository scans during step-by-step development.
+- Established project-local `PROJECT_CAPSULE.md`, `CODEBASE_MAP.md`, `IMPLEMENTATION_PLAN.md`, step packets, `.codex/CURRENT.md`, and verified step checkpoints as the continuation chain for Codex.
+- Required bounded initial read sets and allowed context expansion only through direct dependencies, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material risk.
+- Required each completed step to write a compressed technical checkpoint, advance the current pointer, and stop before implementing the next step.
+- Adopted a non-circular Git handoff: a verified implementation commit is followed by a separate metadata commit whose checkpoint and pointer reference the known implementation SHA.
+- Required steps to remain `VERIFYING` and not advance when commit authorization or durable evidence is still pending.
+- Added a copy-ready incremental project setup template, including the optional `continue-step` skill and deterministic workflow-validation script expectations.
+- Updated the account-wide SDD protocol, retrieval protocol, project `AGENTS.md` template, AI task brief, general context prompt, Vault index, and onboarding entrypoint to follow the new bounded-context workflow.
+- Preserved the rule that live project plans, current pointers, checkpoints, codebase maps, diffs, test evidence, and runtime state belong in authoritative project repositories rather than the Context Vault.
+- Classified this amendment as stable, account-wide software-project and agent governance.
+- Source of authority: Earl's explicit request and approval in the 2026-07-17 conversation.
 
 ## 2026-07-15 — Intent-first skill routing approved
 

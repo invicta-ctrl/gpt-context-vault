@@ -2,47 +2,71 @@
 schema_version: 1
 status: active
 scope: protocols
-last_reviewed: 2026-07-12
+last_reviewed: 2026-07-17
 ---
 
 # Context Retrieval Protocol
 
 ## Procedure
 
-1. Determine the request's scope.
-2. Read [`../START_HERE.md`](../START_HERE.md).
-3. Read [`../CONTEXT_INDEX.md`](../CONTEXT_INDEX.md).
-4. Retrieve the minimum relevant context.
-5. Consult project-specific sources for project work.
-6. Stop retrieving once the request is sufficiently grounded.
-7. Do not pull unrelated personal context.
-8. Do not treat archived or superseded material as active.
-9. Identify uncertainty and conflicts.
-10. Prefer the current instruction over stored context.
+1. Read the root [`../AGENTS.md`](../AGENTS.md).
+2. Determine the request's intent, target, authority, risk, deliverable, and verification needs.
+3. Scan the available skill descriptions and select only directly relevant playbooks.
+4. Retrieve the minimum relevant Context Vault files.
+5. For registered project work, consult [`../projects/PROJECT_REGISTRY.md`](../projects/PROJECT_REGISTRY.md), then use the project repository as authority.
+6. In the project repository, read its applicable `AGENTS.md` files and `.codex/CURRENT.md` when present.
+7. Use [`../START_HERE.md`](../START_HERE.md) and [`../CONTEXT_INDEX.md`](../CONTEXT_INDEX.md) only when routing remains unresolved or non-project context must be located.
+8. Stop retrieving once the request is sufficiently grounded.
+9. Do not pull unrelated personal context.
+10. Do not treat archived or superseded material as active.
+11. Identify uncertainty and conflicts.
+12. Prefer Earl's current instruction over stored context, while recording material project scope changes as amendments.
+
+## Project implementation retrieval
+
+When `.codex/CURRENT.md` exists in the authoritative project repository:
+
+- use its listed files as the initial context budget;
+- read the active step packet and immediately relevant checkpoint;
+- read only listed project-capsule and codebase-map sections;
+- read only listed source and test files;
+- do not perform a broad repository scan;
+- expand context only through direct dependencies, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material risk;
+- record why additional context was necessary;
+- follow [`INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md`](INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md).
+
+## Stop conditions
+
+Stop retrieval when:
+
+- the authoritative source has been located;
+- the current step is adequately grounded;
+- additional files would repeat established context;
+- the required decision or verification can be completed safely;
+- the active repository's pointer provides a sufficient read set.
 
 ## Examples
 
 ### Engineering question
 
-Read:
+Read only the relevant combination of:
 
 - [`../academics/CIVIL_ENGINEERING_CONTEXT.md`](../academics/CIVIL_ENGINEERING_CONTEXT.md)
 - [`../academics/FORMULA_FORMATTING.md`](../academics/FORMULA_FORMATTING.md)
-
-Retrieve subject-specific files only when they affect the solution.
+- a subject-specific file when it affects the solution.
 
 ### HAU-USC development
 
 Read:
 
 - [`../projects/PROJECT_REGISTRY.md`](../projects/PROJECT_REGISTRY.md)
-- [`../projects/HAU_USC_LOGISTICS.md`](../projects/HAU_USC_LOGISTICS.md)
+- [`../projects/HAU_USC_LOGISTICS.md`](../projects/HAU_USC_LOGISTICS.md) only when its routing summary adds value.
 
-Then use the project repository as the authority for code, requirements, status, and tests.
+Then use the HAU-USC repository's `AGENTS.md`, `.codex/CURRENT.md`, accepted step packet, checkpoint, and listed code or tests. Do not reread the whole repository by default.
 
 ### General writing request
 
-Read response preferences only if they materially improve the output. Do not load academic or project files.
+Read response preferences only when they materially improve the output. Do not load academic or project files.
 
 ### Thesis planning
 
