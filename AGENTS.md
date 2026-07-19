@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-17
+last_reviewed: 2026-07-19
 ---
 
 # AGENTS.md
@@ -73,6 +73,12 @@ Follow:
 6. Archived or superseded material only when history is requested
 
 Material project changes must still be recorded through the project's amendment process. The Vault never replaces the project repository as technical truth.
+
+## Compatibility policy
+
+Do not consider backward compatibility. Ignore legacy code/libraries.
+
+This directive applies to implementation choices and does not authorize deleting or disregarding explicitly preserved reference artifacts, immutable migration evidence, accepted specifications, current data invariants, security boundaries, or rollback evidence. Legacy assets may remain as reference or evidence, but they should not constrain new architecture unless an accepted specification explicitly requires that constraint.
 
 ## Execution safeguards
 
