@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-17
+last_reviewed: 2026-07-24
 ---
 
 # AGENTS.md
@@ -56,12 +56,44 @@ When `.codex/CURRENT.md` exists:
 4. Expand context only through direct dependencies, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material security, migration, compatibility, and invariant risks.
 5. Record why every additional file was needed.
 6. Implement and verify only the active accepted step.
-7. Write the checkpoint, advance the pointer, and stop before implementing the next step.
+7. Write the checkpoint, advance the pointer, and stop before implementing the next step unless the accepted project plan explicitly authorizes continuous execution across named phases.
 
 Follow:
 
 - [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md)
 - [`protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md`](protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md)
+
+## Mandatory context-compaction survival
+
+Context compaction, generated conversation summaries, native memory, and transcript reconstruction are convenience aids only. They are never authoritative operational state for repository or provider work.
+
+For any long-running, multi-phase, deployment, migration, or externally stateful task:
+
+1. Keep a durable project-local resume record in `.codex/CURRENT.md` and the current checkpoint or handoff.
+2. Update it before a model or session switch, when compaction is announced or likely, after every consequential external mutation, and before a usage limit could interrupt work.
+3. The resume record must distinguish:
+   - repository `HEAD`;
+   - upstream `HEAD`;
+   - deployed runtime SHA or version;
+   - documentation or handoff commit;
+   - branch and worktree;
+   - active specification, amendment, step, or phase;
+   - completed and operationally accepted work;
+   - exact external resources changed;
+   - database schema, migrations, backups, and reconciliation;
+   - verification commands and results;
+   - open defects and blockers;
+   - the next exact action;
+   - consequential actions that must not be repeated without verification.
+4. After compaction, a fresh session, or a usage-limit interruption, do not continue from the compacted summary alone. Rehydrate from the project `AGENTS.md`, `.codex/CURRENT.md`, current checkpoint or handoff, Git state, and verified provider state.
+5. Reconcile contradictions before any new mutation. Preserve separate identities for repository state, deployed runtime state, and handoff metadata.
+6. Before retrying a migration, deployment, merge, import, restore, email, upload, or other consequential write, verify whether the previous attempt already succeeded.
+7. Do not claim completion from remembered or compacted context. Require durable evidence from the authoritative repository and current external state.
+8. Never store secrets, credentials, raw personal data, session material, or private provider identifiers in the resume record.
+
+If the project has no durable resume mechanism, create or repair the smallest project-local pointer and checkpoint structure before continuing substantial work.
+
+Follow [`protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md`](protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md).
 
 ## Authority order
 
