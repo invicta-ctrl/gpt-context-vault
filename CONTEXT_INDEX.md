@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-17
+last_reviewed: 2026-07-24
 ---
 
 # Context Index
@@ -11,7 +11,7 @@ Use this index only when the root [`AGENTS.md`](AGENTS.md) has not already resol
 
 | Category | File | Purpose | Authority level | Update frequency |
 |---|---|---|---|---|
-| Agent routing | [`AGENTS.md`](AGENTS.md) | Single operational entrypoint for intent, skill, project, and bounded-context routing | High | As agent workflows improve |
+| Agent routing | [`AGENTS.md`](AGENTS.md) | Single operational entrypoint for intent, skill, project, bounded-context, and compaction-survival routing | High | As agent workflows improve |
 | Start | [`START_HERE.md`](START_HERE.md) | Human onboarding and unresolved-routing fallback | High | Rare |
 | Current focus | [`CURRENT_FOCUS.md`](CURRENT_FOCUS.md) | Active priorities | Medium | As priorities change |
 | User context | [`profile/USER_CONTEXT.md`](profile/USER_CONTEXT.md) | Minimal working profile | Medium | Rare |
@@ -33,6 +33,7 @@ Use this index only when the root [`AGENTS.md`](AGENTS.md) has not already resol
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
 | AI-assisted SDD | [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md) | Account-wide specification, implementation, review, testing, security, and Git gates | High for software projects | As engineering workflow improves |
 | Incremental Codex context | [`protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md`](protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md) | Bounded active-step reading, plans, checkpoints, handoffs, and anti-rescan rules | High for Codex projects | As continuation workflow improves |
+| Context-compaction survival | [`protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md`](protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md) | Durable resume blocks, post-compaction rehydration, provider-state reconciliation, and replay protection | High for long-running and externally stateful work | As continuation workflow improves |
 | Security policy | [`security/DATA_POLICY.md`](security/DATA_POLICY.md) | Allowed and prohibited storage | High | Rare |
 | Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompt with project current-step routing | Operational | As workflows improve |
 | Memory template | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized persistent-memory entries | Operational | As needed |
