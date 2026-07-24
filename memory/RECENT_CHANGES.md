@@ -2,10 +2,23 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-17
+last_reviewed: 2026-07-24
 ---
 
 # Recent Changes
+
+## 2026-07-24 — Context-compaction survival governance approved
+
+- Hardcoded account-wide context-compaction survival rules into the root `AGENTS.md`.
+- Classified compacted conversation summaries, native memory, and transcript reconstruction as non-authoritative hints for repository and provider state.
+- Added `protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md` for durable resume blocks, pre-compaction checkpoints, post-compaction rehydration, and consequential-write replay protection.
+- Required long-running and externally stateful projects to preserve separate repository, deployed-runtime, and handoff-metadata identities.
+- Standardized a canonical compaction-resume block containing exact Git state, active specification and step, external resources, database migrations, backups, verification evidence, open defects, next exact action, and actions that must not be repeated without verification.
+- Required checkpoint refreshes after consequential external mutations, when compaction is reported or likely, when usage limits threaten interruption, and before session/model switches.
+- Required fresh or compacted sessions to rehydrate from project `AGENTS.md`, `.codex/CURRENT.md`, the current checkpoint or handoff, Git, CI, and verified provider state before new mutations.
+- Preserved the rule that secrets, raw personal data, credentials, private identifiers, runtime logs, and project-specific live state do not belong in the Context Vault.
+- Classified this amendment as stable, account-wide agent and software-project governance.
+- Source of authority: Earl's explicit instruction after context compaction and usage-limit interruptions during the HAU-USC Logistics v0.7.0 production workflow.
 
 ## 2026-07-17 — Incremental Codex context workflow approved
 
