@@ -13,6 +13,9 @@ last_reviewed: 2026-08-19
 - Recorded the accepted specification in governance/agents/specs/AGENTS-CONSOLIDATION-001.md.
 - Authorized one canonical Context Vault AGENTS.md, conditional managed replicas, project extensions, deterministic synchronization and verification, preservation, rollback, and exact stop conditions.
 - Substantive execution remains gated per target by dirty-work preservation, repository authority, active-writer state, and Odysseus extension-loading proof.
+- Prepared the canonical universal-policy candidate, registry, audit, rule matrix, governance guide, consolidation report, four extension sources, and deterministic synchronization/verification scripts on the isolated governance branch.
+- Frozen the exhaustive pre-change inventory at 106 Windows-equivalent AGENTS.md files, 41 unique hashes, 10 duplicate groups, zero unclassified files, and 206 inaccessible protected paths.
+- Left Global Codex, HAU-USC Logistics, Odysseus, all historical worktrees, stale copies, and third-party files unchanged while their gates remain closed.
 
 ## 2026-07-12 — HAU-USC repository registered
 

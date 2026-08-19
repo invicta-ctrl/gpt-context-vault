@@ -23,12 +23,17 @@ Use this log for account-wide context changes.
 
 - Accepted specification governance/agents/specs/AGENTS-CONSOLIDATION-001.md
 - Dedicated isolated worktree and branch for governed execution
+- Canonical AGENTS.md candidate
+- AGENTS registry, audit, rule matrix, governance guide, consolidation report, pre-change manifest, extension sources, and sync/verify tooling
+- Exhaustive JSON and CSV pre-change inventory
 
 ### Modified
 
 - CONTEXT_INDEX.md
 - memory/RECENT_CHANGES.md
 - memory/MEMORY_CHANGELOG.md
+- START_HERE.md
+- README.md
 
 ### Superseded
 

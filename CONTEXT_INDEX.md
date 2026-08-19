@@ -29,6 +29,13 @@ last_reviewed: 2026-08-19
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
 | Codex routing | [`automation/codex-model-routing/README.md`](automation/codex-model-routing/README.md) | Reusable instruction-refinement and model-routing governance | Operational | As workflows improve |
+| Canonical agent governance | [AGENTS.md](AGENTS.md) | Sole editable account-wide/general policy authority after repository adoption | Critical | Through accepted governance changes |
+| AGENTS registry | [governance/agents/AGENTS_REGISTRY.json](governance/agents/AGENTS_REGISTRY.json) | Canonical, managed-replica, extension, exclusion, gate, and rollback registry | High | When targets or gates change |
+| AGENTS audit | [governance/agents/AGENTS_AUDIT.md](governance/agents/AGENTS_AUDIT.md) | Exhaustive pre-change inventory, hash groups, classifications, and dispositions | Evidence | After authorized audits |
+| AGENTS rule matrix | [governance/agents/AGENTS_RULE_MATRIX.md](governance/agents/AGENTS_RULE_MATRIX.md) | Universal versus project/local rule disposition and contradiction resolution | High | When policy architecture changes |
+| AGENTS operations | [governance/agents/AGENTS_GOVERNANCE.md](governance/agents/AGENTS_GOVERNANCE.md) | Change, synchronization, drift, extension, rollback, and recovery workflow | High | Rare |
+| AGENTS synchronization | [utomation/agents-governance/README.md](automation/agents-governance/README.md) | Dry-run-first deterministic sync and verification tooling | Operational | When tooling changes |
+| AGENTS consolidation report | [governance/agents/AGENTS_CONSOLIDATION_REPORT.md](governance/agents/AGENTS_CONSOLIDATION_REPORT.md) | Current execution state, blockers, preservation, and verification record | Evidence | During this consolidation |
 | AGENTS governance specification | [AGENTS-CONSOLIDATION-001](governance/agents/specs/AGENTS-CONSOLIDATION-001.md) | Accepted canonicalization, replica, extension, synchronization, rollback, and stop-condition authority | High | When governance changes |
 | Security policy | [`security/DATA_POLICY.md`](security/DATA_POLICY.md) | Allowed and prohibited storage | High | Rare |
 | Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompts | Operational | As workflows improve |

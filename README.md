@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-13
+last_reviewed: 2026-08-19
 ---
 
 # GPT Context Vault
@@ -32,22 +32,23 @@ It is **not**:
 
 ## Source-of-truth hierarchy
 
-1. Earl's current explicit instruction
-2. The authoritative repository of the active project
-3. Active context in this repository
-4. Native ChatGPT saved memory
-5. Recent session summaries
+1. Earls current explicit instruction
+2. The active projects accepted specification and approved amendments
+3. The authoritative repository and applicable project policy
+4. Active context in this repository
+5. Native memory and relevant recent context
 6. Archived or superseded information
 
 Current direct instructions always override older stored context.
 
 ## Reading workflow
 
-1. Start with [`START_HERE.md`](START_HERE.md).
-2. Use [`CONTEXT_INDEX.md`](CONTEXT_INDEX.md) to locate only the relevant files.
-3. For project-specific work, consult [`projects/PROJECT_REGISTRY.md`](projects/PROJECT_REGISTRY.md).
-4. Follow the authoritative project repository when one is registered.
-5. Stop retrieving once the task is sufficiently grounded.
+1. Start with the canonical [AGENTS.md](AGENTS.md).
+2. Continue with [START_HERE.md](START_HERE.md).
+3. Use [CONTEXT_INDEX.md](CONTEXT_INDEX.md) to locate only the relevant files.
+4. For project-specific work, consult [projects/PROJECT_REGISTRY.md](projects/PROJECT_REGISTRY.md).
+5. Follow the authoritative project repository, its project extension, current pointer, and accepted specification.
+6. Stop retrieving once the task is sufficiently grounded.
 
 ## Update workflow
 
@@ -92,7 +93,7 @@ Version 1 includes:
 - privacy and redaction controls;
 - reusable prompts and templates.
 
-Version 1 intentionally excludes automatic synchronization, chat-export ingestion, vector databases, bots, APIs, scheduled jobs, and semantic indexing services.
+Version 1 excludes background or last-writer-wins synchronization, chat-export ingestion, vector databases, bots, APIs, scheduled jobs, and semantic indexing services. AGENTS replicas use an explicit, registry-driven, dry-run-first synchronization and verification workflow.
 
 ## Architecture
 
