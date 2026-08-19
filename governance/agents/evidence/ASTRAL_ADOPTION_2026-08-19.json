@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "target": "astral-bridge",
+  "captured_at": "2026-08-19T15:51:37.124593Z",
+  "owner_authorization": "AUTHORIZE ASTRAL AGENTS GOVERNANCE CANDIDATE 61129771b2089c43fb61a07932d103ba065fc116 MERGE",
+  "repository": "https://github.com/invicta-ctrl/Astral-Bridge",
+  "candidate_branch": "governance/agents-consolidation-001",
+  "authorized_candidate_commit": "61129771b2089c43fb61a07932d103ba065fc116",
+  "candidate_tree": "81ebe1b1cd8f1a04d92c0cc747aa0fc086a78444",
+  "pull_request": {
+    "number": 2,
+    "state": "MERGED",
+    "merged_at": "2026-08-19T10:48:47Z",
+    "merge_commit": "5d6004a2b567363199f50544d696fc76a53e84b5",
+    "main_before": "51a9072db811c1cc5dace2498bf66af62af5052f",
+    "main_after": "5d6004a2b567363199f50544d696fc76a53e84b5",
+    "merge_commit_parents": [
+      "51a9072db811c1cc5dace2498bf66af62af5052f",
+      "61129771b2089c43fb61a07932d103ba065fc116"
+    ],
+    "status_checks": []
+  },
+  "tree_identity": {
+    "candidate_tree": "81ebe1b1cd8f1a04d92c0cc747aa0fc086a78444",
+    "merged_main_tree": "81ebe1b1cd8f1a04d92c0cc747aa0fc086a78444",
+    "identical": true
+  },
+  "live_files": {
+    "AGENTS.md": {
+      "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "expected_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "state": "MATCH"
+    },
+    ".agents/PROJECT_POLICY.md": {
+      "sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "expected_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "state": "MATCH"
+    }
+  },
+  "changed_by_merge": [
+    ".gitattributes",
+    "AGENTS.md"
+  ],
+  "verification": {
+    "candidate_is_merge_parent": "PASS",
+    "candidate_tree_equals_main_tree": "PASS",
+    "local_main_status": "CLEAN",
+    "local_main_upstream": "origin/main",
+    "local_main_divergence": "0 ahead / 0 behind",
+    "git_diff_check": "PASS",
+    "scaffold_validator": "PASS",
+    "root_hash": "MATCH",
+    "extension_hash": "MATCH"
+  },
+  "exclusions_preserved": [
+    "No AB-001 source migration",
+    "No CodexPro protected-source change",
+    "No runtime, provider, database, deployment, credential, or public-release change"
+  ],
+  "post_merge_full_verification": {
+    "captured_at": "2026-08-19T15:59:19.830132Z",
+    "candidate_aware_verification": "PASS",
+    "global_codex": "MATCH / MATCH / MATCH",
+    "astral_bridge": "MATCH / MATCH",
+    "hau_usc_logistics": "BLOCKED",
+    "odysseus": "BLOCKED_CONDITIONAL",
+    "strict_live_verification": "EXPECTED_NONZERO_HAU_REQUIRED_TARGET_BLOCKED",
+    "stale_cleanup_allowed": false,
+    "stale_cleanup_performed": false
+  },
+  "global_codex_managed_drift_repair": {
+    "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+    "expected_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+    "dry_run": "WOULD_UPDATE / MATCH / MATCH",
+    "apply": "UPDATED / MATCH / MATCH",
+    "backup_path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T155425Z\\AGENTS.md",
+    "backup_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+    "resulting_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+    "verification": "MATCH / MATCH / MATCH"
+  }
+}
