@@ -45,7 +45,7 @@ canonical root after reconciliation SHA-256:
 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
 ```
 
-The Astral candidate still contains the prior canonical root `b3bb68ac4b675caab7c0c248a667a2a1cdc2992d27653cf1275fd026db7486f2`. It is intentionally marked for resynchronization and reverification before any Astral live-adoption decision.
+The Astral candidate was resynchronized to the reconciled canonical root, reverified, committed, and pushed at `cbc48a4f5253a670cc65c46249824a586d73ba3c`. Live Astral `main` remains unchanged pending the explicit adoption decision.
 
 ## Branches
 
@@ -55,6 +55,7 @@ The Astral candidate still contains the prior canonical root `b3bb68ac4b675caab7
 branch: governance/agents-consolidation-001
 base: edaadec29c6b83472c079844c18e94890a7f7742
 specification commit: c21ecff
+current-main reconciliation commit: 5e264b1f34a5e548d179a403c7420e625a93e64d
 ```
 
 The original `feat/codex-model-routing-governance` checkout and its untracked `.codegraph/` directory remain untouched.
@@ -64,7 +65,7 @@ The original `feat/codex-model-routing-governance` checkout and its untracked `.
 ```text
 branch: governance/agents-consolidation-001
 base: 75aab9d6ea3b8921307f080e7a939f31e69f0f51
-candidate commit: efc7a12ba00e3332d7574d05c00f2d967a6e1602
+candidate commit: cbc48a4f5253a670cc65c46249824a586d73ba3c
 ```
 
 The main checkout remains unchanged. The candidate branch was pushed but was not merged.
@@ -82,17 +83,17 @@ The main checkout remains unchanged. The candidate branch was pushed but was not
 ## Candidate execution evidence
 
 ```text
-Astral pre-apply verification: expected failure with 2 blocking results
-Astral synchronization dry run: PASS
+Astral current-main resynchronization dry run: PASS (root WOULD_UPDATE; extension MATCH)
 Astral root synchronization: UPDATED
-Astral extension synchronization: CREATED, corrected after repository validation, then UPDATED
-Astral root SHA-256: b3bb68ac4b675caab7c0c248a667a2a1cdc2992d27653cf1275fd026db7486f2
+Astral extension synchronization: MATCH / unchanged
+Astral root SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
 Astral extension SHA-256: a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e
 Astral targeted verification: PASS
 Astral git diff --check: PASS
 Astral scripts/verify-scaffold.mjs: PASS
-Astral commit/push: efc7a12ba00e3332d7574d05c00f2d967a6e1602 / PASS
-Astral merge: NOT AUTHORIZED; NOT PERFORMED
+Astral commit/push: cbc48a4f5253a670cc65c46249824a586d73ba3c / PASS
+Astral upstream divergence: 0 ahead / 0 behind
+Astral merge: AWAITING EXPLICIT ADOPTION DECISION; NOT PERFORMED
 ```
 
 ## Stale-reference audit
