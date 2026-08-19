@@ -17,9 +17,9 @@ The root AGENTS.md is the account-wide governance entrypoint. This file is the C
 4. Determine whether the request is general, academic, personal, or project-specific.
 5. Retrieve only the minimum files needed.
 6. For project-specific work, consult [projects/PROJECT_REGISTRY.md](projects/PROJECT_REGISTRY.md), then follow the registered repository, project extension, current pointer, and accepted specification.
-7. When the task needs instruction refinement or model routing, consult [utomation/codex-model-routing/README.md](automation/codex-model-routing/README.md).
+7. When the task needs instruction refinement or model routing, consult [automation/codex-model-routing/README.md](automation/codex-model-routing/README.md).
 8. Ignore archived and superseded information unless historical context is requested.
-9. Treat Earls current explicit instruction as the highest authority.
+9. Treat Earl's current explicit instruction as the highest authority.
 10. Do not retrieve unrelated personal context.
 11. Do not automatically save anything after merely reading this vault.
 
@@ -37,7 +37,7 @@ Do not load the entire repository by default.
 ## Authority order
 
 1. Current explicit instruction
-2. Active projects accepted specification and approved amendments
+2. Active project's accepted specification and approved amendments
 3. Active projects authoritative repository and applicable project policy
 4. Active files in this vault
 5. Native memory and relevant recent context

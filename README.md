@@ -32,8 +32,8 @@ It is **not**:
 
 ## Source-of-truth hierarchy
 
-1. Earls current explicit instruction
-2. The active projects accepted specification and approved amendments
+1. Earl's current explicit instruction
+2. The active project's accepted specification and approved amendments
 3. The authoritative repository and applicable project policy
 4. Active context in this repository
 5. Native memory and relevant recent context
