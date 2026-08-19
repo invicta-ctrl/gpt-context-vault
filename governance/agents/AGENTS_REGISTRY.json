@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "spec_id": "AGENTS-CONSOLIDATION-001",
-  "updated_at": "2026-08-19T07:57:31.097Z",
+  "updated_at": "2026-08-19T08:58:51.281Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -16,13 +16,18 @@
     "relative_path": "AGENTS.md",
     "preferred_absolute_path": "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
     "current_task_worktree_path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-consolidation-001\\AGENTS.md",
-    "branch": "governance/agents-consolidation-001",
-    "status": "candidate_reconciled_with_origin_main",
+    "branch": "main",
+    "status": "active",
     "editable": true,
-    "activation_gate": "merge or otherwise adopt the accepted branch through the Context Vault repository's protected path",
     "reconciled_origin_main": "48ac55aa71a5442ab3e213b4041602e30019a9ed",
-    "candidate_commit": "5e264b1f34a5e548d179a403c7420e625a93e64d",
-    "candidate_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+    "active_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
+    "adoption_pr": 6,
+    "adoption_merge_commit": "5718995f74c832678f421d113671fb1d1f1923cf",
+    "line_ending_pr": 7,
+    "line_ending_merge_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
+    "active_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+    "local_checkout_verified": true,
+    "local_checkout_preserved_untracked": ".codegraph/"
   },
   "extension_sources": [
     {
@@ -54,11 +59,32 @@
       "repository": null,
       "required": true,
       "conditional": false,
-      "sync_allowed": false,
-      "gate_status": "BLOCKED_CANONICAL_NOT_ACTIVE",
-      "prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
+      "sync_allowed": true,
+      "gate_status": "ELIGIBLE_KNOWN_LEAN_CTX_DRIFT_REPAIR_AND_ACTIVATION",
+      "prechange_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
       "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md",
-      "notes": "Do not mutate live global Codex policy until the canonical Context Vault branch is adopted and the extension is installed."
+      "notes": "Canonical root and extension match. Global Codex activates the registered extension through a generated developer_instructions block in config.toml; the block is sourced from the canonical extension, backup-protected, drift-guarded, and verified through codex debug prompt-input.",
+      "prechange_extension_exists": false,
+      "extension_activation": {
+        "kind": "codex_developer_instructions",
+        "config_path": "C:\\Users\\adria\\.codex\\config.toml",
+        "begin_marker": "# BEGIN MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
+        "end_marker": "# END MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
+        "prechange_config_sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c",
+        "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\config.toml"
+      },
+      "original_prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
+      "known_external_drift": {
+        "source": "lean-ctx 3.9.17 shared rules injection",
+        "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+        "repair": "restore canonical root after setting rules_injection=off and setup.auto_inject_rules=false",
+        "lean_ctx_config_backup": "C:\\Users\\adria\\.config\\lean-ctx\\backups\\agents-consolidation-001\\20260819T085551Z\\config.toml",
+        "lean_ctx_config_backup_sha256": "730b9d8cc2fbc3f08af453f4814f16a738bf6f1c549640827cd98d75e7b1e6e6",
+        "lean_ctx_config_current_sha256": "8a606859edaecf07119f7a1872fa4237d8ab4143f0b48d034c8850d2c36fc388",
+        "rules_injection": "off",
+        "setup_auto_inject_rules": false,
+        "config_validation": "PASS"
+      }
     },
     {
       "id": "hau-usc-logistics",
@@ -92,7 +118,7 @@
       "candidate_prechange_extension_exists": true,
       "candidate_prechange_extension_sha256": "7da28021024eb62c94161e99d7110e6d491a38707968000009d49b00b551c5a8",
       "candidate_branch": "governance/agents-consolidation-001",
-      "candidate_commit": "cbc48a4f5253a670cc65c46249824a586d73ba3c",
+      "candidate_commit": "61129771b2089c43fb61a07932d103ba065fc116",
       "candidate_root_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
       "candidate_extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
       "candidate_verification": {
@@ -104,7 +130,8 @@
         "scaffold_validator": "PASS",
         "push": "PASS",
         "upstream_divergence": "0 ahead / 0 behind",
-        "merge": "AWAITING_EXPLICIT_ASTRAL_ADOPTION_DECISION"
+        "merge": "AWAITING_EXPLICIT_ASTRAL_ADOPTION_DECISION",
+        "gitattributes": "PASS: /AGENTS.md and /.agents/PROJECT_POLICY.md text eol=lf"
       }
     },
     {
@@ -166,7 +193,7 @@
       }
     ]
   },
-  "activation_state": "CANDIDATE_RECONCILED_WITH_CURRENT_MAIN_ASTRAL_RESYNCED_VERIFIED_PUSHED",
+  "activation_state": "CANONICAL_ACTIVE_GLOBAL_CODEX_ELIGIBLE_ASTRAL_CANDIDATE_VERIFIED_OTHER_TARGETS_BLOCKED",
   "inventory_evidence": {
     "prechange_json": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.json",
     "prechange_csv": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.csv",

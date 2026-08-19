@@ -8,6 +8,12 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+$activationModulePath = Join-Path $PSScriptRoot 'CodexExtensionActivation.psm1'
+if (-not (Test-Path -LiteralPath $activationModulePath -PathType Leaf)) {
+    throw "Activation module is missing: $activationModulePath"
+}
+Import-Module $activationModulePath -Force
+
 function Get-Sha256 {
     param([Parameter(Mandatory)][string]$Path)
     (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant()
@@ -107,6 +113,7 @@ foreach ($replica in $registry.managed_replicas) {
     $extensionPath = [string]$replica.extension_path
     $mode = 'live'
     $allowed = [bool]$replica.sync_allowed
+    $activation = Get-OptionalProperty -Object $replica -Name 'extension_activation' -Default $null
 
     if (-not $allowed -and $IncludeCandidateTargets -and
         $replica.PSObject.Properties.Name -contains 'candidate_sync_allowed' -and
@@ -115,14 +122,17 @@ foreach ($replica in $registry.managed_replicas) {
         $extensionPath = [string]$replica.candidate_extension_path
         $allowed = $true
         $mode = 'candidate'
+        $activation = $null
     }
 
     if (-not $allowed) {
+        $blockedActivationAction = if ($null -ne $activation) { 'BLOCKED' } else { 'N/A' }
         $results.Add([pscustomobject]@{
             Id = $replica.id
             Mode = $mode
             ReplicaAction = 'BLOCKED'
             ExtensionAction = 'BLOCKED'
+            ActivationAction = $blockedActivationAction
             ReplicaPath = $targetPath
             ExtensionPath = $extensionPath
             Detail = [string]$replica.gate_status
@@ -184,8 +194,23 @@ foreach ($replica in $registry.managed_replicas) {
         }
     }
 
+    $activationPlan = $null
+    if ($null -ne $activation) {
+        try {
+            $activationPlan = Invoke-CodexDeveloperInstructionsSync `
+                -Activation $activation `
+                -ExtensionSource $extensionSource `
+                -Timestamp $timestamp
+        }
+        catch {
+            $failures.Add("$($replica.id): activation preflight failed: $($_.Exception.Message)")
+            continue
+        }
+    }
+
     $replicaAction = Get-PlannedAction -Exists $replicaExists -CurrentHash $replicaCurrentHash -DesiredHash $canonicalHash -Applying ([bool]$Apply)
     $extensionAction = Get-PlannedAction -Exists $extensionExists -CurrentHash $extensionCurrentHash -DesiredHash $extensionSourceHash -Applying ([bool]$Apply)
+    $activationAction = if ($null -ne $activationPlan) { [string]$activationPlan.Action } else { 'N/A' }
 
     if (-not $Apply) {
         $results.Add([pscustomobject]@{
@@ -193,9 +218,10 @@ foreach ($replica in $registry.managed_replicas) {
             Mode = $mode
             ReplicaAction = $replicaAction
             ExtensionAction = $extensionAction
+            ActivationAction = $activationAction
             ReplicaPath = $targetPath
             ExtensionPath = $extensionPath
-            Detail = "replica=$canonicalHash extension=$extensionSourceHash"
+            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction"
         })
         continue
     }
@@ -229,6 +255,20 @@ foreach ($replica in $registry.managed_replicas) {
         Write-AtomicBytes -Path $extensionPath -Bytes $extensionBytes
     }
 
+    if ($null -ne $activation) {
+        try {
+            $activationResult = Invoke-CodexDeveloperInstructionsSync `
+                -Activation $activation `
+                -ExtensionSource $extensionSource `
+                -Timestamp $timestamp `
+                -Apply
+            $activationAction = [string]$activationResult.Action
+        }
+        catch {
+            throw "$($replica.id): activation apply failed: $($_.Exception.Message)"
+        }
+    }
+
     $afterReplicaHash = Get-Sha256 $targetPath
     $afterExtensionHash = Get-Sha256 $extensionPath
     if ($afterReplicaHash -ne $canonicalHash) {
@@ -243,9 +283,10 @@ foreach ($replica in $registry.managed_replicas) {
         Mode = $mode
         ReplicaAction = $replicaAction
         ExtensionAction = $extensionAction
+        ActivationAction = $activationAction
         ReplicaPath = $targetPath
         ExtensionPath = $extensionPath
-        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash"
+        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction"
     })
 }
 

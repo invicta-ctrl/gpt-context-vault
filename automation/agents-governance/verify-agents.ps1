@@ -8,9 +8,27 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+$activationModulePath = Join-Path $PSScriptRoot 'CodexExtensionActivation.psm1'
+if (-not (Test-Path -LiteralPath $activationModulePath -PathType Leaf)) {
+    throw "Activation module is missing: $activationModulePath"
+}
+Import-Module $activationModulePath -Force
+
 function Get-Sha256 {
     param([Parameter(Mandatory)][string]$Path)
     (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant()
+}
+
+function Get-OptionalProperty {
+    param(
+        [Parameter(Mandatory)]$Object,
+        [Parameter(Mandatory)][string]$Name,
+        $Default = $null
+    )
+    if ($Object.PSObject.Properties.Name -contains $Name) {
+        return $Object.$Name
+    }
+    return $Default
 }
 
 function Resolve-ExtensionSource {
@@ -49,6 +67,7 @@ foreach ($replica in $registry.managed_replicas) {
     $extensionPath = [string]$replica.extension_path
     $eligible = [bool]$replica.sync_allowed
     $mode = 'live'
+    $activation = Get-OptionalProperty -Object $replica -Name 'extension_activation' -Default $null
 
     if (-not $eligible -and $IncludeCandidateTargets -and
         $replica.PSObject.Properties.Name -contains 'candidate_sync_allowed' -and
@@ -57,14 +76,17 @@ foreach ($replica in $registry.managed_replicas) {
         $extensionPath = [string]$replica.candidate_extension_path
         $eligible = $true
         $mode = 'candidate'
+        $activation = $null
     }
 
     if (-not $eligible) {
+        $blockedActivationState = if ($null -ne $activation) { 'BLOCKED' } else { 'N/A' }
         $results.Add([pscustomobject]@{
             Id = $replica.id
             Mode = $mode
             Replica = 'BLOCKED'
             Extension = 'BLOCKED'
+            Activation = $blockedActivationState
             ReplicaPath = $path
             ExtensionPath = $extensionPath
             Detail = [string]$replica.gate_status
@@ -111,20 +133,40 @@ foreach ($replica in $registry.managed_replicas) {
         }
     }
 
+    $activationState = 'N/A'
+    $activationDetail = 'no activation mechanism registered'
+    if ($null -ne $activation) {
+        try {
+            $activationResult = Test-CodexDeveloperInstructionsActivation `
+                -Activation $activation `
+                -ExtensionSource $extensionSource
+            $activationState = [string]$activationResult.State
+            $activationDetail = [string]$activationResult.Detail
+        }
+        catch {
+            $activationState = 'ERROR'
+            $activationDetail = $_.Exception.Message
+        }
+    }
+
     $results.Add([pscustomobject]@{
         Id = $replica.id
         Mode = $mode
         Replica = $replicaState
         Extension = $extensionState
+        Activation = $activationState
         ReplicaPath = $path
         ExtensionPath = $extensionPath
-        Detail = "replica: $replicaDetail; extension: $extensionDetail"
+        Detail = "replica: $replicaDetail; extension: $extensionDetail; activation: $activationDetail"
     })
 
     if ($replicaState -ne 'MATCH') {
         $failureCount++
     }
     if ($extensionState -ne 'MATCH') {
+        $failureCount++
+    }
+    if ($null -ne $activation -and $activationState -ne 'MATCH') {
         $failureCount++
     }
 }
