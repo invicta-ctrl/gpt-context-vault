@@ -19,9 +19,10 @@ Use this file for human onboarding, unresolved routing, or non-project requests 
 4. Follow the registered project's authoritative repository, applicable project extension, `.codex/CURRENT.md` when present, bounded current task and handoff, and accepted specification.
 5. For non-project work, use [`CONTEXT_INDEX.md`](CONTEXT_INDEX.md) to locate only the relevant file or category.
 6. When the task needs instruction refinement or model routing, consult [`automation/codex-model-routing/README.md`](automation/codex-model-routing/README.md).
-7. Ignore archived and superseded information unless history is requested.
-8. Do not retrieve unrelated personal context.
-9. Do not automatically save anything after merely reading this vault.
+7. When token, context, delegation, evidence-reuse, review, or verification efficiency is in scope, follow [the canonical token/context policy](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md).
+8. Ignore archived and superseded information unless history is requested.
+9. Do not retrieve unrelated personal context.
+10. Do not automatically save anything after merely reading this vault.
 
 ## Stop condition
 

@@ -88,6 +88,8 @@ Expand context only through acceptance criteria, direct dependencies, verificati
 
 Do not repeat expensive reads, tests, builds, reviews, migrations, deployments, or analyses while the relevant source, artifact, configuration, and external state remain unchanged.
 
+The canonical token and context-efficiency policy is [protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md). It governs ordinary reasoning, delegation, evidence reuse, review, verification escalation, abnormal-route reasons, and stop-when-green behavior. Project rules may be stricter but may not weaken safety.
+
 ## Project incremental-context rule
 
 When a project contains `.codex/CURRENT.md`:
@@ -182,9 +184,10 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Delegate only bounded, independent work that reduces latency or context without weakening verification.
+- Default to zero children. Use at most one active child only when the work is bounded, independent, non-overlapping, explicitly justified, and expected to reduce total context or latency without weakening verification.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
+- Independent review and broad test suites are risk-triggered, not routine ceremony.
 - Do not continue automatically into a new phase after the accepted work unit is complete unless the active authority explicitly permits it.
 
 Project extensions may define stricter model classes, writer locks, branch rules, release paths, or delegation limits. Those refinements apply only within their registered scope.
