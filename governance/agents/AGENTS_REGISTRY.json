@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "spec_id": "AGENTS-CONSOLIDATION-001",
-  "updated_at": "2026-08-19T08:58:51.281Z",
+  "updated_at": "2026-08-19T15:59:19.830132Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -60,10 +60,10 @@
       "required": true,
       "conditional": false,
       "sync_allowed": true,
-      "gate_status": "ELIGIBLE_KNOWN_LEAN_CTX_DRIFT_REPAIR_AND_ACTIVATION",
+      "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
       "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md",
-      "notes": "Canonical root and extension match. Global Codex activates the registered extension through a generated developer_instructions block in config.toml; the block is sourced from the canonical extension, backup-protected, drift-guarded, and verified through codex debug prompt-input.",
+      "notes": "Global Codex root, extension, and deterministic developer-instructions activation are active and verified. Recurring known managed-root drift was backup-protected and repaired during Astral adoption verification.",
       "prechange_extension_exists": false,
       "extension_activation": {
         "kind": "codex_developer_instructions",
@@ -84,6 +84,20 @@
         "rules_injection": "off",
         "setup_auto_inject_rules": false,
         "config_validation": "PASS"
+      },
+      "active_root_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "active_extension_sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+      "last_drift_repair": {
+        "observed_at": "2026-08-19T15:59:19.830132Z",
+        "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+        "expected_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+        "classification": "KNOWN_LEAN_CTX_STYLE_MANAGED_ROOT_DRIFT",
+        "dry_run": "WOULD_UPDATE root; extension MATCH; activation MATCH",
+        "apply": "UPDATED root; extension MATCH; activation MATCH",
+        "backup_path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T155425Z\\AGENTS.md",
+        "backup_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+        "resulting_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+        "targeted_verification": "MATCH / MATCH / MATCH"
       }
     },
     {
@@ -108,12 +122,12 @@
       "repository": "https://github.com/invicta-ctrl/Astral-Bridge",
       "required": true,
       "conditional": false,
-      "sync_allowed": false,
-      "candidate_sync_allowed": true,
-      "gate_status": "LIVE_BLOCKED_CANDIDATE_SYNCED_VERIFIED_PUSHED_CURRENT_MAIN_RECONCILED",
+      "sync_allowed": true,
+      "candidate_sync_allowed": false,
+      "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "df283d7010f10942fad2a2295b72195ea5a33316d2fcb3b59b5826ab19d41158",
       "rollback": "Git commit 75aab9d6ea3b8921307f080e7a939f31e69f0f51",
-      "notes": "Live main remains unchanged. The isolated candidate is synchronized to the current-main-reconciled canonical root, verified, committed, and pushed; live adoption still requires the authorized Astral merge decision.",
+      "notes": "The exact owner-authorized candidate was merged through Astral Bridge PR #2. Live main matches the canonical root and registered Astral extension, and the merged tree is identical to the authorized candidate tree.",
       "candidate_prechange_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
       "candidate_prechange_extension_exists": true,
       "candidate_prechange_extension_sha256": "7da28021024eb62c94161e99d7110e6d491a38707968000009d49b00b551c5a8",
@@ -130,8 +144,30 @@
         "scaffold_validator": "PASS",
         "push": "PASS",
         "upstream_divergence": "0 ahead / 0 behind",
-        "merge": "AWAITING_EXPLICIT_ASTRAL_ADOPTION_DECISION",
+        "merge": "MERGED_PR_2_EXACT_OWNER_AUTHORIZED_CANDIDATE",
         "gitattributes": "PASS: /AGENTS.md and /.agents/PROJECT_POLICY.md text eol=lf"
+      },
+      "active_branch": "main",
+      "adoption_candidate_commit": "61129771b2089c43fb61a07932d103ba065fc116",
+      "active_main_commit": "5d6004a2b567363199f50544d696fc76a53e84b5",
+      "active_tree": "81ebe1b1cd8f1a04d92c0cc747aa0fc086a78444",
+      "adoption_pull_request": 2,
+      "adoption_merge_commit": "5d6004a2b567363199f50544d696fc76a53e84b5",
+      "adoption_merged_at": "2026-08-19T10:48:47Z",
+      "active_root_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "active_extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "activation_evidence": "governance/agents/evidence/ASTRAL_ADOPTION_2026-08-19.json",
+      "live_verification": {
+        "candidate_is_merge_parent": true,
+        "candidate_tree_equals_main_tree": true,
+        "root_hash_match": true,
+        "extension_hash_match": true,
+        "git_diff_check": "PASS",
+        "scaffold_validator": "PASS",
+        "local_main_clean": true,
+        "local_main_upstream_divergence": "0 ahead / 0 behind",
+        "pull_request_status": "MERGED",
+        "status_checks": "NONE_CONFIGURED"
       }
     },
     {
@@ -193,7 +229,7 @@
       }
     ]
   },
-  "activation_state": "CANONICAL_ACTIVE_GLOBAL_CODEX_ELIGIBLE_ASTRAL_CANDIDATE_VERIFIED_OTHER_TARGETS_BLOCKED",
+  "activation_state": "CANONICAL_GLOBAL_CODEX_ASTRAL_ACTIVE_HAU_ODYSSEUS_BLOCKED",
   "inventory_evidence": {
     "prechange_json": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.json",
     "prechange_csv": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.csv",

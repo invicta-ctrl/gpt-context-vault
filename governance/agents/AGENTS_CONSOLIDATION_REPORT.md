@@ -21,17 +21,17 @@ Completed:
 - canonical universal policy adopted into Context Vault `main` through PR #6;
 - four project/local extension sources;
 - deterministic registry, synchronization, and verification tooling;
-- isolated Astral Bridge candidate synchronized, verified, committed, and pushed;
+- Astral Bridge candidate synchronized, verified, owner-authorized, and merged through PR #2;
 - LF-stable canonical and extension bytes adopted through PR #7;
+- Global Codex root/extension/activation verified, with recurring managed-root drift repaired from a verified backup;
 - preservation of HAU, Odysseus, historical, worktree, vendor, backup, and test files.
 
 Blocked:
 
 - HAU synchronization is blocked by active Terra writer locks and unrelated dirty work.
 - Odysseus synchronization is blocked because its current runtime loads only the root policy and has no project-extension loader.
-- Live Astral activation and protected-main merge require separate repository authorization.
 
-No deployment, database, provider, Google, credential, model, or application-runtime state has changed. Global Codex is now eligible for its targeted backup-and-activation step.
+No deployment, database, provider, Google, credential, model, or application-runtime state has changed. Global Codex and Astral Bridge are active managed targets; HAU remains the required blocked live target and Odysseus remains conditional and blocked in the current registry.
 
 ## Canonical activation evidence
 
@@ -57,7 +57,7 @@ canonical root after reconciliation SHA-256:
 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
 ```
 
-The Astral candidate was resynchronized to the reconciled canonical root, pinned to LF-stable governance bytes, reverified, committed, and pushed at `61129771b2089c43fb61a07932d103ba065fc116`. Live Astral `main` remains unchanged pending the explicit adoption decision.
+The Astral candidate was resynchronized to the reconciled canonical root, pinned to LF-stable governance bytes, reverified, committed, and pushed at `61129771b2089c43fb61a07932d103ba065fc116`. Earl authorized that exact candidate; Astral Bridge PR #2 merged it into `main` at `5d6004a2b567363199f50544d696fc76a53e84b5`, and the merged tree is identical to the authorized candidate tree.
 
 ## Branches
 
@@ -84,16 +84,16 @@ base: 75aab9d6ea3b8921307f080e7a939f31e69f0f51
 candidate commit: 61129771b2089c43fb61a07932d103ba065fc116
 ```
 
-The main checkout remains unchanged. The candidate branch was pushed but was not merged.
+The live `main` checkout is clean, tracks `origin/main`, and is verified at merge commit `5d6004a2b567363199f50544d696fc76a53e84b5`. The authorized candidate `61129771b2089c43fb61a07932d103ba065fc116` is the second merge parent and has the same tree as merged `main`.
 
 ## Managed-target state
 
 | Target | Replica | Extension | State |
 |---|---|---|---|
 | Context Vault | Active canonical `main` | N/A | Adopted; local path and SHA verified |
-| Global Codex | Unchanged | Source prepared | Eligible; backup and activation pending |
+| Global Codex | `MATCH` on live root | `MATCH` with activation `MATCH` | Active; recurring managed-root drift backup-protected and repaired |
 | HAU-USC Logistics | Unchanged | Source prepared only | Blocked |
-| Astral Bridge | `MATCH` on candidate branch | `MATCH` on candidate branch | Verified and pushed; live main blocked |
+| Astral Bridge | `MATCH` on live `main` | `MATCH` on live `main` | Active; exact owner-authorized candidate merged through PR #2 |
 | Odysseus | Unchanged | Source prepared only | Blocked |
 
 ## Candidate execution evidence
@@ -110,7 +110,9 @@ Astral scripts/verify-scaffold.mjs: PASS
 Astral commit/push: 61129771b2089c43fb61a07932d103ba065fc116 / PASS
 Astral LF attributes: PASS (`AGENTS.md` and extension forced to LF)
 Astral upstream divergence: 0 ahead / 0 behind
-Astral merge: AWAITING EXPLICIT ADOPTION DECISION; NOT PERFORMED
+Astral merge: PR #2 MERGED exact owner-authorized candidate; merge commit 5d6004a2b567363199f50544d696fc76a53e84b5
+Astral adoption evidence: `governance/agents/evidence/ASTRAL_ADOPTION_2026-08-19.json`.
+Global Codex post-merge drift repair: observed `667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e`; backup `C:\Users\adria\.codex\backups\agents-consolidation-001\20260819T155425Z\AGENTS.md`; restored canonical `66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769`; targeted verification `MATCH / MATCH / MATCH`.
 ```
 
 ## Stale-reference audit
