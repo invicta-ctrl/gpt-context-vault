@@ -18,21 +18,33 @@ Completed:
 - accepted specification recorded, committed, and pushed;
 - isolated Context Vault task branch/worktree;
 - machine-readable pre-change inventory;
-- canonical universal-policy candidate;
+- canonical universal policy adopted into Context Vault `main` through PR #6;
 - four project/local extension sources;
 - deterministic registry, synchronization, and verification tooling;
 - isolated Astral Bridge candidate synchronized, verified, committed, and pushed;
-- preservation of HAU, Global Codex, Odysseus, historical, worktree, vendor, backup, and test files.
+- LF-stable canonical and extension bytes adopted through PR #7;
+- preservation of HAU, Odysseus, historical, worktree, vendor, backup, and test files.
 
 Blocked:
 
-- Context Vault canonical activation requires the repository's protected adoption path.
 - HAU synchronization is blocked by active Terra writer locks and unrelated dirty work.
-- Global Codex synchronization is blocked until the canonical master is active.
 - Odysseus synchronization is blocked because its current runtime loads only the root policy and has no project-extension loader.
 - Live Astral activation and protected-main merge require separate repository authorization.
 
-No deployment, database, provider, Google, credential, model, or application-runtime state was changed.
+No deployment, database, provider, Google, credential, model, or application-runtime state has changed. Global Codex is now eligible for its targeted backup-and-activation step.
+
+## Canonical activation evidence
+
+```text
+Context Vault adoption PR: #6 / MERGED
+Context Vault adoption merge: 5718995f74c832678f421d113671fb1d1f1923cf
+LF stability PR: #7 / MERGED
+Active main: c9e0be299c017dadcad75addfa8048f10f679f7f
+Registered canonical path: D:DocumentsCodexGitHubgpt-context-vaultAGENTS.md
+Canonical SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
+Canonical working-tree EOL: LF
+Untracked .codegraph/: PRESERVED / UNCHANGED
+```
 
 ## Current-main reconciliation
 
@@ -45,7 +57,7 @@ canonical root after reconciliation SHA-256:
 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
 ```
 
-The Astral candidate was resynchronized to the reconciled canonical root, reverified, committed, and pushed at `cbc48a4f5253a670cc65c46249824a586d73ba3c`. Live Astral `main` remains unchanged pending the explicit adoption decision.
+The Astral candidate was resynchronized to the reconciled canonical root, pinned to LF-stable governance bytes, reverified, committed, and pushed at `61129771b2089c43fb61a07932d103ba065fc116`. Live Astral `main` remains unchanged pending the explicit adoption decision.
 
 ## Branches
 
@@ -56,16 +68,20 @@ branch: governance/agents-consolidation-001
 base: edaadec29c6b83472c079844c18e94890a7f7742
 specification commit: c21ecff
 current-main reconciliation commit: 5e264b1f34a5e548d179a403c7420e625a93e64d
+adoption PR #6 merge: 5718995f74c832678f421d113671fb1d1f1923cf
+LF-stability PR #7 merge: c9e0be299c017dadcad75addfa8048f10f679f7f
+active branch: main
+active canonical SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
 ```
 
-The original `feat/codex-model-routing-governance` checkout and its untracked `.codegraph/` directory remain untouched.
+The registered local checkout now tracks adopted `main`. The previous feature commit remains preserved on its branch and remote; the untracked `.codegraph/` directory remains untouched.
 
 ### Astral Bridge
 
 ```text
 branch: governance/agents-consolidation-001
 base: 75aab9d6ea3b8921307f080e7a939f31e69f0f51
-candidate commit: cbc48a4f5253a670cc65c46249824a586d73ba3c
+candidate commit: 61129771b2089c43fb61a07932d103ba065fc116
 ```
 
 The main checkout remains unchanged. The candidate branch was pushed but was not merged.
@@ -74,8 +90,8 @@ The main checkout remains unchanged. The candidate branch was pushed but was not
 
 | Target | Replica | Extension | State |
 |---|---|---|---|
-| Context Vault | Canonical candidate | N/A | Prepared on task branch |
-| Global Codex | Unchanged | Source prepared only | Blocked |
+| Context Vault | Active canonical `main` | N/A | Adopted; local path and SHA verified |
+| Global Codex | Unchanged | Source prepared | Eligible; backup and activation pending |
 | HAU-USC Logistics | Unchanged | Source prepared only | Blocked |
 | Astral Bridge | `MATCH` on candidate branch | `MATCH` on candidate branch | Verified and pushed; live main blocked |
 | Odysseus | Unchanged | Source prepared only | Blocked |
@@ -91,7 +107,8 @@ Astral extension SHA-256: a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e
 Astral targeted verification: PASS
 Astral git diff --check: PASS
 Astral scripts/verify-scaffold.mjs: PASS
-Astral commit/push: cbc48a4f5253a670cc65c46249824a586d73ba3c / PASS
+Astral commit/push: 61129771b2089c43fb61a07932d103ba065fc116 / PASS
+Astral LF attributes: PASS (`AGENTS.md` and extension forced to LF)
 Astral upstream divergence: 0 ahead / 0 behind
 Astral merge: AWAITING EXPLICIT ADOPTION DECISION; NOT PERFORMED
 ```
