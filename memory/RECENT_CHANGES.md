@@ -2,10 +2,17 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-12
+last_reviewed: 2026-08-19
 ---
 
 # Recent Changes
+
+## 2026-08-19 - AGENTS-CONSOLIDATION-001 accepted
+
+- Earl explicitly approved AGENTS-CONSOLIDATION-001 as written.
+- Recorded the accepted specification in governance/agents/specs/AGENTS-CONSOLIDATION-001.md.
+- Authorized one canonical Context Vault AGENTS.md, conditional managed replicas, project extensions, deterministic synchronization and verification, preservation, rollback, and exact stop conditions.
+- Substantive execution remains gated per target by dirty-work preservation, repository authority, active-writer state, and Odysseus extension-loading proof.
 
 ## 2026-07-12 — HAU-USC repository registered
 

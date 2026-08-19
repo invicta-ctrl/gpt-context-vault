@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: memory
-last_reviewed: 2026-07-12
+last_reviewed: 2026-08-19
 ---
 
 # Memory Changelog
@@ -16,6 +16,31 @@ Use this log for account-wide context changes.
 - Superseded
 - Archived
 - Removed
+
+## 2026-08-19 - AGENTS-CONSOLIDATION-001 accepted
+
+### Added
+
+- Accepted specification governance/agents/specs/AGENTS-CONSOLIDATION-001.md
+- Dedicated isolated worktree and branch for governed execution
+
+### Modified
+
+- CONTEXT_INDEX.md
+- memory/RECENT_CHANGES.md
+- memory/MEMORY_CHANGELOG.md
+
+### Superseded
+
+- Chat-only specification approval as the sole record of authority
+
+### Archived
+
+- None
+
+### Removed
+
+- None
 
 ## 2026-07-12 — HAU-USC repository registration
 

@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-12
+last_reviewed: 2026-08-19
 ---
 
 # Context Index
@@ -29,6 +29,7 @@ last_reviewed: 2026-07-12
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
 | Codex routing | [`automation/codex-model-routing/README.md`](automation/codex-model-routing/README.md) | Reusable instruction-refinement and model-routing governance | Operational | As workflows improve |
+| AGENTS governance specification | [AGENTS-CONSOLIDATION-001](governance/agents/specs/AGENTS-CONSOLIDATION-001.md) | Accepted canonicalization, replica, extension, synchronization, rollback, and stop-condition authority | High | When governance changes |
 | Security policy | [`security/DATA_POLICY.md`](security/DATA_POLICY.md) | Allowed and prohibited storage | High | Rare |
 | Prompts | [`prompts/GENERAL_CONTEXT_PROMPT.md`](prompts/GENERAL_CONTEXT_PROMPT.md) | Reusable assistant prompts | Operational | As workflows improve |
 | Templates | [`templates/MEMORY_ENTRY_TEMPLATE.md`](templates/MEMORY_ENTRY_TEMPLATE.md) | Standardized entries | Operational | As needed |
