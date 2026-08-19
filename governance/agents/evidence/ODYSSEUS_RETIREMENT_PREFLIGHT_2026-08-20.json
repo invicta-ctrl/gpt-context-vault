@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001-A2",
+  "status": "READ_ONLY_PREFLIGHT_PROPOSED_AMENDMENT_NOT_ACCEPTED",
+  "captured_at": "2026-08-19T16:44:29.649398Z",
+  "runtime_state": {
+    "windows_process": "NONE_VERIFIED; audit-command self-matches excluded",
+    "windows_service": "NONE",
+    "scheduled_task": "NONE",
+    "external_provider_actions": 0
+  },
+  "source_checkout": {
+    "path": "D:\\AI_Workspace\\odysseus",
+    "exists": true,
+    "file_count": 17037,
+    "directory_count": 2124,
+    "total_bytes": 433913752,
+    "branch": "governance/agents-consolidation-001-odysseus-a1",
+    "head": "f2eb14111f5d8db4c979398f9e9260caa4fe18e1",
+    "tree": "6e757e34d3a8dd20982bc7dd45865b7c5589ed44",
+    "worktree_status": "CLEAN",
+    "upstream": null,
+    "remote": "https://github.com/pewdiepie-archdaemon/odysseus.git",
+    "contains_ignored_env_file": true,
+    "env_content_read": false
+  },
+  "data_root": {
+    "path": "D:\\AI_Workspace\\odysseus_data",
+    "exists": true,
+    "file_count": 1,
+    "directory_count": 3,
+    "total_bytes": 3154,
+    "memory_file_sha256": "147f25338522427dfc4496d18658d1c5517b56a7b087684845984cfd5e7b69ac",
+    "content_read": false
+  },
+  "exact_local_targets": [
+    {
+      "path": "D:\\AI_Workspace\\.agents\\PROJECT_POLICY.md",
+      "bytes": 8095,
+      "sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e",
+      "disposition": "DELETE_AFTER_APPROVAL"
+    },
+    {
+      "path": "D:\\AI_Workspace\\bridge\\odysseus_openclaw_bridge.py",
+      "bytes": 2991,
+      "sha256": "cddf1f7df8553618be89349f4583d7426a0c58130e8d25d27597e51984688879",
+      "disposition": "DELETE_AFTER_APPROVAL"
+    },
+    {
+      "path": "D:\\AI_Workspace\\Important codes\\Codes.txt",
+      "bytes": 271,
+      "sha256": "e065950dcb90ad6f5bcb7f0f4cfbc6a4f9f70cae5aad8afccc44f7cdb297fb25",
+      "disposition": "REMOVE_ONLY_ODYSSEUS_BLOCK_AFTER_APPROVAL"
+    },
+    {
+      "path": "D:\\AI_Workspace\\odysseus\\data\\AGENTS.md",
+      "bytes": 12392,
+      "sha256": "e9dfe77f1f6844b247afe40aaf7ca3c8118466ce82adece04d091eaaaf0151ec",
+      "disposition": "DELETED_WITH_SOURCE_TREE"
+    }
+  ],
+  "rollback_files_delete_last": [
+    {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\odysseus-a1-f2eb141.bundle",
+      "bytes": 40697795,
+      "sha256": "21d26f78e73855cd30fb0e735080d21e0257c0543d9c1daca48dff13669a6f03"
+    },
+    {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\odysseus-a1-f2eb141.patch",
+      "bytes": 12567,
+      "sha256": "ac6ec2dc9237d828309ff01dd6c0b97388dc91f008cdcf8428fa7541e5555597"
+    },
+    {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\odysseus-sync-dry-run.txt",
+      "bytes": 442,
+      "sha256": "d689f22114f1ceab9372932cdcbb0a4bf372ab30f3aebe9d3459736d0f93d02e"
+    }
+  ],
+  "explicit_keep_untouched": [
+    {
+      "path": "D:\\AI_Workspace\\AGENTS.md",
+      "bytes": 18562,
+      "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "reason": "generic universal policy replica, not Odysseus-specific"
+    },
+    {
+      "path": "D:\\Documents\\Codex\\HAU-USC Logistics",
+      "reason": "owner exclusion and active writer lock"
+    },
+    {
+      "path": "D:\\Documents\\Codex\\Astral-Bridge",
+      "reason": "owner exclusion"
+    },
+    {
+      "path": "C:\\Users\\adria\\.codex",
+      "reason": "owner exclusion"
+    }
+  ],
+  "context_vault_disposition": {
+    "remove_active_target": true,
+    "remove_active_extension_source": true,
+    "supersede_a1": true,
+    "retain_historical_specs_inventories_and_evidence": true
+  },
+  "execution_performed": false
+}

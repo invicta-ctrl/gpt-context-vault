@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "status": "READ_ONLY_RECONCILIATION_COMPLETE_CANDIDATE_BLOCKED",
+  "captured_at": "2026-08-19T16:44:54.291217Z",
+  "repository": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system",
+  "fetch": "PASS_PRUNE_ORIGIN",
+  "active_checkout": {
+    "branch": "governance/agents-main-sync",
+    "head": "43d1a55b7b5e85ec2064eeb1a2c1729524c739ed",
+    "upstream": "origin/governance/agents-main-sync",
+    "preserved_dirty_paths": [
+      "docs/SECURITY_AND_ACCESS.md",
+      ".ai-bridge/",
+      "docs/reference/SECURITY_AUDIT_CONSOLIDATED_RECOMMENDATIONS_2026-08-18.md"
+    ],
+    "modified": false
+  },
+  "authoritative_product_lineage": {
+    "ref": "origin/release/v0.8.3-identity-foundation",
+    "head": "8874fc849f387831acf2957cc1259d98d1b11a99",
+    "current_milestone": "V83_ID_C_DISABLED_ENABLEMENT_GATE_VERIFIED_PASS_NEXT_RELEASE_IDENTITY_CANDIDATE_FREEZE_PREFLIGHT_REVIEW",
+    "current_mode": "REVIEW",
+    "active_writer": "TERRA_MAX:/root/v83_gate_a_terra_writer",
+    "writer_lock": "HELD",
+    "lock_status": "ACTIVE",
+    "accepted_specs": [
+      ".codex/specs/active/v0.8.1-v0.8.5-v1r7a3-standalone-master-program.md",
+      ".codex/specs/active/v0.8.3-identity-intake-a5-accepted.md"
+    ]
+  },
+  "other_refs": {
+    "origin_main": "7d826f2683fbca8058ff08e8ae40acc1e095c076",
+    "origin_frontend_design_integration": "331ab6d54cfe8883e6f0efa2fac3e0d5cf589162"
+  },
+  "candidate_preparation": {
+    "authorized_now": false,
+    "worktree_created": false,
+    "branch_created": false,
+    "files_modified": false,
+    "blocker": "The authoritative release lineage holds the singular Terra writer lock. A second governance writer or HAU worktree would violate project policy.",
+    "resume_gate": "ACTIVE_WRITER: NONE; WRITER_LOCK: RELEASED; HANDOFF_STATUS: READY_FOR_HANDOFF; clean pushed authoritative release state"
+  },
+  "external_actions": {
+    "provider": 0,
+    "database": 0,
+    "deployment": 0,
+    "migration": 0,
+    "figma": 0
+  }
+}
