@@ -324,19 +324,19 @@ verified_baseline_commit: <commit-sha>
 
 ## Included
 
-- 
+-
 
 ## Excluded
 
-- 
+-
 
 ## Allowed files or modules
 
-- 
+-
 
 ## Off-limits files, modules, and behavior
 
-- 
+-
 
 ## Existing interfaces and invariants
 
@@ -345,12 +345,12 @@ verified_baseline_commit: <commit-sha>
 
 ## Required behavior
 
-1. 
-2. 
+1.
+2.
 
 ## Error and edge-case behavior
 
-- 
+-
 
 ## Acceptance criteria
 
@@ -374,11 +374,11 @@ verified_baseline_commit: <commit-sha>
 
 ### Manual checks
 
-1. 
+1.
 
 ## Rollback or recovery
 
-- 
+-
 
 ## Required checkpoint content
 
@@ -416,13 +416,13 @@ implementation_commit: <implementation-commit-sha>
 
 ## Implemented behavior
 
-- 
+-
 
 ## Meaningful file effects
 
 ### `<path>`
 
-- 
+-
 
 ## Interfaces available to later steps
 
@@ -432,11 +432,11 @@ implementation_commit: <implementation-commit-sha>
 
 ## Decisions and assumptions
 
-- 
+-
 
 ## Preserved invariants
 
-- 
+-
 
 ## Acceptance-criteria evidence
 
@@ -455,7 +455,7 @@ implementation_commit: <implementation-commit-sha>
 
 ## Risks and known limitations
 
-- 
+-
 
 ## Amendments
 

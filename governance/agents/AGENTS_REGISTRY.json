@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "updated_at": "2026-08-19T07:57:31.097Z",
+  "policy": {
+    "one_editable_general_authority": true,
+    "replicas_byte_identical": true,
+    "project_specific_rules_use_extensions": true,
+    "default_apply_mode": "dry_run",
+    "last_edited_replica_never_wins": true,
+    "symlinks_or_hardlinks": "forbidden_without_separate_proof_and_approval"
+  },
+  "canonical": {
+    "id": "context-vault-canonical",
+    "repository": "https://github.com/invicta-ctrl/gpt-context-vault",
+    "relative_path": "AGENTS.md",
+    "preferred_absolute_path": "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+    "current_task_worktree_path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-consolidation-001\\AGENTS.md",
+    "branch": "governance/agents-consolidation-001",
+    "status": "candidate_reconciled_with_origin_main",
+    "editable": true,
+    "activation_gate": "merge or otherwise adopt the accepted branch through the Context Vault repository's protected path",
+    "reconciled_origin_main": "48ac55aa71a5442ab3e213b4041602e30019a9ed",
+    "candidate_commit": "5e264b1f34a5e548d179a403c7420e625a93e64d",
+    "candidate_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+  },
+  "extension_sources": [
+    {
+      "id": "global-codex-extension-source",
+      "source_relative_path": "governance/agents/extensions/global-codex.PROJECT_POLICY.md",
+      "target_path": "C:\\Users\\adria\\.codex\\.agents\\PROJECT_POLICY.md"
+    },
+    {
+      "id": "hau-usc-logistics-extension-source",
+      "source_relative_path": "governance/agents/extensions/hau-usc-logistics.PROJECT_POLICY.md",
+      "target_path": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\.agents\\PROJECT_POLICY.md"
+    },
+    {
+      "id": "astral-bridge-extension-source",
+      "source_relative_path": "governance/agents/extensions/astral-bridge.PROJECT_POLICY.md",
+      "target_path": "D:\\Documents\\Codex\\Astral-Bridge\\.agents\\PROJECT_POLICY.md"
+    },
+    {
+      "id": "odysseus-extension-source",
+      "source_relative_path": "governance/agents/extensions/odysseus.PROJECT_POLICY.md",
+      "target_path": "D:\\AI_Workspace\\.agents\\PROJECT_POLICY.md"
+    }
+  ],
+  "managed_replicas": [
+    {
+      "id": "global-codex",
+      "path": "C:\\Users\\adria\\.codex\\AGENTS.md",
+      "extension_path": "C:\\Users\\adria\\.codex\\.agents\\PROJECT_POLICY.md",
+      "repository": null,
+      "required": true,
+      "conditional": false,
+      "sync_allowed": false,
+      "gate_status": "BLOCKED_CANONICAL_NOT_ACTIVE",
+      "prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
+      "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md",
+      "notes": "Do not mutate live global Codex policy until the canonical Context Vault branch is adopted and the extension is installed."
+    },
+    {
+      "id": "hau-usc-logistics",
+      "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\AGENTS.md",
+      "extension_path": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\.agents\\PROJECT_POLICY.md",
+      "repository": "https://github.com/invicta-ctrl/hau-usc-logistics-management-system",
+      "required": true,
+      "conditional": false,
+      "sync_allowed": false,
+      "gate_status": "BLOCKED_ACTIVE_WRITER_AND_DIRTY_WORK",
+      "prechange_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+      "rollback": "Git history and dedicated future task branch/worktree",
+      "notes": "The active checkout contains unrelated security-document work, and live v0.8.3 worktrees record held Terra writer locks. Historical worktrees must not be mass-mutated."
+    },
+    {
+      "id": "astral-bridge",
+      "path": "D:\\Documents\\Codex\\Astral-Bridge\\AGENTS.md",
+      "extension_path": "D:\\Documents\\Codex\\Astral-Bridge\\.agents\\PROJECT_POLICY.md",
+      "candidate_worktree_path": "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\AGENTS.md",
+      "candidate_extension_path": "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\.agents\\PROJECT_POLICY.md",
+      "repository": "https://github.com/invicta-ctrl/Astral-Bridge",
+      "required": true,
+      "conditional": false,
+      "sync_allowed": false,
+      "candidate_sync_allowed": true,
+      "gate_status": "LIVE_BLOCKED_CANDIDATE_SYNCED_VERIFIED_PUSHED_CURRENT_MAIN_RECONCILED",
+      "prechange_sha256": "df283d7010f10942fad2a2295b72195ea5a33316d2fcb3b59b5826ab19d41158",
+      "rollback": "Git commit 75aab9d6ea3b8921307f080e7a939f31e69f0f51",
+      "notes": "Live main remains unchanged. The isolated candidate is synchronized to the current-main-reconciled canonical root, verified, committed, and pushed; live adoption still requires the authorized Astral merge decision.",
+      "candidate_prechange_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "candidate_prechange_extension_exists": true,
+      "candidate_prechange_extension_sha256": "7da28021024eb62c94161e99d7110e6d491a38707968000009d49b00b551c5a8",
+      "candidate_branch": "governance/agents-consolidation-001",
+      "candidate_commit": "cbc48a4f5253a670cc65c46249824a586d73ba3c",
+      "candidate_root_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "candidate_extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "candidate_verification": {
+        "sync_dry_run": "PASS (WOULD_UPDATE root; extension MATCH)",
+        "sync_apply": "PASS (UPDATED root; extension MATCH)",
+        "root_hash_match": true,
+        "extension_hash_match": true,
+        "git_diff_check": "PASS",
+        "scaffold_validator": "PASS",
+        "push": "PASS",
+        "upstream_divergence": "0 ahead / 0 behind",
+        "merge": "AWAITING_EXPLICIT_ASTRAL_ADOPTION_DECISION"
+      }
+    },
+    {
+      "id": "odysseus",
+      "path": "D:\\AI_Workspace\\AGENTS.md",
+      "extension_path": "D:\\AI_Workspace\\.agents\\PROJECT_POLICY.md",
+      "repository": null,
+      "required": false,
+      "conditional": true,
+      "sync_allowed": false,
+      "gate_status": "BLOCKED_EXTENSION_LOADER",
+      "prechange_sha256": "03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272",
+      "rollback": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md",
+      "notes": "chat_processor.py loads only D:\\AI_Workspace\\AGENTS.md. Runtime-loader changes are outside this specification."
+    }
+  ],
+  "stale_owned": [
+    {
+      "path": "D:\\AI_Workspace\\odysseus\\data\\AGENTS.md",
+      "sha256": "e9dfe77f1f6844b247afe40aaf7ca3c8118466ce82adece04d091eaaaf0151ec",
+      "disposition": "preserve_until_odysseus_extension_loader_and_reference_gates_pass"
+    },
+    {
+      "path": "D:\\Download\\AGENTS.md",
+      "sha256": "1744f504d6754308264d9aa7db75271e253af8a7ca39196ca8ea25e591662188",
+      "disposition": "preserve_until_canonical_activation_and_reference_gates_pass"
+    }
+  ],
+  "worktree_derived": {
+    "root": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees",
+    "count_prechange": 32,
+    "sync_allowed": false,
+    "disposition": "preserve_unchanged"
+  },
+  "historical_immutable": [
+    "D:\\Documents\\Codex\\HAU-USC Logistics\\archives\\old-prototype\\20260715\\HAU_USC_Logistics_Apps_Script\\AGENTS.md",
+    "D:\\Documents\\Codex\\HAU-USC Logistics\\private-config\\evidence\\slice-13-demo-20260716\\gate-b-20260718-113245\\history-a3fffb9-full\\AGENTS.md"
+  ],
+  "backup_or_test": {
+    "count_prechange": 39,
+    "sync_allowed": false,
+    "disposition": "preserve_or_allow_normal_temp_cleanup_outside_this_spec"
+  },
+  "third_party_excluded": {
+    "count_prechange": 27,
+    "sync_allowed": false,
+    "representative_hashes": [
+      {
+        "path": "C:\\Users\\adria\\llama.cpp\\AGENTS.md",
+        "sha256": "3a943ba3a8e459f9e720843f1abce6f371f6f70a44b9ea610494050ca4029f44"
+      },
+      {
+        "path": "C:\\Users\\adria\\.claude\\plugins\\marketplaces\\impeccable\\AGENTS.md",
+        "sha256": "d2a2b1c4f5d0a49c467adfbe263efcc0eec785855b3c5a1e976e337a23076bd4"
+      },
+      {
+        "path": "C:\\Users\\adria\\.codex\\.tmp\\bundled-marketplaces\\openai-bundled\\plugins\\sites\\AGENTS.md",
+        "sha256": "1948b53b13790189e85281254c899005ca22c86f4eb7b664fffdc0b52d9b10ea"
+      }
+    ]
+  },
+  "activation_state": "CANDIDATE_RECONCILED_WITH_CURRENT_MAIN_ASTRAL_RESYNCED_VERIFIED_PUSHED",
+  "inventory_evidence": {
+    "prechange_json": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.json",
+    "prechange_csv": "governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-19.csv",
+    "candidate_json": "governance/agents/inventory/AGENTS_INVENTORY_CANDIDATE_2026-08-19.json",
+    "candidate_csv": "governance/agents/inventory/AGENTS_INVENTORY_CANDIDATE_2026-08-19.csv",
+    "prechange_exact_count": 106,
+    "candidate_exact_count": 108,
+    "candidate_unique_hashes": 42,
+    "candidate_duplicate_groups": 11,
+    "candidate_family_variants": 18,
+    "candidate_unclassified": 0,
+    "inaccessible_paths": 206,
+    "reference_audit_markdown": "governance/agents/AGENTS_AUDIT.md",
+    "reference_audit_files_scanned": 718,
+    "reference_audit_raw_matches": 15,
+    "reference_audit_actionable_blocked": 3,
+    "reference_audit_automatic_fixes": 0
+  }
+}

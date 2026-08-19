@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-17
+last_reviewed: 2026-08-19
 ---
 
 # GPT Context Vault
@@ -34,22 +34,22 @@ It is **not**:
 ## Source-of-truth hierarchy
 
 1. Earl's current explicit instruction
-2. Active project's accepted specification and approved amendments
-3. Active project's authoritative repository
+2. The active project's accepted specification and approved amendments
+3. The authoritative repository and applicable project policy
 4. Active context in this repository
-5. Native ChatGPT saved memory and recent summaries
+5. Native memory and relevant recent context
 6. Archived or superseded information
 
 Current direct instructions override older stored context, but material project changes must still be recorded through the active repository's amendment process.
 
 ## Reading workflow
 
-1. Start with [`AGENTS.md`](AGENTS.md).
+1. Start with the canonical [AGENTS.md](AGENTS.md).
 2. Classify the request and retrieve only the minimum relevant Vault context.
-3. For project-specific work, consult [`projects/PROJECT_REGISTRY.md`](projects/PROJECT_REGISTRY.md) when routing is needed.
-4. Follow the authoritative project repository and its applicable `AGENTS.md` files.
+3. For project-specific work, consult [projects/PROJECT_REGISTRY.md](projects/PROJECT_REGISTRY.md) only when routing is needed.
+4. Follow the authoritative project repository, its project extension, current pointer, and accepted specification.
 5. When the project has `.codex/CURRENT.md`, use it as the pointer to the single active step and bounded initial read set.
-6. Use [`START_HERE.md`](START_HERE.md) and [`CONTEXT_INDEX.md`](CONTEXT_INDEX.md) only for human onboarding, unresolved routing, or locating additional non-project context.
+6. Use [START_HERE.md](START_HERE.md) and [CONTEXT_INDEX.md](CONTEXT_INDEX.md) only for human onboarding, unresolved routing, or locating additional non-project context.
 7. Stop retrieving once the task is adequately grounded.
 
 Do not reread the whole Vault or an entire project repository by default.
@@ -60,7 +60,7 @@ For step-by-step software work, the Vault defines reusable governance while live
 
 ```text
 Vault AGENTS.md
-    -> project AGENTS.md
+    -> project AGENTS.md and project extension
     -> project .codex/CURRENT.md
     -> active step packet
     -> listed source and test files
@@ -73,6 +73,7 @@ See:
 
 - [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md)
 - [`protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md`](protocols/INCREMENTAL_CODEX_CONTEXT_PROTOCOL.md)
+- [`protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md`](protocols/CONTEXT_COMPACTION_SURVIVAL_PROTOCOL.md)
 - [`templates/INCREMENTAL_CODEX_PROJECT_SETUP_TEMPLATE.md`](templates/INCREMENTAL_CODEX_PROJECT_SETUP_TEMPLATE.md)
 
 ## Update workflow
@@ -88,6 +89,12 @@ Routine updates should be reviewed before they are committed:
 7. Update the appropriate index and recent-changes record.
 
 Codex is optional for routine maintenance. Small updates may be prepared in a normal ChatGPT conversation and committed manually.
+
+## Codex instruction refinement and routing
+
+The reusable Codex routing standard lives in [`automation/codex-model-routing/`](automation/codex-model-routing/). It defines how natural instructions are classified, when rough or partial requests receive a read-only structured refinement, how model and reasoning tiers are selected, and when work must safe-stop for ambiguity, authority conflicts, approval, or unsupported capabilities.
+
+Project repositories remain authoritative for technical facts, source code, tests, commands, and current status. A project may adopt the standard through its own `.codex/` configuration and local launcher, but live prompts, refined briefs, route decisions, logs, diffs, secrets, and build artifacts remain local to that project and are not stored in this vault. Model identifiers and capability checks must be verified per installation rather than copied blindly between projects.
 
 ## Privacy model
 
@@ -108,26 +115,28 @@ The Vault includes:
 - thesis constraints;
 - account-wide project registry;
 - curated project routing summaries;
-- retrieval, update, handoff, conflict, SDD, and incremental-context protocols;
+- retrieval, update, handoff, conflict, SDD, incremental-context, and compaction-survival protocols;
+- canonical AGENTS governance, registry, project-extension sources, and deterministic drift tooling;
 - privacy and redaction controls;
 - reusable prompts and project templates.
 
-It intentionally excludes automatic synchronization, raw chat ingestion, project runtime state, unrestricted agent execution, and semantic-indexing services unless separately specified and accepted.
+It intentionally excludes raw chat ingestion, live project runtime state, unrestricted agent execution, last-writer-wins governance synchronization, and semantic-indexing services unless separately specified and accepted. Registered AGENTS replicas use an explicit, registry-driven, dry-run-first synchronization and verification workflow.
 
 ## Architecture
 
 ```text
 General ChatGPT or Codex
-          │
-          ▼
+          |
+          v
   gpt-context-vault
-          │
-          ├── account-wide routing and preferences
-          ├── reusable governance and templates
-          └── project registry
-                         │
-             ┌───────────┴───────────┐
-             ▼                       ▼
+          |
+          +-- account-wide routing and preferences
+          +-- reusable governance and templates
+          +-- canonical AGENTS policy and registry
+          +-- project registry
+                         |
+             +-----------+-----------+
+             v                       v
      project repository       project repository
   specs, code, plans,      research, sources,
   checkpoints, evidence    status, and evidence

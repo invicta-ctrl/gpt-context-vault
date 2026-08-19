@@ -77,19 +77,19 @@ Record the file and why the listed context was insufficient. Additional context 
 
 ### Required behavior
 
-- 
+-
 
 ### Allowed files or modules
 
-- 
+-
 
 ### Initially off-limits files, modules, and behavior
 
-- 
+-
 
 ### Explicit non-goals
 
-- 
+-
 
 ## Constraints and invariants
 
@@ -107,7 +107,7 @@ Record the file and why the listed context was insufficient. Additional context 
 
 List only assumptions that affect this step. Verify material assumptions against bounded repository context before editing.
 
-- 
+-
 
 ## Required planning step
 

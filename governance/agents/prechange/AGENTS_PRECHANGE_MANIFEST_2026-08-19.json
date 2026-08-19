@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "captured_at": "2026-08-19",
+  "context_vault": {
+    "repository": "D:\\Documents\\Codex\\GitHub\\gpt-context-vault",
+    "branch": "feat/codex-model-routing-governance",
+    "head": "edaadec29c6b83472c079844c18e94890a7f7742",
+    "status": [
+      "?? .codegraph/"
+    ],
+    "preservation": "Original checkout left unchanged; isolated task worktree created.",
+    "task_branch": "governance/agents-consolidation-001",
+    "task_worktree": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-consolidation-001",
+    "rollback": "Delete or abandon task branch/worktree without touching original checkout."
+  },
+  "hau_usc_logistics": {
+    "repository": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system",
+    "branch": "governance/agents-main-sync",
+    "head": "43d1a55b7b5e85ec2064eeb1a2c1729524c739ed",
+    "status": [
+      "M docs/SECURITY_AND_ACCESS.md",
+      "?? docs/reference/SECURITY_AUDIT_CONSOLIDATED_RECOMMENDATIONS_2026-08-18.md"
+    ],
+    "agents_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+    "active_writer_evidence": "Multiple v0.8.3 and preserved worktrees record held Terra locks.",
+    "decision": "BLOCKED; no HAU file or worktree modified.",
+    "rollback": "No change made."
+  },
+  "astral_bridge": {
+    "repository": "D:\\Documents\\Codex\\Astral-Bridge",
+    "branch": "main",
+    "head": "75aab9d6ea3b8921307f080e7a939f31e69f0f51",
+    "status": [],
+    "agents_sha256": "df283d7010f10942fad2a2295b72195ea5a33316d2fcb3b59b5826ab19d41158",
+    "task_branch": "governance/agents-consolidation-001",
+    "task_worktree": "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001",
+    "rollback": "Git commit 75aab9d6ea3b8921307f080e7a939f31e69f0f51"
+  },
+  "global_codex": {
+    "path": "C:\\Users\\adria\\.codex\\AGENTS.md",
+    "length": 13098,
+    "sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
+    "decision": "BLOCKED until canonical activation; no live change made.",
+    "planned_backup": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md"
+  },
+  "odysseus": {
+    "path": "D:\\AI_Workspace\\AGENTS.md",
+    "length": 20355,
+    "sha256": "03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272",
+    "loader_source": "D:\\AI_Workspace\\odysseus\\src\\chat_processor.py",
+    "loader_fact": "Loads only ODYSSEUS_GLOBAL_AGENTS_PATH, default D:\\AI_Workspace\\AGENTS.md.",
+    "decision": "BLOCKED extension-loader proof; no live change made.",
+    "planned_backup": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md"
+  },
+  "stale_owned": [
+    {
+      "path": "D:\\AI_Workspace\\odysseus\\data\\AGENTS.md",
+      "sha256": "e9dfe77f1f6844b247afe40aaf7ca3c8118466ce82adece04d091eaaaf0151ec",
+      "decision": "Preserve."
+    },
+    {
+      "path": "D:\\Download\\AGENTS.md",
+      "sha256": "1744f504d6754308264d9aa7db75271e253af8a7ca39196ca8ea25e591662188",
+      "decision": "Preserve."
+    }
+  ],
+  "representative_third_party": [
+    {
+      "path": "C:\\Users\\adria\\llama.cpp\\AGENTS.md",
+      "sha256": "3a943ba3a8e459f9e720843f1abce6f371f6f70a44b9ea610494050ca4029f44"
+    },
+    {
+      "path": "C:\\Users\\adria\\.claude\\plugins\\marketplaces\\impeccable\\AGENTS.md",
+      "sha256": "d2a2b1c4f5d0a49c467adfbe263efcc0eec785855b3c5a1e976e337a23076bd4"
+    },
+    {
+      "path": "C:\\Users\\adria\\.codex\\.tmp\\bundled-marketplaces\\openai-bundled\\plugins\\sites\\AGENTS.md",
+      "sha256": "1948b53b13790189e85281254c899005ca22c86f4eb7b664fffdc0b52d9b10ea"
+    }
+  ]
+}

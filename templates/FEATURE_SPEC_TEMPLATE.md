@@ -31,15 +31,15 @@ Describe the current system behavior and cite the authoritative files, screens, 
 
 ### Included
 
-- 
+-
 
 ### Excluded
 
-- 
+-
 
 ### Off-limits files, modules, or behavior
 
-- 
+-
 
 ## 4. Users and user flows
 
@@ -122,11 +122,11 @@ Use objectively verifiable criteria.
 
 ### Confirmed assumptions
 
-- 
+-
 
 ### Unresolved decisions
 
-- 
+-
 
 Implementation must not begin while a material unresolved decision affects scope, safety, architecture, or acceptance criteria.
 
