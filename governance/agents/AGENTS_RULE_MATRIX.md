@@ -11,7 +11,7 @@ last_reviewed: 2026-08-19
 
 | Source | Role before consolidation | Disposition |
 |---|---|---|
-| Context Vault `START_HERE.md`, protocols, security, registry | Account-wide routing and governance | Universal master foundation |
+| Context Vault root `AGENTS.md`, `START_HERE.md`, SDD/incremental/compaction protocols, security, and registry | Account-wide routing and governance | Universal master foundation; newer active-main rules preserved during adoption |
 | `C:\Users\adria\.codex\AGENTS.md` | Independently editable Global Codex policy | Universal rules to master; local tools to Global Codex extension |
 | HAU-USC Logistics root `AGENTS.md` | Universal plus project release/runtime policy | Universal rules to master; HAU-only rules to project extension |
 | Astral Bridge root `AGENTS.md` | Project bootstrap and security policy | Astral-only rules to project extension |
@@ -31,6 +31,9 @@ last_reviewed: 2026-08-19
 | Live project repository precedence | Yes |  | Reinforced | Reinforced | Reinforced |
 | Context Vault routing | Yes |  |  |  |  |
 | Minimal context retrieval | Yes |  | Reinforced |  | Reinforced |
+| AI-assisted specification-driven development | Yes |  | Reinforced | Reinforced |  |
+| Incremental `.codex/CURRENT.md` routing | Yes |  | Reinforced | Reinforced |  |
+| Context-compaction survival and replay protection | Yes |  | Reinforced | Reinforced | Reinforced |
 | Skill registry | Yes | Local skill behavior | Project ledger rule | Plugin-shell rule |  |
 | Intent-first routing | Yes |  |  |  |  |
 | One focused slice | Yes |  | Reinforced | Reinforced |  |
@@ -121,6 +124,8 @@ Preserve as evidence rather than active universal policy:
 ## Owner decisions still required
 
 No policy-content decision remains open for the accepted specification.
+
+The active `main` governance added AI-assisted SDD, bounded incremental context, and mandatory context-compaction survival after this task branch diverged. Those rules were treated as newer durable authority and merged into the universal master before canonical adoption.
 
 Operational gates remain:
 

@@ -34,6 +34,19 @@ Blocked:
 
 No deployment, database, provider, Google, credential, model, or application-runtime state was changed.
 
+## Current-main reconciliation
+
+Before canonical adoption, the task branch fetched and reconciled the current remote `main` at `48ac55aa71a5442ab3e213b4041602e30019a9ed`. The reconciliation preserved the newer accepted account-wide AI-assisted SDD, incremental `.codex/CURRENT.md` routing, and context-compaction survival rules rather than replacing them with the older task-branch snapshot.
+
+```text
+candidate before reconciliation: 88bb855
+current origin/main reconciled:   48ac55aa71a5442ab3e213b4041602e30019a9ed
+canonical root after reconciliation SHA-256:
+66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
+```
+
+The Astral candidate still contains the prior canonical root `b3bb68ac4b675caab7c0c248a667a2a1cdc2992d27653cf1275fd026db7486f2`. It is intentionally marked for resynchronization and reverification before any Astral live-adoption decision.
+
 ## Branches
 
 ### Context Vault

@@ -88,6 +88,49 @@ Expand context only through acceptance criteria, direct dependencies, verificati
 
 Do not repeat expensive reads, tests, builds, reviews, migrations, deployments, or analyses while the relevant source, artifact, configuration, and external state remain unchanged.
 
+## Project incremental-context rule
+
+When a project contains `.codex/CURRENT.md`:
+
+1. Treat it as the operational pointer to the single active step.
+2. Read only the bounded step packet, relevant checkpoint or handoff, listed capsule or map sections, and listed source and test files.
+3. Do not begin with a broad repository scan or full documentation reread.
+4. Expand context only through direct dependencies, targeted symbol references, verification failures, acceptance criteria, repository contradictions, or material security, migration, compatibility, privacy, and invariant risks.
+5. Record why every additional file was needed when the project requires that evidence.
+6. Implement and verify only the active accepted step.
+7. Write the required checkpoint, advance the pointer, and stop before the next step unless the accepted plan explicitly authorizes continuous execution across named phases.
+
+Apply the active Context Vault AI-assisted SDD and incremental Codex-context protocols when they govern the project. Their canonical copies live in the registered Context Vault rather than in managed replicas.
+
+## Mandatory context-compaction survival
+
+Context compaction, generated conversation summaries, native memory, and transcript reconstruction are convenience aids only. They are never authoritative operational state for repository or provider work.
+
+For long-running, multi-phase, deployment, migration, or externally stateful work:
+
+1. Keep a durable project-local resume record in `.codex/CURRENT.md` and the current checkpoint or handoff.
+2. Update it before a model or session switch, when compaction is announced or likely, after every consequential external mutation, and before a usage limit could interrupt work.
+3. Distinguish at minimum:
+   - repository `HEAD` and upstream `HEAD`;
+   - deployed runtime SHA or version;
+   - documentation or handoff commit;
+   - branch and worktree;
+   - active specification, amendment, step, or phase;
+   - completed and operationally accepted work;
+   - exact external resources changed;
+   - database schema, migrations, backups, and reconciliation;
+   - verification commands and results;
+   - open defects and blockers;
+   - the next exact action;
+   - consequential actions that must not be repeated without verification.
+4. After compaction, a fresh session, or a usage-limit interruption, rehydrate from the project governance, current pointer, checkpoint or handoff, Git state, and verified provider state before any new mutation.
+5. Reconcile contradictions first and preserve separate identities for repository state, deployed runtime state, and handoff metadata.
+6. Before retrying a migration, deployment, merge, import, restore, email, upload, or other consequential write, verify whether the previous attempt already succeeded.
+7. Never claim completion from remembered or compacted context; require durable repository and external-state evidence.
+8. Never store secrets, credentials, raw personal data, session material, or private provider identifiers in the resume record.
+
+When a project lacks a durable resume mechanism, create or repair the smallest project-local pointer and checkpoint structure before continuing substantial work. Apply the active Context Vault context-compaction survival protocol.
+
 ## Skill and tool routing
 
 - Scan the skill registry before selecting a workflow.

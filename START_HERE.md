@@ -7,45 +7,46 @@ last_reviewed: 2026-08-19
 
 # Start Here
 
-The root AGENTS.md is the account-wide governance entrypoint. This file is the Context Vault retrieval entrypoint that follows it.
+The root [`AGENTS.md`](AGENTS.md) is the required agent entrypoint.
+
+Use this file for human onboarding, unresolved routing, or non-project requests that need additional Context Vault context. Do not read it automatically after `AGENTS.md` has already identified the authoritative project and minimum required context.
 
 ## Retrieval procedure
 
-1. Read the root [AGENTS.md](AGENTS.md).
-2. Read this file.
-3. Read [CONTEXT_INDEX.md](CONTEXT_INDEX.md).
-4. Determine whether the request is general, academic, personal, or project-specific.
-5. Retrieve only the minimum files needed.
-6. For project-specific work, consult [projects/PROJECT_REGISTRY.md](projects/PROJECT_REGISTRY.md), then follow the registered repository, project extension, current pointer, and accepted specification.
-7. When the task needs instruction refinement or model routing, consult [automation/codex-model-routing/README.md](automation/codex-model-routing/README.md).
-8. Ignore archived and superseded information unless historical context is requested.
-9. Treat Earl's current explicit instruction as the highest authority.
-10. Do not retrieve unrelated personal context.
-11. Do not automatically save anything after merely reading this vault.
+1. Read the root [`AGENTS.md`](AGENTS.md) when it has not already been loaded.
+2. Determine whether the request is general, academic, personal, or project-specific.
+3. For project-specific work, consult [`projects/PROJECT_REGISTRY.md`](projects/PROJECT_REGISTRY.md) only when routing is unresolved.
+4. Follow the registered project's authoritative repository, applicable project extension, `.codex/CURRENT.md` when present, bounded current task and handoff, and accepted specification.
+5. For non-project work, use [`CONTEXT_INDEX.md`](CONTEXT_INDEX.md) to locate only the relevant file or category.
+6. When the task needs instruction refinement or model routing, consult [`automation/codex-model-routing/README.md`](automation/codex-model-routing/README.md).
+7. Ignore archived and superseded information unless history is requested.
+8. Do not retrieve unrelated personal context.
+9. Do not automatically save anything after merely reading this vault.
 
 ## Stop condition
 
 Stop retrieving when:
 
+- the authoritative source has been found;
 - the task is adequately grounded;
-- the relevant source-of-truth file has been found;
+- the active project's current pointer defines the required read set;
 - additional files would add repetition rather than decision value;
-- the request can be completed without expanding into unrelated context.
+- the request can be completed safely without expanding into unrelated context.
 
 Do not load the entire repository by default.
 
 ## Authority order
 
-1. Current explicit instruction
+1. Earl's current explicit instruction
 2. Active project's accepted specification and approved amendments
-3. Active projects authoritative repository and applicable project policy
+3. Active project's authoritative repository and applicable project policy
 4. Active files in this vault
 5. Native memory and relevant recent context
 6. Archived or superseded information
 
 ## Before writing
 
-Do not modify this repository unless Earl explicitly asks for an update.
+Do not modify this repository unless Earl explicitly requests an update.
 
 When an update is requested, follow:
 
