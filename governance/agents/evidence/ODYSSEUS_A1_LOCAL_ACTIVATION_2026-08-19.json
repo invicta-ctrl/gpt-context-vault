@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001-A1",
+  "captured_at": "2026-08-19T11:14:49.933680Z",
+  "target": "odysseus",
+  "runtime_activation_status": "ACTIVE_LOCAL_VERIFIED",
+  "closeout_status": "BLOCKED_UPSTREAM_WRITE_PERMISSION",
+  "accepted_authority": {
+    "path": "governance/agents/specs/AGENTS-CONSOLIDATION-001-A1-ODYSSEUS-EXTENSION-LOADING.md",
+    "context_vault_pull_request": 9,
+    "head_commit": "ce1ab18b3d0aab4e8c90a95de9c4bd0b49c56c23",
+    "merge_commit": "1d578ad4f63306b2e00c8e1a86fd34221df1513f",
+    "merged_at": "2026-08-19T10:12:18Z"
+  },
+  "repository": {
+    "local_path": "D:\\AI_Workspace\\odysseus",
+    "starting_branch": "dev",
+    "starting_head": "68ba51cb5f6544c66a73ba22db8db6c45e4fadf6",
+    "implementation_branch": "governance/agents-consolidation-001-odysseus-a1",
+    "implementation_commit": "f2eb14111f5d8db4c979398f9e9260caa4fe18e1",
+    "worktree_clean": true,
+    "ahead_of_origin_dev": 1,
+    "remote_url_configured": "https://github.com/pewdiepie-archdaemon/odysseus",
+    "remote_canonical_name": "odysseus-dev/odysseus",
+    "active_github_identity": "invicta-ctrl",
+    "viewer_permission": "READ",
+    "push_result": "BLOCKED HTTP 403",
+    "fork_under_active_identity": false,
+    "credentials_or_account_switched": false
+  },
+  "live_root": {
+    "path": "D:\\AI_Workspace\\AGENTS.md",
+    "exists": true,
+    "bytes": 18562,
+    "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+  },
+  "canonical_source": {
+    "path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-odysseus-a1\\AGENTS.md",
+    "exists": true,
+    "bytes": 18562,
+    "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+  },
+  "live_extension": {
+    "path": "D:\\AI_Workspace\\.agents\\PROJECT_POLICY.md",
+    "exists": true,
+    "bytes": 8095,
+    "sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e"
+  },
+  "extension_source": {
+    "path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-odysseus-a1\\governance\\agents\\extensions\\odysseus.PROJECT_POLICY.md",
+    "exists": true,
+    "bytes": 8095,
+    "sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e"
+  },
+  "implementation_files": [
+    {
+      "path": "D:\\AI_Workspace\\odysseus\\src\\chat_processor.py",
+      "exists": true,
+      "bytes": 22436,
+      "sha256": "e2f106fdb3370a63aa6c77d4bd7fb28cc627add875cfa7b21d8e76509a2c0b4d"
+    },
+    {
+      "path": "D:\\AI_Workspace\\odysseus\\tests\\test_odysseus_governance_loader.py",
+      "exists": true,
+      "bytes": 7828,
+      "sha256": "27d4a576488127bdf2da6fc2229f6f0ecbefe8ce8e829b24a00340eabc72565b"
+    }
+  ],
+  "loader_contract": {
+    "root_environment_variable": "ODYSSEUS_GLOBAL_AGENTS_PATH",
+    "extension_environment_variable": "ODYSSEUS_PROJECT_POLICY_PATH",
+    "root_marker": "GLOBAL_AGENTS_GOVERNANCE",
+    "extension_marker": "PROJECT_POLICY_EXTENSION",
+    "fixed_order": "root then extension",
+    "fail_closed": true,
+    "line_endings": "normalized to LF"
+  },
+  "tests": {
+    "new_loader_regression": "14 passed",
+    "complete_chatprocessor_dependent_set": "41 passed, 1 warning",
+    "compileall_changed_files": "PASS",
+    "focused_diff_secret_pattern_scan": "PASS",
+    "full_suite": {
+      "command": "D:\\AI_Workspace\\odysseus\\venv\\Scripts\\python.exe -m pytest -q",
+      "duration_seconds": 237.577453,
+      "passed": 4444,
+      "skipped": 193,
+      "failed": 51,
+      "errors": 2,
+      "warnings": 9,
+      "classification": "KNOWN INFORMATIONAL / ENVIRONMENT-DEPENDENT FAILURES OUTSIDE A1 SURFACE",
+      "a1_relevant_failed_tests": [],
+      "failing_test_files": [
+        "tests/test_agent_migration_manifest.py",
+        "tests/test_app_db_permissions.py",
+        "tests/test_builtin_mcp_npx_cache.py",
+        "tests/test_code_nav_tools.py",
+        "tests/test_cookbook_docker_access.py",
+        "tests/test_deleted_session_sidebar_regression.py",
+        "tests/test_hwfit_cpu_arch_detection.py",
+        "tests/test_hwfit_macos.py",
+        "tests/test_imap_mailbox_quoting.py",
+        "tests/test_odysseus_dispatcher.py",
+        "tests/test_personal_delete_file_confinement.py",
+        "tests/test_personal_dir_symlink_escape.py",
+        "tests/test_pr_blocker_audit.py",
+        "tests/test_rag_remove_directory_scope.py",
+        "tests/test_rename_user_owner_sync.py",
+        "tests/test_run_focus.py",
+        "tests/test_security_regressions.py",
+        "tests/test_shell_routes.py",
+        "tests/test_slash_setup_provider_aliases.py",
+        "tests/test_tool_path_confinement.py",
+        "tests/test_webhook_emitters_use_manager.py"
+      ],
+      "error_test_file": "tests/test_signature_route_hardening.py",
+      "error_reason": "Windows environment variable limit exceeded by oversized parametrized input",
+      "ci_policy": "Repository CI marks full pytest continue-on-error due known flaky and environment-dependent failures",
+      "raw_log": {
+        "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\full-pytest-corrected.stdout.log",
+        "exists": true,
+        "bytes": 11266183,
+        "sha256": "dc7bf8c8376a46c536deaa7861c204f8c4deebec66b64f51e6c19a5062b61aaa"
+      },
+      "result": {
+        "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\FULL_TEST_RESULT_CORRECTED.json",
+        "exists": true,
+        "bytes": 632,
+        "sha256": "aaef3b44644542d1c7452f96fd8095f2b96931b94a542fdb4df68a31a81cf6e3"
+      },
+      "failed_harness_attempt": {
+        "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\FULL_TEST_HARNESS_FAILURE.json",
+        "exists": true,
+        "bytes": 1468,
+        "sha256": "2c399afe990bfb8774d2ade015cbc9966ab51578689f6007d2f5ef435d585a39"
+      }
+    }
+  },
+  "fresh_process_canary": {
+    "first_role": "system",
+    "governance_sha256": "c9a03c1e659a84fd43d17e5dbcfd474a1a29de2eda12241cd5560775e19939c7",
+    "root_marker_count": 1,
+    "extension_marker_count": 1,
+    "root_before_extension": true,
+    "root_id_present": true,
+    "extension_id_present": true,
+    "governance_index": 0,
+    "persona_index": 1
+  },
+  "runtime_health": {
+    "prechange_running_odysseus_processes": 0,
+    "ephemeral_command": "D:\\AI_Workspace\\odysseus\\venv\\Scripts\\python.exe -m uvicorn app:app --host 127.0.0.1 --port 7000",
+    "http_health": 200,
+    "direct_readiness": true,
+    "critical_readiness_failures": [],
+    "ephemeral_process_stopped": true,
+    "port_7000_listener_count_after": 0,
+    "provider_or_persistent_runtime_config_changed": false
+  },
+  "rollback": {
+    "backup_directory": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z",
+    "prechange_manifest": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\PRECHANGE_MANIFEST.json",
+      "exists": true,
+      "bytes": 2919,
+      "sha256": "85e17b633c2f1a17d2ffeadc557fc070b7b63d4673dceb25bce91f6584b1bd4f"
+    },
+    "root_only_precursor_patch": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\chat_processor.root-loader-precursor.patch",
+      "exists": true,
+      "bytes": 2525,
+      "sha256": "224fba50eba55ed15ffb568ae5a6bcf11545dd825072ae18fd784956580f8466"
+    },
+    "prechange_chat_processor": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\chat_processor.py.chat_processor.before",
+      "exists": true,
+      "bytes": 21211,
+      "sha256": "90431493f6a8e4ac736864ed581fd0f6413ad3d0465c5a10378a101bc0b70172"
+    },
+    "prechange_root": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\AGENTS.md.global_agents.before",
+      "exists": true,
+      "bytes": 20355,
+      "sha256": "03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272"
+    },
+    "nested_historical_policy": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\AGENTS.md.nested_agents.before",
+      "exists": true,
+      "bytes": 12392,
+      "sha256": "e9dfe77f1f6844b247afe40aaf7ca3c8118466ce82adece04d091eaaaf0151ec"
+    },
+    "implementation_bundle": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\odysseus-a1-f2eb141.bundle",
+      "exists": true,
+      "bytes": 40697795,
+      "sha256": "21d26f78e73855cd30fb0e735080d21e0257c0543d9c1daca48dff13669a6f03"
+    },
+    "implementation_patch": {
+      "path": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\20260819T101817880Z\\odysseus-a1-f2eb141.patch",
+      "exists": true,
+      "bytes": 12567,
+      "sha256": "ac6ec2dc9237d828309ff01dd6c0b97388dc91f008cdcf8428fa7541e5555597"
+    },
+    "bundle_verify": "PASS / complete history"
+  },
+  "nested_historical_policy_live": {
+    "path": "D:\\AI_Workspace\\odysseus\\data\\AGENTS.md",
+    "exists": true,
+    "bytes": 12392,
+    "sha256": "e9dfe77f1f6844b247afe40aaf7ca3c8118466ce82adece04d091eaaaf0151ec"
+  },
+  "next_required_action": "Use an already-authorized GitHub identity with write permission to odysseus-dev/odysseus, push f2eb141, then open and merge a PR to dev after required checks."
+}

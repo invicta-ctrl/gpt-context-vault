@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "captured_at": "2026-08-19T11:18:58.174179Z",
+  "status": "BLOCKED_AS_EXPECTED",
+  "canonical_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+  "eligible_target_verification": {
+    "result": "PASS",
+    "exit_code": 0,
+    "global_codex": "MATCH/MATCH/MATCH",
+    "astral_bridge": "MATCH/MATCH",
+    "odysseus": "MATCH/MATCH",
+    "hau_usc_logistics": "BLOCKED and excluded from eligible-target success"
+  },
+  "strict_required_target_verification": {
+    "result": "EXPECTED_FAIL",
+    "exit_code": 1,
+    "blocking_result_count": 1,
+    "global_codex": "MATCH/MATCH/MATCH",
+    "astral_bridge": "MATCH/MATCH",
+    "odysseus": "MATCH/MATCH",
+    "hau_usc_logistics": "BLOCKED/BLOCKED",
+    "raw_output": {
+      "path": "D:\\Temp\\agents-strict-verification-output.txt",
+      "exists": true,
+      "bytes": 1543,
+      "sha256": "594d3db2fff36c9fb4ab01086644fb38da6342fee9ef486c54b0ef2b93078a3b"
+    }
+  },
+  "blockers": [
+    {
+      "id": "hau-usc-logistics",
+      "reason": "Active checkout contains preserved uncommitted security-document work; no candidate was created.",
+      "evidence": "governance/agents/evidence/HAU_HANDOFF_GATE_2026-08-19.json"
+    },
+    {
+      "id": "odysseus-upstream-closeout",
+      "reason": "Local runtime is active and hash-matched, but implementation commit f2eb141 cannot be pushed because the active GitHub identity has READ-only upstream permission.",
+      "hash_verification_blocker": false,
+      "repository_closeout_blocker": true,
+      "evidence": "governance/agents/evidence/ODYSSEUS_A1_LOCAL_ACTIVATION_2026-08-19.json"
+    }
+  ],
+  "stale_cleanup_authorized": false,
+  "stale_cleanup_performed": false,
+  "cleanup_reason": "Strict required-target verification has one blocking result and Odysseus repository closeout remains incomplete."
+}
