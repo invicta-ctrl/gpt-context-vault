@@ -83,6 +83,8 @@
     "post_compaction_rehydration_required": true,
     "durable_evidence_preserved": true,
     "task_relevant_tool_context": true,
+    "tool_context_expansion_reason_required": true,
+    "tool_context_expansion_reason_label": "TOOL_CONTEXT_EXPANSION_REASON",
     "progressive_disclosure_preferred": true,
     "shared_mcp_disable_requires_separate_authority": true,
     "stable_slice_configuration": true,
@@ -338,7 +340,9 @@
       "action": "PRESERVE"
     },
     "a1_unused_external_mcp": {
-      "action": "DO_NOT_INVOKE"
+      "action": "DO_NOT_INVOKE",
+      "material_expansion_requires_reason": true,
+      "reason_label": "TOOL_CONTEXT_EXPANSION_REASON"
     },
     "a1_stable_tool_schema": {
       "action": "PRESERVE_STABLE_SCHEMA"

@@ -314,10 +314,12 @@
         },
         {
           "id": "a1_unused_external_mcp",
-          "title": "Unused external MCP is not invoked",
+          "title": "Unused external MCP is not invoked and material expansion records a reason",
           "contract_key": "a1_unused_external_mcp",
           "expected": {
-            "action": "DO_NOT_INVOKE"
+            "action": "DO_NOT_INVOKE",
+            "material_expansion_requires_reason": true,
+            "reason_label": "TOOL_CONTEXT_EXPANSION_REASON"
           }
         },
         {

@@ -181,6 +181,8 @@ $requiredPipelineValues = [ordered]@{
     post_compaction_rehydration_required = $true
     durable_evidence_preserved = $true
     task_relevant_tool_context = $true
+    tool_context_expansion_reason_required = $true
+    tool_context_expansion_reason_label = "TOOL_CONTEXT_EXPANSION_REASON"
     progressive_disclosure_preferred = $true
     shared_mcp_disable_requires_separate_authority = $true
     stable_slice_configuration = $true
@@ -342,14 +344,15 @@ $boundedActiveGovernance = @(
 ) -join "`n"
 
 $contradictionPatterns = @(
-    '"default_children"\s*:\s*[1-9]',
-    '"max_active_children"\s*:\s*[2-9]',
-    '"max_delegation_depth"\s*:\s*[2-9]',
-    '"max_depth"\s*:\s*[2-9]',
+    '"default_children"\s*:\s*[1-9]\d*',
+    '"max_active_children"\s*:\s*(?:[2-9]|[1-9]\d+)',
+    '"max_delegation_depth"\s*:\s*(?:[2-9]|[1-9]\d+)',
+    '"max_depth"\s*:\s*(?:[2-9]|[1-9]\d+)',
     '"auto_start_next_slice"\s*:\s*true',
     '(?i)scout on every task',
     '(?i)reviewer on every task'
 )
+Assert-True ([regex]::IsMatch('"max_active_children": 10', $contradictionPatterns[1])) "bounded contradiction pattern rejects multi-digit child count"
 foreach ($pattern in $contradictionPatterns) {
     Assert-True (-not [regex]::IsMatch($boundedActiveGovernance, $pattern)) ("bounded active-governance contradiction absent: " + $pattern)
 }
