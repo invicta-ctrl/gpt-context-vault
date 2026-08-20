@@ -3,7 +3,7 @@ schema_version: 1
 status: active
 scope: account-wide
 policy_id: TOKEN-OPT-001
-last_reviewed: 2026-08-20
+last_reviewed: 2026-08-21
 ---
 
 # Codex Token Optimization and Context-Efficiency Rules
@@ -100,6 +100,12 @@ needs it. When no accepted criterion or dependency requires the file, do not cha
 - Record adjacent non-blocking issues briefly instead of fixing them.
 - Never turn a bounded fix into a cleanup, refactor, migration, or redesign program.
 - A material scope change requires an accepted amendment.
+
+Before investigating an optional step, ask:
+**If this step failed or were omitted, could the accepted DONE condition still
+pass?**
+If yes, park it as a brief non-blocking note and do not investigate or
+implement it during the current task.
 
 ## Simplest correct implementation
 

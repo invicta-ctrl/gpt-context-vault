@@ -1,11 +1,49 @@
 ---
 title: AGENTS Audit
-status: prechange-inventory-frozen
-spec_id: AGENTS-CONSOLIDATION-001
-captured: 2026-08-19
+status: active-with-2026-08-21-activation-addendum
+spec_id: AGENTS-CONSOLIDATION-002
+captured: 2026-08-21
 ---
 
 # AGENTS Audit
+
+## AGENTS-CONSOLIDATION-002 activation addendum
+
+The accepted 2026-08-21 scan was deliberately bounded to
+`D:\Documents\Codex\**\AGENTS.md` plus `C:\Users\adria\.codex\AGENTS.md`.
+It did not rescan the wider C: or D: volumes from the frozen 2026-08-19 audit.
+
+Pre-change exact files: 45.
+
+| Classification | Count |
+|---|---:|
+| `CANONICAL_MASTER` | 1 |
+| `MANAGED_REPLICA_DRIFT` | 2 |
+| `PROJECT_SPECIFIC_LEGACY` | 1 |
+| `WORKTREE_REPLICA` | 39 |
+| `ARCHIVED_OR_HISTORICAL` | 2 |
+| `THIRD_PARTY_OR_VENDOR` | 0 |
+| `UNKNOWN_REQUIRES_PRESERVATION` | 0 |
+
+Post-change exact files: 86, including 41 new timestamped rollback copies inside the
+bounded D: scope. The final classification is one canonical master, three managed
+replica matches, 39 registered worktree replicas, and 43 archival/historical or backup
+copies. Unknown count remains zero. All 42 eligible pre-change target hashes are
+present in the 42 timestamped backups when the default Codex backup is included.
+
+Machine-readable evidence:
+
+```text
+governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-21.json
+governance/agents/inventory/AGENTS_INVENTORY_PRECHANGE_2026-08-21.csv
+governance/agents/inventory/AGENTS_INVENTORY_POSTCHANGE_2026-08-21.json
+governance/agents/inventory/AGENTS_INVENTORY_POSTCHANGE_2026-08-21.csv
+```
+
+The unique `frontend-design-integration` worktree instruction is preserved in
+`.agents/WORKTREE_POLICY_APPENDIX.md`, in its timestamped root-policy backup, and in
+Git history. The older exhaustive 2026-08-19 audit remains below as historical
+evidence and is not reinterpreted as the current bounded inventory.
 
 ## Scope and method
 

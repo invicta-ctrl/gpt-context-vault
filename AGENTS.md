@@ -7,7 +7,7 @@ canonical_repository: invicta-ctrl/gpt-context-vault
 canonical_relative_path: AGENTS.md
 managed_replica_policy: byte-identical-generated
 project_extension_path: .agents/PROJECT_POLICY.md
-last_reviewed: 2026-08-19
+last_reviewed: 2026-08-21
 ---
 
 # Universal Agent Governance
@@ -36,6 +36,24 @@ For every request:
 8. Stop and report material conflicts instead of silently combining incompatible instructions.
 
 Do not start with a whole-vault scan, whole-repository scan, full documentation reread, or broad prior-conversation retrieval when a bounded authority chain is available.
+
+## ChatGPT Context Vault routing
+
+When the Context Vault is available to the current ChatGPT environment, use this
+account-wide route:
+
+```text
+Context Vault AGENTS.md
+-> START_HERE.md
+-> CONTEXT_INDEX.md
+-> minimum relevant context
+-> authoritative project repository
+```
+
+This is a routing chain, not an instruction to ingest the whole Vault. Stop retrieval
+as soon as the minimum governing context and authoritative project source are known.
+When the Context Vault is unavailable, do not claim it was loaded; use the best
+available current authority and state that limitation when it matters.
 
 ## Authority order
 

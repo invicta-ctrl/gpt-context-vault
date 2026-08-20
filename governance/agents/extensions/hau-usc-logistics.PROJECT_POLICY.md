@@ -5,7 +5,7 @@ scope: hau-usc-logistics-project-extension
 extension_id: HAU-USC-LOGISTICS-PROJECT-POLICY-V1
 target_repository: invicta-ctrl/hau-usc-logistics-management-system
 universal_governance: ..\AGENTS.md
-last_reviewed: 2026-08-19
+last_reviewed: 2026-08-21
 ---
 
 # HAU-USC Logistics Project Policy Extension
@@ -34,6 +34,11 @@ Git state
 3. Read the phase/context policy and only the accepted specification named by the pointer.
 4. Perform the required Git handshake.
 5. Expand into source, tests, status, or historical evidence only when the active task needs it.
+
+If `.agents/WORKTREE_POLICY_APPENDIX.md` exists, read it immediately after this
+extension. It may preserve narrower worktree-specific authority, is subordinate to the
+universal policy and this extension, and must not redefine account-wide efficiency
+defaults. Its absence is normal.
 
 `.codex/CURRENT.md` is the active pointer. `.codex/CURRENT_TASK.md` bounds the work. `.codex/CURRENT_HANDOFF.md` records transferable execution state. `docs/WORK_CONTINUATION.md` is a compact operator resume record and never a competing pointer.
 
@@ -73,9 +78,12 @@ LINEAGE:
 
 Legacy `REQUIRED_MODEL: CODEX` metadata in older current records remains superseded and non-authoritative for model routing where this accepted amendment applies. A separately accepted task is required before normalizing historical current-chain records.
 
-## Sol, Terra MAX, and Luna MAX orchestration
+## TOKEN-OPT precedence and HAU model roles
 
-This project uses the following model architecture unless Earl explicitly accepts a project amendment:
+TOKEN-OPT-001 is the sole account-wide token/context-efficiency authority. This
+extension keeps HAU's stricter role separation and safety gates without enabling routine
+agent pools or review cycles. An exact accepted high-risk operation may require a more
+specific route; absent that authority, these defaults apply:
 
 ```text
 ORCHESTRATOR_MODEL: GPT-5.6 Sol
@@ -83,41 +91,56 @@ ORCHESTRATOR_WRITES: FORBIDDEN
 SOL_SUBAGENTS: FORBIDDEN
 MAX_SOL_SUBAGENTS: 0
 
-WRITER_MODEL: Terra MAX
-MAX_TERRA_SUBAGENTS: 16
-CANONICAL_BRANCH_WRITER_COUNT: 1
-CANONICAL_ACTIVE_WRITER: one Terra Integration Writer
-PARALLEL_TERRA: isolated non-overlapping worktrees or patch scopes only
-
-READER_MODEL: Luna MAX
-LUNA_WRITES: FORBIDDEN
-MAX_LUNA_SUBAGENTS: 16
-
+DEFAULT_CHILDREN: 0
+MAX_ACTIVE_CHILDREN: 1
 DELEGATION_DEPTH: 1
 SUBAGENT_SPAWNER: Sol only
+
+WRITER_MODEL_CLASS: gpt-5.6-terra
+CANONICAL_BRANCH_WRITER_COUNT: 1
+CANONICAL_ACTIVE_WRITER: one Terra Integration Writer when a child writer is required
+
+READER_MODEL_CLASS: gpt-5.6-luna
+LUNA_WRITES: FORBIDDEN
+
+ORDINARY_REASONING: high or lower
+ROUTINE_INDEPENDENT_REVIEW: false
+ROUTINE_FULL_SUITE_AFTER_SMALL_MODULE: false
 MODEL_SUBSTITUTION: forbidden unless Earl explicitly amends the task
+STOP_WHEN_GREEN: true
 ```
 
 ### Sol
 
 - Sol is the sole top-level read-only planner, router, reviewer, and acceptance authority.
-- Sol may read evidence, normalize scope, maintain the delegation ledger, spawn bounded Terra MAX and Luna MAX children, and produce the owner-facing handoff.
+- Sol may read evidence, normalize scope, maintain the delegation ledger, spawn at
+  most one bounded Terra or Luna child when TOKEN-OPT-001's delegation gate passes,
+  and produce the owner-facing handoff.
 - Sol never edits repository files, creates patches, stages, commits, pushes, merges, rebases, resets, cleans, deploys, migrates, mutates providers, or rotates recovery pointers.
 - No agent may create a Sol child. Child creation remains with the top-level Sol at depth one.
 
-### Terra MAX
+### Terra writer
 
-- Terra MAX is the only model class permitted to mutate repository or provider state when accepted scope authorizes the mutation.
+- The Terra model class is the only child role permitted to mutate repository or
+  provider state when accepted scope authorizes the mutation. Ordinary reasoning is
+  High or lower; MAX is reserved for an exact risk-gated exception.
 - Each write task has exactly one `TERRA_INTEGRATION_WRITER`.
 - The integration writer is the only writer on the canonical task branch/worktree and is recorded as `ACTIVE_WRITER: TERRA_MAX:<task-or-agent-id>`.
-- Additional Terra writers require isolated worktrees or bounded patch artifacts and exclusive non-overlapping paths.
-- Additional writers never share a current pointer, canonical registry, migration, release file, generated manifest, lockfile, or external resource.
+- Additional Terra writers are not a routine option. A specifically accepted high-risk
+  operation may authorize a sequential or otherwise explicitly bounded exception with
+  isolated paths, but the account-wide one-active-child default remains controlling
+  unless that exact accepted authority says otherwise.
+- Writers never share a current pointer, canonical registry, migration, release file,
+  generated manifest, lockfile, or external resource.
 - The integration writer owns canonical integration and conflict resolution after Sol review.
 - Terra does not spawn agents, broaden scope, invoke Sol as a child, or claim acceptance without evidence.
 
-### Luna MAX
+### Luna reviewer
 
-- Luna MAX is read-only and may map, audit, review, perform security/privacy analysis, inspect test gaps, or run final contradiction review.
+- Luna is read-only and may map, audit, review, perform security/privacy analysis,
+  inspect test gaps, or run final contradiction review only when the conditional review
+  gate is met. Routine work uses zero Luna children. Ordinary reasoning is High or
+  lower; MAX requires an exact risk-gated exception.
 - Luna never edits tracked state, writes a patch, takes the writer lock, stages, commits, pushes, merges, deploys, migrates, mutates providers, or spawns agents.
 - Luna reports findings to Sol; an authorized Terra performs any repair.
 
@@ -125,7 +148,9 @@ MODEL_SUBSTITUTION: forbidden unless Earl explicitly amends the task
 
 - `ACTIVE_WRITER` is a hard lock. A conflicting active writer is a stop condition.
 - Read-only work must not race mutable state owned by the writer.
-- The current task/handoff records each delegated Terra or Luna with agent ID, model, role, scope, mode, worktree or patch, owned paths, excluded paths, dependencies, status, and output evidence.
+- The current task/handoff records each delegated Terra or Luna with agent ID, model,
+  reasoning, role, scope, mode, worktree or patch, owned paths, excluded paths,
+  dependencies, status, and output evidence.
 - No row may name Sol as a child.
 - No silent model substitution is permitted.
 - Before a normal handoff, update the three current records together.
@@ -318,4 +343,9 @@ Before a normal governed handoff:
 - record commit, push, PR, deployment, migration, provider, and Google actions only when verified;
 - release the writer lock only through the current pointer.
 
-A future synchronization of the root managed replica must not occur while any authoritative HAU worktree records a conflicting active writer or while the target checkout contains unrelated dirty work.
+A synchronization must stop when the exact `AGENTS.md`, project extension, or
+worktree appendix contains unpreserved dirty/unique content, or when a real concurrent
+writer owns those governance paths. An open session, an in-use worktree, or unrelated
+dirty work elsewhere is not by itself a blocker under an accepted governance-sync task;
+preserve that state, back up the target policy bytes, synchronize only the registered
+governance paths, and report the overlap honestly.

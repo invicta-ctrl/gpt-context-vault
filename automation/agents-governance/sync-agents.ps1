@@ -14,6 +14,12 @@ if (-not (Test-Path -LiteralPath $activationModulePath -PathType Leaf)) {
 }
 Import-Module $activationModulePath -Force
 
+$discoveryModulePath = Join-Path $PSScriptRoot 'RegisteredTargetDiscovery.psm1'
+if (-not (Test-Path -LiteralPath $discoveryModulePath -PathType Leaf)) {
+    throw "Registered-target discovery module is missing: $discoveryModulePath"
+}
+Import-Module $discoveryModulePath -Force
+
 function Get-Sha256 {
     param([Parameter(Mandatory)][string]$Path)
     (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant()
@@ -43,10 +49,16 @@ function Resolve-ExtensionSource {
     param(
         [Parameter(Mandatory)]$Registry,
         [Parameter(Mandatory)][string]$ReplicaId,
-        [Parameter(Mandatory)][string]$RepoRoot
+        [Parameter(Mandatory)][string]$RepoRoot,
+        $Replica = $null
     )
+    $sourceId = "$ReplicaId-extension-source"
+    if ($null -ne $Replica -and
+        $Replica.PSObject.Properties.Name -contains 'extension_source_id') {
+        $sourceId = [string]$Replica.extension_source_id
+    }
     $entry = $Registry.extension_sources | Where-Object {
-        $_.id -eq "$ReplicaId-extension-source"
+        $_.id -eq $sourceId
     } | Select-Object -First 1
     if ($null -eq $entry) { return $null }
     [IO.Path]::GetFullPath((Join-Path $RepoRoot $entry.source_relative_path))
@@ -103,15 +115,16 @@ $timestamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
 
 $results = [Collections.Generic.List[object]]::new()
 $failures = [Collections.Generic.List[string]]::new()
+$allReplicas = @($registry.managed_replicas) + @(Get-RegisteredWorktreeTargets -Registry $registry)
 
-foreach ($replica in $registry.managed_replicas) {
+foreach ($replica in $allReplicas) {
     if ($TargetId -and $replica.id -notin $TargetId) {
         continue
     }
 
     $targetPath = [string]$replica.path
     $extensionPath = [string]$replica.extension_path
-    $mode = 'live'
+    $mode = [string](Get-OptionalProperty -Object $replica -Name 'mode' -Default 'live')
     $allowed = [bool]$replica.sync_allowed
     $activation = Get-OptionalProperty -Object $replica -Name 'extension_activation' -Default $null
 
@@ -151,7 +164,7 @@ foreach ($replica in $registry.managed_replicas) {
         continue
     }
 
-    $extensionSource = Resolve-ExtensionSource -Registry $registry -ReplicaId $replica.id -RepoRoot $repoRoot
+    $extensionSource = Resolve-ExtensionSource -Registry $registry -ReplicaId $replica.id -RepoRoot $repoRoot -Replica $replica
     if (-not $extensionSource -or
         -not (Test-Path -LiteralPath $extensionSource -PathType Leaf)) {
         $failures.Add("$($replica.id): extension source is missing: $extensionSource")
@@ -166,19 +179,22 @@ foreach ($replica in $registry.managed_replicas) {
     $extensionExists = Test-Path -LiteralPath $extensionPath -PathType Leaf
     $extensionCurrentHash = if ($extensionExists) { Get-Sha256 $extensionPath } else { $null }
 
-    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash) {
+    $acceptAnyPrechange = [bool](Get-OptionalProperty -Object $replica -Name 'accept_any_prechange_with_backup' -Default $false)
+    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash -and -not $acceptAnyPrechange) {
         $prechangeProperty = if ($mode -eq 'candidate') { 'candidate_prechange_sha256' } else { 'prechange_sha256' }
-        $expected = [string](Get-OptionalProperty -Object $replica -Name $prechangeProperty -Default '')
-        if ([string]::IsNullOrWhiteSpace($expected) -or $replicaCurrentHash -ne $expected) {
+        $expected = @([string](Get-OptionalProperty -Object $replica -Name $prechangeProperty -Default ''))
+        $expected += @((Get-OptionalProperty -Object $replica -Name 'allowed_prechange_sha256' -Default @()) | ForEach-Object { [string]$_ })
+        $expected = @($expected | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        if ($replicaCurrentHash -notin $expected) {
             $failures.Add(
                 "$($replica.id): replica changed since preflight; expected " +
-                "$expected, found $replicaCurrentHash"
+                "$($expected -join ','), found $replicaCurrentHash"
             )
             continue
         }
     }
 
-    if ($extensionExists -and $extensionCurrentHash -ne $extensionSourceHash) {
+    if ($extensionExists -and $extensionCurrentHash -ne $extensionSourceHash -and -not $acceptAnyPrechange) {
         $extensionExistsProperty = if ($mode -eq 'candidate') { 'candidate_prechange_extension_exists' } else { 'prechange_extension_exists' }
         $extensionHashProperty = if ($mode -eq 'candidate') { 'candidate_prechange_extension_sha256' } else { 'prechange_extension_sha256' }
         $expectedExtensionExists = [bool](Get-OptionalProperty -Object $replica -Name $extensionExistsProperty -Default $false)
@@ -226,8 +242,12 @@ foreach ($replica in $registry.managed_replicas) {
         continue
     }
 
-    if (-not $replica.repository) {
+    $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
+    if ($backupRequired) {
         $backupPattern = [string]$replica.rollback
+        if ([string]::IsNullOrWhiteSpace($backupPattern) -or $backupPattern -notmatch '<timestamp>') {
+            throw "$($replica.id): backup-required target has no timestamped rollback path"
+        }
         $backupPath = $backupPattern.Replace('<timestamp>', $timestamp)
         $backupDir = Split-Path -Parent $backupPath
         New-Item -ItemType Directory -Force -Path $backupDir | Out-Null

@@ -1,0 +1,719 @@
+{
+    "schema_version":  1,
+    "generated_at":  "2026-08-20T17:38:49.1168233Z",
+    "phase":  "POSTCHANGE",
+    "scan_root":  "D:\\Documents\\Codex",
+    "global_codex_agents":  "C:\\Users\\adria\\.codex\\AGENTS.md",
+    "canonical_path":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+    "canonical_prechange_sha256":  "ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d",
+    "canonical_sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+    "total":  86,
+    "counts":  [
+                   {
+                       "Classification":  "ARCHIVED_OR_HISTORICAL",
+                       "Count":  43
+                   },
+                   {
+                       "Classification":  "CANONICAL_MASTER",
+                       "Count":  1
+                   },
+                   {
+                       "Classification":  "MANAGED_REPLICA_MATCH",
+                       "Count":  3
+                   },
+                   {
+                       "Classification":  "WORKTREE_REPLICA",
+                       "Count":  39
+                   }
+               ],
+    "files":  [
+                  {
+                      "Path":  "C:\\Users\\adria\\.codex\\AGENTS.md",
+                      "Classification":  "MANAGED_REPLICA_MATCH",
+                      "TargetId":  "global-codex",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\Astral-Bridge\\AGENTS.md",
+                      "Classification":  "MANAGED_REPLICA_MATCH",
+                      "TargetId":  "astral-bridge",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\backups\\agents-consolidation-002\\20260820T173802Z\\astral-bridge-active\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  18562,
+                      "Sha256":  "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\backups\\agents-consolidation-002\\astral-bridge-worktrees\\20260820T173802Z\\astral-bridge-agents-authorized-efc7a12\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15583,
+                      "Sha256":  "dbf0cbafa7ccb0a732f89ba30055927606ea33d94b84f006027a4d693b96017f",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\backups\\agents-consolidation-002\\astral-bridge-worktrees\\20260820T173802Z\\astral-bridge-agents-consolidation-001\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  18562,
+                      "Sha256":  "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+                      "Classification":  "CANONICAL_MASTER",
+                      "TargetId":  "context-vault-canonical",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\AGENTS.md",
+                      "Classification":  "MANAGED_REPLICA_MATCH",
+                      "TargetId":  "hau-usc-logistics",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\archives\\old-prototype\\20260715\\HAU_USC_Logistics_Apps_Script\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  2648,
+                      "Sha256":  "0ffe0fead1e111f7fe8cba4750fa687cf130806dc9cdba9e6f78b49b1aa0ecc2",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\active\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\design-dna-staging-2026-08-10\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  10335,
+                      "Sha256":  "0d64b83e92748440ff23199660e7a65400f4fac2fd18b1fa5766b2822cf8535d",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\playground-owner-feedback-2026-08-10\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\spec-v073-frontend-design-integration\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  8334,
+                      "Sha256":  "ca53d79b4d6a3fd07912f087eac26e9b8a9fb52cc88914f7224ae2caef10b150",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-production-execution-eb14cd81\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  16044,
+                      "Sha256":  "eeb436f36724e763e26def5b2dd1c8239a8177d3e58bb8ce71e7f27e77c51f3f",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s09-auth-reset-atomicity\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s09-lane-a\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s09-release-preflight\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s10-evidence-bb652506\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  16044,
+                      "Sha256":  "eeb436f36724e763e26def5b2dd1c8239a8177d3e58bb8ce71e7f27e77c51f3f",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s11-generator-eol\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-cloudflare-fresh-d1-startup-budget\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-internal-verification-aa083567\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  16044,
+                      "Sha256":  "eeb436f36724e763e26def5b2dd1c8239a8177d3e58bb8ce71e7f27e77c51f3f",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-a2-access-directory\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-a-closure\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-a-current-ui\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-a-mobile-topbar-gap\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-d-denied-renderer\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-g-generator-replacement\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-p-revision-sync\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-r2-request-search\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-r-rv01-closure\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-t-static-contract\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-lane-w-workspace-auth\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-recovery-4ded0bc2\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-rv01-post-review-truth\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v081-s12-v5-functional-closure\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v082-s06-controlled-a3477ae-20260813-2338\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v082-s06-controlled-replacement-a3477ae-20260813-2348\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v082-s06-serial-full-lf-a3477ae-20260814-0015\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-account-application-repository-prettier-b0c2aa0\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-disabled-enablement-gate-codex\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-eight-digit-verification-d23daef\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-gate-a-fixture-codex\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-id-c-source-projection-probe-codex\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-release-identity-version-correction-4fcd1ed\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-staff-account-activity-history-f3c28ba\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v083-staff-directory-projection-08d5c5b\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260820T173802Z\\v83-idc-gate-a-audit-prep-2026-08-16\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  15741,
+                      "Sha256":  "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\private-config\\evidence\\slice-13-demo-20260716\\gate-b-20260718-113245\\history-a3fffb9-full\\AGENTS.md",
+                      "Classification":  "ARCHIVED_OR_HISTORICAL",
+                      "TargetId":  null,
+                      "Length":  3622,
+                      "Sha256":  "b1b439b808adfaa5d54d6a1a20465f7acee9180def61675ff007fe115db7e910",
+                      "MatchesCanonical":  false
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\design-dna-staging-2026-08-10\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:design-dna-staging-2026-08-10",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\playground-owner-feedback-2026-08-10\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:playground-owner-feedback-2026-08-10",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\spec-v073-frontend-design-integration\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:spec-v073-frontend-design-integration",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-production-execution-eb14cd81\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-production-execution-eb14cd81",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s09-auth-reset-atomicity\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s09-auth-reset-atomicity",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s09-lane-a\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s09-lane-a",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s09-release-preflight\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s09-release-preflight",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s10-evidence-bb652506\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s10-evidence-bb652506",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s11-generator-eol\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s11-generator-eol",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-cloudflare-fresh-d1-startup-budget\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-cloudflare-fresh-d1-startup-budget",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-internal-verification-aa083567\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-internal-verification-aa083567",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-a2-access-directory\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-a2-access-directory",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-a-closure\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-a-closure",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-a-current-ui\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-a-current-ui",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-a-mobile-topbar-gap\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-a-mobile-topbar-gap",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-d-denied-renderer\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-d-denied-renderer",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-g-generator-replacement\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-g-generator-replacement",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-p-revision-sync\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-p-revision-sync",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-r2-request-search\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-r2-request-search",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-r-rv01-closure\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-r-rv01-closure",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-t-static-contract\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-t-static-contract",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-lane-w-workspace-auth\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-lane-w-workspace-auth",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-recovery-4ded0bc2\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-recovery-4ded0bc2",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-rv01-post-review-truth\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-rv01-post-review-truth",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-v5-functional-closure\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v081-s12-v5-functional-closure",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-controlled-a3477ae-20260813-2338\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v082-s06-controlled-a3477ae-20260813-2338",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-controlled-replacement-a3477ae-20260813-2348\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v082-s06-controlled-replacement-a3477ae-20260813-2348",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-serial-full-lf-a3477ae-20260814-0015\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v082-s06-serial-full-lf-a3477ae-20260814-0015",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-account-application-repository-prettier-b0c2aa0\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-account-application-repository-prettier-b0c2aa0",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-disabled-enablement-gate-codex\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-disabled-enablement-gate-codex",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-eight-digit-verification-d23daef\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-eight-digit-verification-d23daef",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-gate-a-fixture-codex\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-gate-a-fixture-codex",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-id-c-source-projection-probe-codex\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-id-c-source-projection-probe-codex",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-release-identity-version-correction-4fcd1ed\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-release-identity-version-correction-4fcd1ed",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-staff-account-activity-history-f3c28ba\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-staff-account-activity-history-f3c28ba",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v083-staff-directory-projection-08d5c5b\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v083-staff-directory-projection-08d5c5b",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v83-idc-gate-a-audit-prep-2026-08-16\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "hau-usc-logistics-worktree:v83-idc-gate-a-audit-prep-2026-08-16",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-authorized-efc7a12\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "astral-bridge-worktree:astral-bridge-agents-authorized-efc7a12",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  },
+                  {
+                      "Path":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\AGENTS.md",
+                      "Classification":  "WORKTREE_REPLICA",
+                      "TargetId":  "astral-bridge-worktree:astral-bridge-agents-consolidation-001",
+                      "Length":  19753,
+                      "Sha256":  "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+                      "MatchesCanonical":  true
+                  }
+              ]
+}

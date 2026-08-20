@@ -1,8 +1,8 @@
 ---
 title: AGENTS Governance
-status: active-candidate
-spec_id: AGENTS-CONSOLIDATION-001
-last_reviewed: 2026-08-19
+status: active
+spec_id: AGENTS-CONSOLIDATION-002
+last_reviewed: 2026-08-21
 ---
 
 # AGENTS Governance
@@ -32,15 +32,9 @@ Preferred checkout path:
 D:\Documents\Codex\GitHub\gpt-context-vault\AGENTS.md
 ```
 
-During implementation, the accepted candidate is prepared on:
-
-```text
-branch: governance/agents-consolidation-001
-worktree:
-D:\Documents\Codex\GitHub\worktrees\gpt-context-vault-agents-consolidation-001
-```
-
-The candidate becomes the active canonical master only after the Context Vault repository's accepted protected adoption path completes. Until then, live replicas remain unchanged except for separately authorized candidate branches.
+The active canonical master is the checked-out Context Vault `main` lineage. Changes use
+the current accepted task's Git path; a managed replica is never copied back into the
+master.
 
 ## Managed replicas
 
@@ -58,6 +52,10 @@ D:\AI_Workspace\AGENTS.md
 ```
 
 Each target has an explicit gate in `AGENTS_REGISTRY.json`.
+
+Registered worktree groups add immediate child Git roots beneath exact owned parent
+directories. New children are detected on the next dry run; non-Git children are
+ignored and preserved, while failed Git identity is `BLOCKED`.
 
 A blocked target is not silently skipped and called complete. It is reported as `BLOCKED` with the exact reason.
 
@@ -142,17 +140,20 @@ powershell -NoProfile -ExecutionPolicy Bypass `
   -Apply
 ```
 
-Live targets remain blocked in the registry until their exact activation gates pass.
+Only targets whose exact registry gates pass are eligible.
 
 The script:
 
 - reads the canonical root-policy bytes and the registered project-extension source bytes from the current Context Vault checkout;
 - reads only registered targets;
+- discovers only immediate child Git roots under registered worktree parents;
 - refuses unexpected pre-change hashes for both replica and extension;
 - performs dry-run by default;
 - writes replica and extension atomically;
 - creates and verifies timestamped backups for eligible non-Git replica and extension files;
-- never updates historical, worktree-derived, vendor, backup, test, stale, unknown, or unregistered paths.
+- backs up every target marked `backup_required` before replacement;
+- never updates archival evidence, vendor, backup, test, stale, unknown, non-Git, or
+  unregistered paths.
 
 ## Verification
 
@@ -204,7 +205,6 @@ If a unique rule is lost, a replica drifts, or an extension cannot be loaded, st
 
 Never synchronize or rewrite:
 
-- HAU historical or active worktrees merely to match the master;
 - immutable evidence snapshots;
 - archives and recovery packages;
 - temporary CodexPro fixtures;
@@ -216,14 +216,16 @@ Never synchronize or rewrite:
 - stale owned copies before preservation/reference gates pass;
 - unregistered paths.
 
-## Activation states on 2026-08-19
+## Activation states on 2026-08-21
 
 | Target | State | Reason |
 |---|---|---|
-| Context Vault | Candidate branch pushed | Protected adoption path still required |
-| Global Codex | Blocked | Canonical candidate is not active |
-| HAU-USC Logistics | Blocked | Active v0.8.3 writer locks and unrelated dirty work |
-| Astral Bridge | Candidate branch allowed | Clean repository and closed AB-000; no main merge authorized |
+| Context Vault | Active canonical | Sole editable general policy |
+| Global Codex | Active / `MATCH` | Root, extension, and activation verified |
+| HAU-USC Logistics | Active / `MATCH` | Active root plus 37 registered worktrees synchronized with exact backups |
+| Astral Bridge | Active / `MATCH` | Active root plus two registered worktrees synchronized with exact backups |
 | Odysseus | Blocked | Runtime does not load the project extension |
 
-This state is intentionally partial. Full completion cannot be claimed while required gates remain blocked.
+Odysseus is conditional and outside AGENTS-CONSOLIDATION-002's requested local inventory
+scope. It is not counted as requested active drift; its gate remains explicit rather
+than being silently skipped.

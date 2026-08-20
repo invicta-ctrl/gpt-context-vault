@@ -14,6 +14,12 @@ if (-not (Test-Path -LiteralPath $activationModulePath -PathType Leaf)) {
 }
 Import-Module $activationModulePath -Force
 
+$discoveryModulePath = Join-Path $PSScriptRoot 'RegisteredTargetDiscovery.psm1'
+if (-not (Test-Path -LiteralPath $discoveryModulePath -PathType Leaf)) {
+    throw "Registered-target discovery module is missing: $discoveryModulePath"
+}
+Import-Module $discoveryModulePath -Force
+
 function Get-Sha256 {
     param([Parameter(Mandatory)][string]$Path)
     (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant()
@@ -35,10 +41,16 @@ function Resolve-ExtensionSource {
     param(
         [Parameter(Mandatory)]$Registry,
         [Parameter(Mandatory)][string]$ReplicaId,
-        [Parameter(Mandatory)][string]$RepoRoot
+        [Parameter(Mandatory)][string]$RepoRoot,
+        $Replica = $null
     )
+    $sourceId = "$ReplicaId-extension-source"
+    if ($null -ne $Replica -and
+        $Replica.PSObject.Properties.Name -contains 'extension_source_id') {
+        $sourceId = [string]$Replica.extension_source_id
+    }
     $entry = $Registry.extension_sources | Where-Object {
-        $_.id -eq "$ReplicaId-extension-source"
+        $_.id -eq $sourceId
     } | Select-Object -First 1
     if ($null -eq $entry) { return $null }
     [IO.Path]::GetFullPath((Join-Path $RepoRoot $entry.source_relative_path))
@@ -56,9 +68,11 @@ if (-not (Test-Path -LiteralPath $canonicalPath -PathType Leaf)) {
 
 $canonicalHash = Get-Sha256 $canonicalPath
 $results = [Collections.Generic.List[object]]::new()
+$appendixResults = [Collections.Generic.List[object]]::new()
 $failureCount = 0
+$allReplicas = @($registry.managed_replicas) + @(Get-RegisteredWorktreeTargets -Registry $registry)
 
-foreach ($replica in $registry.managed_replicas) {
+foreach ($replica in $allReplicas) {
     if ($TargetId -and $replica.id -notin $TargetId) {
         continue
     }
@@ -66,7 +80,7 @@ foreach ($replica in $registry.managed_replicas) {
     $path = [string]$replica.path
     $extensionPath = [string]$replica.extension_path
     $eligible = [bool]$replica.sync_allowed
-    $mode = 'live'
+    $mode = [string](Get-OptionalProperty -Object $replica -Name 'mode' -Default 'live')
     $activation = Get-OptionalProperty -Object $replica -Name 'extension_activation' -Default $null
 
     if (-not $eligible -and $IncludeCandidateTargets -and
@@ -111,7 +125,7 @@ foreach ($replica in $registry.managed_replicas) {
         }
     }
 
-    $extensionSource = Resolve-ExtensionSource -Registry $registry -ReplicaId $replica.id -RepoRoot $repoRoot
+    $extensionSource = Resolve-ExtensionSource -Registry $registry -ReplicaId $replica.id -RepoRoot $repoRoot -Replica $replica
     $extensionState = 'SOURCE_MISSING'
     $extensionDetail = [string]$extensionSource
     if ($extensionSource -and (Test-Path -LiteralPath $extensionSource -PathType Leaf)) {
@@ -171,8 +185,40 @@ foreach ($replica in $registry.managed_replicas) {
     }
 }
 
+if ($registry.PSObject.Properties.Name -contains 'preserved_worktree_appendices') {
+    foreach ($appendix in $registry.preserved_worktree_appendices) {
+        $appendixPath = [string]$appendix.path
+        $expectedHash = [string]$appendix.sha256
+        $state = 'MISSING'
+        $detail = "expected=$expectedHash"
+        if (Test-Path -LiteralPath $appendixPath -PathType Leaf) {
+            $actualHash = Get-Sha256 $appendixPath
+            if ($actualHash -eq $expectedHash) {
+                $state = 'MATCH'
+                $detail = $actualHash
+            }
+            else {
+                $state = 'DRIFT'
+                $detail = "expected=$expectedHash actual=$actualHash"
+            }
+        }
+        $appendixResults.Add([pscustomobject]@{
+            State = $state
+            Path = $appendixPath
+            Detail = $detail
+        })
+        if ($state -ne 'MATCH') {
+            $failureCount++
+        }
+    }
+}
+
 Write-Host "CANONICAL $canonicalHash $canonicalPath"
 $results | Format-Table -AutoSize | Out-String | Write-Host
+if ($appendixResults.Count -gt 0) {
+    Write-Host 'PRESERVED WORKTREE APPENDICES'
+    $appendixResults | Format-Table -AutoSize | Out-String | Write-Host
+}
 
 if ($failureCount -gt 0) {
     Write-Error "AGENTS verification failed with $failureCount blocking result(s)."

@@ -1,178 +1,131 @@
 ---
 title: AGENTS Consolidation Report
-status: in-progress-partial
-spec_id: AGENTS-CONSOLIDATION-001
-updated: 2026-08-19
+status: verification-green-commit-pending
+spec_id: AGENTS-CONSOLIDATION-002
+updated: 2026-08-21
 ---
 
 # AGENTS Consolidation Report
 
-## Current result
+## Result
 
-The specification gate has passed and the accepted authority is durable.
+The requested local governance activation is verification-green.
 
-Completed:
+- The Context Vault root remains the sole editable general-policy master.
+- Global Codex, active Astral Bridge, active HAU-USC Logistics, 37 registered HAU
+  worktrees, and two registered Astral worktrees are byte-identical to the canonical
+  root.
+- Every eligible root has its registered project extension; Global Codex activation is
+  also `MATCH`.
+- The Odysseus target remains `BLOCKED_EXTENSION_LOADER`, is conditional, is outside the
+  requested `D:\Documents\Codex` inventory scope, and was not modified.
+- The two HAU archival/evidence roots were preserved unchanged.
+- No application build, browser suite, deployment, migration, database/provider,
+  Production, credential, model/provider, or external-system action ran.
 
-- read-only C:/D: inventory and hash analysis;
-- zero-unclassified classification;
-- accepted specification recorded, committed, and pushed;
-- isolated Context Vault task branch/worktree;
-- machine-readable pre-change inventory;
-- canonical universal policy adopted into Context Vault `main` through PR #6;
-- four project/local extension sources;
-- deterministic registry, synchronization, and verification tooling;
-- Astral Bridge candidate synchronized, verified, owner-authorized, and merged through PR #2;
-- LF-stable canonical and extension bytes adopted through PR #7;
-- Global Codex root/extension/activation verified, with recurring managed-root drift repaired from a verified backup;
-- preservation of HAU, Odysseus, historical, worktree, vendor, backup, and test files.
-
-Blocked:
-
-- HAU synchronization is blocked by active Terra writer locks and unrelated dirty work.
-- Odysseus synchronization is blocked because its current runtime loads only the root policy and has no project-extension loader.
-
-No deployment, database, provider, Google, credential, model, or application-runtime state has changed. Global Codex and Astral Bridge are active managed targets; HAU remains the required blocked live target and Odysseus remains conditional and blocked in the current registry.
-
-## Canonical activation evidence
+## Canonical and inventory evidence
 
 ```text
-Context Vault adoption PR: #6 / MERGED
-Context Vault adoption merge: 5718995f74c832678f421d113671fb1d1f1923cf
-LF stability PR: #7 / MERGED
-Active main: c9e0be299c017dadcad75addfa8048f10f679f7f
-Registered canonical path: D:DocumentsCodexGitHubgpt-context-vaultAGENTS.md
-Canonical SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
-Canonical working-tree EOL: LF
-Untracked .codegraph/: PRESERVED / UNCHANGED
+Context Vault baseline HEAD: fe69dc2191deac683d09eebaee56ff922f870e7a
+Context Vault baseline branch: main
+Baseline upstream divergence: 0 ahead / 0 behind
+Canonical pre-change SHA-256: ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d
+Canonical active SHA-256: 83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f
+Pre-change exact AGENTS.md count: 45
+Eligible managed/worktree targets: 42
+Post-change requested managed matches: 42
+New timestamped root-policy backups: 42
+Backup/pre-change SHA-256 multiset equality: PASS
+Post-change unknown classifications: 0
 ```
 
-## Current-main reconciliation
+The pre/post JSON and CSV inventories under `governance/agents/inventory/` contain the
+exact path, classification, length, SHA-256, target ID, and canonical-match result.
 
-Before canonical adoption, the task branch fetched and reconciled the current remote `main` at `48ac55aa71a5442ab3e213b4041602e30019a9ed`. The reconciliation preserved the newer accepted account-wide AI-assisted SDD, incremental `.codex/CURRENT.md` routing, and context-compaction survival rules rather than replacing them with the older task-branch snapshot.
+## Preservation
+
+Backup timestamp: `20260820T173802Z` (UTC).
 
 ```text
-candidate before reconciliation: 88bb855
-current origin/main reconciled:   48ac55aa71a5442ab3e213b4041602e30019a9ed
-canonical root after reconciliation SHA-256:
-66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
+C:\Users\adria\.codex\backups\agents-consolidation-002\20260820T173802Z
+D:\Documents\Codex\HAU-USC Logistics\backups\agents-consolidation-002\20260820T173802Z
+D:\Documents\Codex\backups\agents-consolidation-002\20260820T173802Z
+D:\Documents\Codex\backups\agents-consolidation-002\astral-bridge-worktrees\20260820T173802Z
 ```
 
-The Astral candidate was resynchronized to the reconciled canonical root, pinned to LF-stable governance bytes, reverified, committed, and pushed at `61129771b2089c43fb61a07932d103ba065fc116`. Earl authorized that exact candidate; Astral Bridge PR #2 merged it into `main` at `5d6004a2b567363199f50544d696fc76a53e84b5`, and the merged tree is identical to the authorized candidate tree.
+The default Codex backup SHA-256 is
+`667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e`.
+The remaining exact backup hashes are present in the post-change inventory.
 
-## Branches
+The unique v0.7.3 frontend worktree instruction was extracted before synchronization
+to `.agents/WORKTREE_POLICY_APPENDIX.md` with SHA-256
+`b524237fe7c140d1cc98c1b38af8cfdfd515507f5bab47aeb3f2db9f4c31741b`.
+Its complete original root bytes are also preserved by the backup with SHA-256
+`ca53d79b4d6a3fd07912f087eac26e9b8a9fb52cc88914f7224ae2caef10b150`
+and by Git history.
 
-### Context Vault
+Unrelated pre-existing HAU work remained untouched:
 
 ```text
-branch: governance/agents-consolidation-001
-base: edaadec29c6b83472c079844c18e94890a7f7742
-specification commit: c21ecff
-current-main reconciliation commit: 5e264b1f34a5e548d179a403c7420e625a93e64d
-adoption PR #6 merge: 5718995f74c832678f421d113671fb1d1f1923cf
-LF-stability PR #7 merge: c9e0be299c017dadcad75addfa8048f10f679f7f
-active branch: main
-active canonical SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
+M docs/SECURITY_AND_ACCESS.md
+?? .ai-bridge/
+?? docs/reference/SECURITY_AUDIT_CONSOLIDATED_RECOMMENDATIONS_2026-08-18.md
 ```
 
-The registered local checkout now tracks adopted `main`. The previous feature commit remains preserved on its branch and remote; the untracked `.codegraph/` directory remains untouched.
+## TOKEN-OPT and HAU reconciliation
 
-### Astral Bridge
+The approved optional-step parking heuristic appears once in TOKEN-OPT-001. Base
+fixture version 1 remains exactly ten fixtures with canonical serialized SHA-256
+`eb5314d707734395ebf2a23b9294cda6855a2dfbeacf6e4645fba1de5513ba58`.
+The A1 suite remains 26 unique fixtures.
+
+HAU keeps its read-only Sol orchestrator, one Terra Integration Writer when a child
+writer is required, conditional read-only Luna review, writer lock, recovery branches,
+Playground/Production release gates, rollback, environment isolation, privacy, and data
+invariants. Routine defaults are now zero children, one active child maximum, depth one,
+High-or-lower reasoning, no routine independent review, no routine full-suite loop, and
+stop when green. Project threads changed from 32 to 2; the two routine Luna profiles
+changed from MAX to High.
+
+Historical accepted specifications with exact operation-specific concurrency remain
+historical or operation-scoped authority and were not rewritten.
+
+## Tooling hardening
+
+The existing `automation/agents-governance/` framework now:
+
+- discovers immediate child Git roots only under exact registered worktree parents;
+- blocks failed Git identity and preserves unknown/non-Git children;
+- dry-runs by default and applies only with `-Apply`;
+- backs up every `backup_required` target before replacement;
+- reports `MATCH`, `DRIFT`, `MISSING`, or `BLOCKED`;
+- produces bounded pre/post inventory evidence;
+- detects new eligible registered worktrees; and
+- is idempotent (the post-apply dry run reported only `MATCH` for all eligible targets).
+
+## Verification
 
 ```text
-branch: governance/agents-consolidation-001
-base: 75aab9d6ea3b8921307f080e7a939f31e69f0f51
-candidate commit: 61129771b2089c43fb61a07932d103ba065fc116
+verify-agents.ps1 -FailOnBlocked: PASS for all 42 requested eligible targets
+sync-agents.ps1 post-apply dry run: PASS / all eligible MATCH
+verify-token-optimization.ps1: PASS
+TOKEN-OPT base fixtures: 10/10 PASS and canonical fixture hash unchanged
+TOKEN-OPT A1 fixtures: 26/26 PASS
+Global Codex model: gpt-5.6-sol PASS
+Global ordinary reasoning: high PASS
+Global concurrent-thread maximum: PASS
+Sol Advisor model/reasoning: gpt-5.6-sol / high PASS
+HAU npm run check:agents: PASS (12 project files)
+HAU targeted codex-governance tests: 14/14 PASS
+PowerShell parser for governance scripts/modules: PASS
+Registry JSON parse: PASS
 ```
 
-The live `main` checkout is clean, tracks `origin/main`, and is verified at merge commit `5d6004a2b567363199f50544d696fc76a53e84b5`. The authorized candidate `61129771b2089c43fb61a07932d103ba065fc116` is the second merge parent and has the same tree as merged `main`.
+Application builds, browser/E2E suites, deployment checks, migrations, and Production
+checks were intentionally not run.
 
-## Managed-target state
+## Git closeout
 
-| Target | Replica | Extension | State |
-|---|---|---|---|
-| Context Vault | Active canonical `main` | N/A | Adopted; local path and SHA verified |
-| Global Codex | `MATCH` on live root | `MATCH` with activation `MATCH` | Active; recurring managed-root drift backup-protected and repaired |
-| HAU-USC Logistics | Unchanged | Source prepared only | Blocked |
-| Astral Bridge | `MATCH` on live `main` | `MATCH` on live `main` | Active; exact owner-authorized candidate merged through PR #2 |
-| Odysseus | Unchanged | Source prepared only | Blocked |
-
-## Candidate execution evidence
-
-```text
-Astral current-main resynchronization dry run: PASS (root WOULD_UPDATE; extension MATCH)
-Astral root synchronization: UPDATED
-Astral extension synchronization: MATCH / unchanged
-Astral root SHA-256: 66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769
-Astral extension SHA-256: a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e
-Astral targeted verification: PASS
-Astral git diff --check: PASS
-Astral scripts/verify-scaffold.mjs: PASS
-Astral commit/push: 61129771b2089c43fb61a07932d103ba065fc116 / PASS
-Astral LF attributes: PASS (`AGENTS.md` and extension forced to LF)
-Astral upstream divergence: 0 ahead / 0 behind
-Astral merge: PR #2 MERGED exact owner-authorized candidate; merge commit 5d6004a2b567363199f50544d696fc76a53e84b5
-Astral adoption evidence: `governance/agents/evidence/ASTRAL_ADOPTION_2026-08-19.json`.
-Global Codex post-merge drift repair: observed `667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e`; backup `C:\Users\adria\.codex\backups\agents-consolidation-001\20260819T155425Z\AGENTS.md`; restored canonical `66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769`; targeted verification `MATCH / MATCH / MATCH`.
-```
-
-## Stale-reference audit
-
-The final bounded deterministic scan covered 718 owned/governance files and produced 15 raw matches. The detailed disposition is maintained in `governance/agents/AGENTS_AUDIT.md`.
-
-- **Three actionable references remain blocked:** the literal `REQUIRED_MODEL: CODEX` fields in HAU `.codex/CURRENT.md` and `.codex/CURRENT_TASK.md`, plus the Odysseus root claim that it is the canonical global policy.
-- **Five HAU policy/test references are intentional safeguards:** they state or test that the legacy model metadata is superseded and therefore remain unchanged.
-- **Seven Context Vault matches are intentional provenance:** inventory, disposition, and consolidation evidence.
-- **No automatic stale-reference rewrite was performed.** HAU remains blocked by writer locks and dirty work; Odysseus remains blocked by missing extension-loading proof.
-## Final governance verification modes
-
-```text
-PowerShell parser: PASS for sync-agents.ps1 and verify-agents.ps1
-Context Vault git diff --check: PASS
-Full synchronization dry run: PASS
-Candidate verification: PASS
-  astral-bridge root: MATCH
-  astral-bridge extension: MATCH
-  global-codex: BLOCKED
-  hau-usc-logistics: BLOCKED
-  odysseus: BLOCKED
-Strict required-target verification: EXPECTED FAIL
-Strict exit code: 1
-Strict blocking result count: 3
-```
-
-The strict failure is the correct safety result. It proves that the package does not treat a prepared candidate as full live activation and does not bypass Global Codex, HAU, or Odysseus gates. Astral live `main` also remains blocked because no merge was authorized.
-## Final filename-only verification
-
-```text
-PRE-CHANGE EXACT WINDOWS-EQUIVALENT AGENTS.md: 106
-CANDIDATE-STATE EXACT WINDOWS-EQUIVALENT AGENTS.md: 108
-CHANGE: +2 isolated candidate-worktree files only
-EXACT UPPERCASE AT CANDIDATE STATE: 100
-CASE VARIANTS: 8
-UNIQUE SHA-256 HASHES: 42
-DUPLICATE HASH GROUPS: 11
-AGENTS-FAMILY VARIANTS: 18
-UNCLASSIFIED: 0
-INACCESSIBLE PROTECTED PATHS: 206
-```
-
-The two added exact files are the Context Vault canonical candidate and the Astral Bridge managed-replica candidate. The final scan did not discover an unclassified exact file.
-
-## Cleanup
-
-No stale, historical, worktree, backup, fixture, package, plugin, marketplace, or vendor file has been removed or archived.
-
-Cleanup remains gated by:
-
-```text
-canonical activation
--> eligible replica synchronization
--> extension loading proof
--> reference audit
--> recovery verification
--> owner-approved final cleanup
-```
-
-## Completion boundary
-
-This report must not claim full consolidation while a required target remains blocked. The accepted architecture and tools are prepared, but live activation remains partial.
+Implementation and evidence commits are pending final logical-diff review. No push or
+merge is assumed or reported. Update this section with verified commit identities, then
+stop.

@@ -1,8 +1,8 @@
 ---
 title: AGENTS Rule Matrix
-status: active-candidate
-spec_id: AGENTS-CONSOLIDATION-001
-last_reviewed: 2026-08-19
+status: active
+spec_id: AGENTS-CONSOLIDATION-002
+last_reviewed: 2026-08-21
 ---
 
 # AGENTS Rule Matrix
@@ -86,7 +86,8 @@ project/local differences = extensions
 Before consolidation:
 
 - some policies said the main agent was the only writer;
-- HAU required Sol read-only, one Terra integration writer, optional isolated Terra writers, and Luna read-only;
+- HAU requires Sol read-only, one Terra integration writer when a child writer is
+  required, and conditional Luna read-only review;
 - older HAU branches said Codex was the only writer;
 - Global Codex used Native V2 defaults.
 
@@ -94,7 +95,10 @@ Decision:
 
 - universal policy declares one canonical writer unless accepted project policy says otherwise;
 - Global Codex keeps Native V2 as a default;
-- HAU extension preserves its stricter Sol/Terra/Luna architecture;
+- HAU extension preserves its stricter Sol/Terra/Luna role separation and writer lock,
+  while TOKEN-OPT-001 controls the zero-child default, one active child maximum, depth
+  one, ordinary High-or-lower reasoning, conditional review, proportional testing, and
+  stop-when-green behavior;
 - historical branch policies remain history and do not overwrite active authority.
 
 ### Branch and release rules
@@ -127,11 +131,7 @@ No policy-content decision remains open for the accepted specification.
 
 The active `main` governance added AI-assisted SDD, bounded incremental context, and mandatory context-compaction survival after this task branch diverged. Those rules were treated as newer durable authority and merged into the universal master before canonical adoption.
 
-Operational gates remain:
-
-1. Context Vault protected adoption/merge.
-2. HAU writer-lock release and clean isolated task branch.
-3. Astral protected branch adoption after candidate review.
-4. Global Codex activation after canonical adoption.
-5. Separately accepted Odysseus extension-loader change.
-6. Cleanup approval after synchronization, loader proof, references, and recovery verification.
+Requested local activation gates are complete for Context Vault, Global Codex, HAU,
+Astral, and the registered worktree groups. A separately accepted Odysseus
+extension-loader change remains conditional and outside AGENTS-CONSOLIDATION-002.
+Archival cleanup remains separately gated and was not performed.
