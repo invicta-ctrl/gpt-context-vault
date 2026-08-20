@@ -1,6 +1,6 @@
 ---
 title: AGENTS Consolidation Report
-status: verification-green-commit-pending
+status: complete-local-activation
 spec_id: AGENTS-CONSOLIDATION-002
 updated: 2026-08-21
 ---
@@ -126,6 +126,26 @@ checks were intentionally not run.
 
 ## Git closeout
 
-Implementation and evidence commits are pending final logical-diff review. No push or
-merge is assumed or reported. Update this section with verified commit identities, then
-stop.
+```text
+Context Vault branch: governance/agents-consolidation-002
+Context Vault implementation commit: 602fb0eb43da470dcdc78a63347ea241380e5831
+HAU active governance branch: governance/agents-main-sync
+HAU active governance commit: b96c44bbf5b1a60d8e3154f47c7b6b2ced5ad2dc
+Astral Bridge branch: governance/agents-consolidation-002
+Astral Bridge governance commit: a93b1b571d829ee63d0382eba62363c30fcb3eba
+HAU v0.7.3 preserved-appendix commit: c20bfd1cd78b87a5489415af1b316e3ffc70280b
+Pushes: NONE
+Pull requests: NONE
+Merges: NONE
+```
+
+The remaining HAU/Astral worktree replicas are generated local operating copies. They
+remain visibly modified/untracked on their existing branches rather than rewriting
+dozens of historical or in-progress branch histories. Their exact pre-change bytes are
+backed up, their live bytes verify `MATCH`, and the deterministic command can recreate
+them. This is intentional preservation, not unreported clean state.
+
+The complete logical diffs were reviewed, targeted files were staged explicitly, and
+unrelated HAU work was not staged. No remote action is assumed or reported. The
+accepted local activation work unit is complete; stop before push, PR, merge, cleanup,
+Odysseus work, or another audit pass.
