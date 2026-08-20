@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "policy_id": "TOKEN-OPT-001",
+  "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
+  "defaults": {
+    "global_model": "gpt-5.6-sol",
+    "ordinary_reasoning_effort": "high",
+    "max_concurrent_threads_per_session": 2,
+    "default_children": 0,
+    "max_active_children": 1,
+    "max_delegation_depth": 1,
+    "routine_independent_review": false,
+    "routine_full_suite_after_small_module": false
+  },
+  "context": {
+    "normal_route": [
+      "Context Vault AGENTS.md",
+      "authoritative repository",
+      "project AGENTS.md",
+      ".codex/CURRENT.md",
+      "accepted active specification or step",
+      "directly relevant source and tests"
+    ],
+    "expansion_reason_label": "CONTEXT_EXPANSION_REASON",
+    "expansion_triggers": [
+      "direct_dependency",
+      "unresolved_acceptance_criterion",
+      "targeted_symbol_or_reference",
+      "verification_failure",
+      "contradiction",
+      "security_or_privacy_concern",
+      "migration_compatibility_or_data_invariant",
+      "missing_authoritative_fact"
+    ]
+  },
+  "verification": {
+    "reuse_keys": [
+      "commit_sha",
+      "artifact_hash",
+      "configuration",
+      "environment",
+      "external_state"
+    ],
+    "reverify_reason_label": "REVERIFY_REASON",
+    "test_route": [
+      "targeted",
+      "affected_subsystem",
+      "required_acceptance_checks",
+      "final_appropriate_gate"
+    ]
+  },
+  "safety_precedence": [
+    "owner_and_accepted_authority",
+    "security_authorization_privacy_secrets",
+    "data_invariants_migrations_backups_rollback",
+    "repository_writer_lock_unknown_work_git_safety",
+    "deployment_production_recovery_external_state",
+    "truthful_evidence_and_reporting"
+  ],
+  "behavior_contract": {
+    "small_bug": {
+      "action": "TARGETED_DISCOVERY",
+      "repository_scan": false
+    },
+    "new_session_continuation": {
+      "action": "FOLLOW_POINTER_CHAIN",
+      "route": [
+        "Context Vault AGENTS.md",
+        "authoritative repository",
+        "project AGENTS.md",
+        ".codex/CURRENT.md",
+        "accepted active specification or step"
+      ]
+    },
+    "missing_specification": {
+      "action": "STOP_BEFORE_IMPLEMENTATION"
+    },
+    "failing_focused_test": {
+      "action": "EXPAND_AFFECTED_DEPENDENCIES",
+      "reason_required": true
+    },
+    "fresh_existing_verification": {
+      "action": "REUSE_EVIDENCE",
+      "required_unchanged": [
+        "commit_sha",
+        "artifact_hash",
+        "configuration",
+        "environment",
+        "external_state"
+      ]
+    },
+    "stale_verification": {
+      "action": "REVERIFY",
+      "reason_required": true
+    },
+    "large_repository": {
+      "action": "TARGETED_DISCOVERY",
+      "broad_read": false
+    },
+    "subagent_opportunity": {
+      "action": "PARENT_OR_TOOL_FIRST",
+      "default_children": 0,
+      "max_active_children": 1,
+      "justification_required": true
+    },
+    "conflicting_governance": {
+      "action": "STOP_WITH_EXACT_CONFLICT"
+    },
+    "optimization_versus_safety": {
+      "action": "SAFETY_WINS",
+      "precedence": [
+        "security",
+        "authority",
+        "rollback",
+        "migration",
+        "data",
+        "privacy",
+        "git_safety"
+      ]
+    }
+  }
+}

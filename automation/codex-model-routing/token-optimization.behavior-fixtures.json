@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "policy_id": "TOKEN-OPT-001",
+  "fixtures": [
+    {
+      "id": "small_bug",
+      "title": "Small bug",
+      "contract_key": "small_bug",
+      "expected": {
+        "action": "TARGETED_DISCOVERY",
+        "repository_scan": false
+      }
+    },
+    {
+      "id": "new_session_continuation",
+      "title": "New session continuation",
+      "contract_key": "new_session_continuation",
+      "expected": {
+        "action": "FOLLOW_POINTER_CHAIN",
+        "route": [
+          "Context Vault AGENTS.md",
+          "authoritative repository",
+          "project AGENTS.md",
+          ".codex/CURRENT.md",
+          "accepted active specification or step"
+        ]
+      }
+    },
+    {
+      "id": "missing_specification",
+      "title": "Missing specification",
+      "contract_key": "missing_specification",
+      "expected": {
+        "action": "STOP_BEFORE_IMPLEMENTATION"
+      }
+    },
+    {
+      "id": "failing_focused_test",
+      "title": "Failing focused test",
+      "contract_key": "failing_focused_test",
+      "expected": {
+        "action": "EXPAND_AFFECTED_DEPENDENCIES",
+        "reason_required": true
+      }
+    },
+    {
+      "id": "fresh_existing_verification",
+      "title": "Fresh existing verification",
+      "contract_key": "fresh_existing_verification",
+      "expected": {
+        "action": "REUSE_EVIDENCE",
+        "required_unchanged": [
+          "commit_sha",
+          "artifact_hash",
+          "configuration",
+          "environment",
+          "external_state"
+        ]
+      }
+    },
+    {
+      "id": "stale_verification",
+      "title": "Stale verification",
+      "contract_key": "stale_verification",
+      "expected": {
+        "action": "REVERIFY",
+        "reason_required": true
+      }
+    },
+    {
+      "id": "large_repository",
+      "title": "Large repository",
+      "contract_key": "large_repository",
+      "expected": {
+        "action": "TARGETED_DISCOVERY",
+        "broad_read": false
+      }
+    },
+    {
+      "id": "subagent_opportunity",
+      "title": "Subagent opportunity",
+      "contract_key": "subagent_opportunity",
+      "expected": {
+        "action": "PARENT_OR_TOOL_FIRST",
+        "default_children": 0,
+        "max_active_children": 1,
+        "justification_required": true
+      }
+    },
+    {
+      "id": "conflicting_governance",
+      "title": "Conflicting governance",
+      "contract_key": "conflicting_governance",
+      "expected": {
+        "action": "STOP_WITH_EXACT_CONFLICT"
+      }
+    },
+    {
+      "id": "optimization_versus_safety",
+      "title": "Optimization Versus Safety",
+      "contract_key": "optimization_versus_safety",
+      "expected": {
+        "action": "SAFETY_WINS",
+        "precedence": [
+          "security",
+          "authority",
+          "rollback",
+          "migration",
+          "data",
+          "privacy",
+          "git_safety"
+        ]
+      }
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-07-13
+last_reviewed: 2026-08-20
 ---
 
 # Codex model routing
@@ -25,8 +25,16 @@ architecture, status, and implementation decisions. A project adapter may copy
 the standard into its own runtime, but the vault must not store live prompts,
 generated briefs, route decisions, logs, diffs, secrets, or build artifacts.
 
+The canonical account-wide token and context-efficiency policy is
+[`../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md).
+It governs ordinary reasoning, delegation, evidence reuse, review, verification
+escalation, and stop-when-green behavior. Project rules may be stricter but may
+not weaken safety.
+
 ## Standard contents
 
+- [`../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md)
+  is the single account-wide token/context-efficiency authority.
 - [`INSTRUCTION_REFINEMENT_STANDARD.md`](INSTRUCTION_REFINEMENT_STANDARD.md)
   defines the preflight gate and safe-stop behavior.
 - [`REFINED_EXECUTION_BRIEF_TEMPLATE.md`](REFINED_EXECUTION_BRIEF_TEMPLATE.md)
@@ -45,6 +53,10 @@ For a project task, read the normal vault entrypoint and project registry first,
 then retrieve this standard only when refinement or routing is relevant. Read
 the registered project repository for current technical facts. Stop when the
 brief and route can be decided without speculative context.
+
+When token, context, delegation, evidence reuse, review, or verification
+efficiency is in scope, retrieve the canonical policy above and expand context
+only for a recorded reason it permits.
 
 ## Capability compatibility
 

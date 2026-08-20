@@ -25,9 +25,10 @@ catalog:
 | `judgment` | Architecture, schema, permissions, migration, security, or data-integrity decisions dominate |
 | `deep_review` | High-risk work, release blockers, or a lower tier failed with evidence |
 
-Reasoning should be `low` or `medium` for fast work, `medium` for ordinary
-implementation/exploration, and `high` or the installed high-end value only
-for consequential judgment or review. Never use an unsupported value.
+Reasoning should be `low` or `medium` for fast work and may use `high` for
+ordinary implementation, exploration, or consequential judgment. Ordinary work
+does not exceed High by default. Higher installed values are risk-gated
+exceptions, not routine routing choices. Never use an unsupported value.
 
 ## Current Codex compatibility rule
 
@@ -51,12 +52,12 @@ another UI label as a CLI reasoning value.
 
 ## Subagents and worktrees
 
-Use subagents only when there are at least three independent workstreams,
-non-overlapping ownership, and a final integration step. Read-heavy
-exploration, testing, and review are safer than parallel writes. Any parallel
-write work requires isolated worktrees and explicit ownership. Keep nesting at
-one level and the thread cap conservative. A sequential task should use one
-worker, even when it is large.
+Use zero children by default. Permit one active child maximum only when the work
+is bounded, independent, non-overlapping, explicitly justified, and expected to
+reduce total context or latency without weakening verification. Keep delegation
+depth at one. Prefer read-only exploration, testing, or review to parallel
+writes; any child write requires isolated ownership and the repository's writer
+rules. A sequential task stays with the parent even when it is large.
 
 ## Escalation
 
@@ -67,7 +68,14 @@ escalate merely because a worker took time.
 
 ## Verification and safe stops
 
-Every route names an allowlisted verification profile and a read-only review.
+Every route names an allowlisted verification profile. Use targeted checks
+first, then affected and required acceptance checks. Do not run a full suite after every small module.
+Independent review is conditional on material risk,
+uncertainty, or explicit owner request rather than routine ceremony. Reuse
+same-SHA evidence while its source, configuration, environment, artifact, and
+external-state assumptions remain valid, and stop when accepted evidence is
+green.
+
 Block when the refinement is invalid, the route is unsupported, the worktree
 is unsafe, documentation conflicts materially, or a destructive/deployment/
 migration/external-write action lacks explicit approval. A hook can add context

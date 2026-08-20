@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-08-19
+last_reviewed: 2026-08-20
 ---
 
 # Context Index
@@ -29,6 +29,7 @@ Use this index only when the root [`AGENTS.md`](AGENTS.md) has not already resol
 | Recent changes | [`memory/RECENT_CHANGES.md`](memory/RECENT_CHANGES.md) | Latest approved context and governance updates | Medium | After meaningful updates |
 | Superseded | [`memory/SUPERSEDED_CONTEXT.md`](memory/SUPERSEDED_CONTEXT.md) | Replaced information | Historical only | When conflicts are resolved |
 | Retrieval protocol | [`protocols/CONTEXT_RETRIEVAL_PROTOCOL.md`](protocols/CONTEXT_RETRIEVAL_PROTOCOL.md) | Minimal-context retrieval process | High | Rare |
+| Codex token and context efficiency | [`protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md) | Canonical reasoning, delegation, evidence-reuse, review, verification, and stop-when-green policy | High | Through accepted governance changes |
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
 | AI-assisted SDD | [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md) | Account-wide specification, implementation, review, testing, security, and Git gates | High for software projects | As engineering workflow improves |
