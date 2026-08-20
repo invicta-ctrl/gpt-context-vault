@@ -345,6 +345,115 @@ handoff status
 Do not turn the current pointer into a historical archive. Prefer one exact next action
 over artificial future-action lists.
 
+## Current/Next Slice Pipeline
+
+The accepted [`TOKEN-OPT-001-A1`](../governance/agents/specs/TOKEN-OPT-001-A1.md)
+amendment defines one optional read-only scout-ahead lane:
+
+```text
+CURRENT WRITER FINISHES CURRENT SLICE
+OPTIONAL READ-ONLY SCOUT PREPARES AN ALREADY AUTHORIZED NEXT SLICE
+ENDING SHA REVALIDATES THE SCOUT PACKET
+UNAPPROVED NEXT SLICE -> HANDOFF AND STOP
+NEVER AUTO-START THE NEXT SLICE
+```
+
+Freeze the current authority, baseline SHA, objective, owned and excluded paths,
+acceptance criteria, and named next candidate before scouting. A scout is permitted
+only when the next slice already has drafting authority, the single child slot is
+free, preparation is bounded and independent, paths and stop conditions are explicit,
+and no stricter project rule prohibits it.
+
+Disable scouting for trivial or inferred future work, critical or destructive
+operations, migrations, Production, provider or database mutations, security or
+privacy ambiguity, writer conflict, dirty unknown state, missing authority, or when
+the child slot is required by the writer or a required reviewer.
+
+The scout is read-only, may not delegate, and may interrupt the current slice only for
+a wrong repository, branch, or baseline; controlling authority conflict; writer
+conflict; or a security, privacy, or data-integrity risk affecting current work.
+
+The scout packet must contain:
+
+```text
+SCOUT_STATUS
+NEXT_SLICE_ID
+NEXT_SLICE_AUTHORITY
+SCOUT_BASELINE_SHA
+OBSERVED_AT
+STALE_IF
+FACTS
+INFERENCES
+UNVERIFIED
+OBJECTIVE
+IN_SCOPE
+OUT_OF_SCOPE
+LIKELY_OWNED_PATHS
+EXCLUDED_PATHS
+DEPENDENCIES
+CURRENT_INVARIANTS
+EXPECTED_ACCEPTANCE_CRITERIA
+FOCUSED_TEST_PLAN
+SECURITY_OR_PRIVACY_GATES
+CONFIGURATION_GATES
+OWNER_DECISIONS_REQUIRED
+RISKS
+BLOCKERS
+DO_NOT_REPEAT
+NO_WRITE_ATTESTATION
+```
+
+At current-slice closeout, compare the scout baseline SHA with the ending SHA and
+inspect only the delta capable of invalidating the packet. Classify it as `VALID`,
+`PARTIALLY_STALE`, `STALE`, `BLOCKED`, or `NO_OP`. Static policy cannot prove runtime
+zero-write behavior; parent-observed before/after Git state is required.
+
+An identical ending SHA skips only Git-delta revalidation. Before reusing evidence,
+check `STALE_IF`, relevant configuration, artifact identity, environment, and relevant
+external state; any triggered invalidator requires scoped revalidation.
+
+## Cache-friendly prompt ordering
+
+Where ordering is controllable, place stable authority, safety rules, durable project
+rules, workflow contracts, and stable tool schemas before the current slice, SHA,
+failures, changed paths, live PR/provider state, timestamps, and run identifiers.
+
+Prompt shape alone does not prove a cache hit or savings. Cache claims require runtime
+telemetry. When telemetry is unavailable, report:
+
+```text
+CACHE HIT: UNVERIFIED / UNAVAILABLE
+```
+
+Unsupported universal efficiency percentages are prohibited.
+
+## Safe compaction and tool context
+
+Manual compaction is permitted only at a durable checkpoint recording authority, HEAD
+and tree, worktree, writer, objective, completed work, changed files, verification,
+blockers, next action, and actions not to repeat. Rehydration must reread minimum
+authority, recheck Git identity, compare the checkpoint, and mark missing load-bearing
+facts `UNVERIFIED`.
+
+Compaction never replaces Git, accepted specifications, tests, backups, audit evidence,
+migrations, recovery evidence, or provider records.
+
+Use external tools and MCPs only when accepted scope needs them. Record
+`TOOL_CONTEXT_EXPANSION_REASON` for material additions. Shared MCP disablement requires
+separate authority; do not globally disable shared capabilities for theoretical savings.
+
+Keep repository/worktree, writer, model role, reasoning, sandbox, authority, tools, and
+acceptance entrypoints stable within a slice. A required change records:
+
+```text
+CONFIG_CHANGE_REASON
+OLD_VALUE
+NEW_VALUE
+AUTHORITY
+EVIDENCE_INVALIDATED
+ROLLBACK / REVERSION
+```
+
 ## Deterministic anti-drift defaults
 
 Active account-wide defaults:
@@ -360,7 +469,8 @@ routine independent review = false
 routine full suite after each small module = false
 ```
 
-The machine-readable defaults, ten behavior fixtures, and focused validator live under
+The machine-readable defaults, the unchanged ten-fixture base suite, the versioned
+26-fixture A1 suite, and the focused validator live under
 `automation/codex-model-routing/`.
 
 ## Stop condition

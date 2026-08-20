@@ -35,6 +35,8 @@ not weaken safety.
 
 - [`../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](../../protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md)
   is the single account-wide token/context-efficiency authority.
+- [`../../governance/agents/specs/TOKEN-OPT-001-A1.md`](../../governance/agents/specs/TOKEN-OPT-001-A1.md)
+  defines the accepted Current/Next Slice Pipeline and read-only scout-ahead amendment.
 - [`INSTRUCTION_REFINEMENT_STANDARD.md`](INSTRUCTION_REFINEMENT_STANDARD.md)
   defines the preflight gate and safe-stop behavior.
 - [`REFINED_EXECUTION_BRIEF_TEMPLATE.md`](REFINED_EXECUTION_BRIEF_TEMPLATE.md)
@@ -57,6 +59,11 @@ brief and route can be decided without speculative context.
 When token, context, delegation, evidence reuse, review, or verification
 efficiency is in scope, retrieve the canonical policy above and expand context
 only for a recorded reason it permits.
+
+The Current/Next Slice Pipeline uses zero children by default and at most one
+read-only scout for an already authorized next slice. The parent revalidates the
+scout packet against the current slice's ending SHA and never auto-starts the next
+slice.
 
 ## Capability compatibility
 

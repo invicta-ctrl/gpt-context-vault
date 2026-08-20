@@ -1,7 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "policy_id": "TOKEN-OPT-001",
-  "fixtures": [
+  "fixture_suites": {
+    "TOKEN-OPT-001": {
+      "suite_version": 1,
+      "fixture_count": 10,
+      "fixtures": [
     {
       "id": "small_bug",
       "title": "Small bug",
@@ -112,5 +116,253 @@
         ]
       }
     }
-  ]
+      ]
+    },
+    "TOKEN-OPT-001-A1": {
+      "suite_version": 1,
+      "fixture_count": 26,
+      "fixtures": [
+        {
+          "id": "a1_trivial_task",
+          "title": "Trivial task does not spawn a scout",
+          "contract_key": "a1_trivial_task",
+          "expected": {
+            "scout": "DISABLED",
+            "reason": "TRIVIAL_TASK"
+          }
+        },
+        {
+          "id": "a1_authorized_next_slice",
+          "title": "Authorized next slice permits one scout",
+          "contract_key": "a1_authorized_next_slice",
+          "expected": {
+            "scout": "PERMITTED",
+            "next_slice_authorized": true,
+            "max_active_children": 1
+          }
+        },
+        {
+          "id": "a1_inferred_next_slice",
+          "title": "Inferred next slice does not spawn a scout",
+          "contract_key": "a1_inferred_next_slice",
+          "expected": {
+            "scout": "DISABLED",
+            "reason": "NEXT_SLICE_NOT_AUTHORIZED"
+          }
+        },
+        {
+          "id": "a1_critical_mutation",
+          "title": "Critical mutation disables scouting",
+          "contract_key": "a1_critical_mutation",
+          "expected": {
+            "scout": "DISABLED",
+            "reason": "CRITICAL_OPERATION"
+          }
+        },
+        {
+          "id": "a1_scout_write_attempt",
+          "title": "Scout write attempt is a violation",
+          "contract_key": "a1_scout_write_attempt",
+          "expected": {
+            "action": "VIOLATION",
+            "scout_read_only": true
+          }
+        },
+        {
+          "id": "a1_scout_child_spawn_attempt",
+          "title": "Scout child-spawn attempt is a violation",
+          "contract_key": "a1_scout_child_spawn_attempt",
+          "expected": {
+            "action": "VIOLATION",
+            "scout_may_delegate": false
+          }
+        },
+        {
+          "id": "a1_second_active_child",
+          "title": "Second active child is a violation",
+          "contract_key": "a1_second_active_child",
+          "expected": {
+            "action": "VIOLATION",
+            "max_active_children": 1
+          }
+        },
+        {
+          "id": "a1_stale_if_change",
+          "title": "STALE_IF change requires classification",
+          "contract_key": "a1_stale_if_change",
+          "expected": {
+            "action": "REVALIDATE_AND_CLASSIFY",
+            "stale_if_required": true
+          }
+        },
+        {
+          "id": "a1_current_green_next_unapproved",
+          "title": "Green current slice and unapproved next slice stops",
+          "contract_key": "a1_current_green_next_unapproved",
+          "expected": {
+            "action": "HANDOFF_AND_STOP",
+            "auto_start_next_slice": false
+          }
+        },
+        {
+          "id": "a1_stricter_project_rule",
+          "title": "Stricter project concurrency rule wins",
+          "contract_key": "a1_stricter_project_rule",
+          "expected": {
+            "action": "PROJECT_RULE_WINS"
+          }
+        },
+        {
+          "id": "a1_scout_authority_conflict",
+          "title": "Scout authority conflict interrupts without repair",
+          "contract_key": "a1_scout_authority_conflict",
+          "expected": {
+            "action": "INTERRUPT_CURRENT_SLICE",
+            "repair": false
+          }
+        },
+        {
+          "id": "a1_same_sha_evidence",
+          "title": "Same SHA skips only Git revalidation after invalidator checks",
+          "contract_key": "a1_same_sha_evidence",
+          "expected": {
+            "action": "CHECK_INVALIDATORS_THEN_REUSE",
+            "git_revalidation_scope": "NONE_IF_SAME_SHA",
+            "required_invalidator_checks": [
+              "STALE_IF",
+              "RELEVANT_CONFIGURATION",
+              "ARTIFACT_IDENTITY",
+              "ENVIRONMENT",
+              "RELEVANT_EXTERNAL_STATE"
+            ]
+          }
+        },
+        {
+          "id": "a1_writer_occupies_child_slot",
+          "title": "Writer-occupied child slot defers scout",
+          "contract_key": "a1_writer_occupies_child_slot",
+          "expected": {
+            "scout": "DEFERRED",
+            "reason": "CHILD_SLOT_OCCUPIED"
+          }
+        },
+        {
+          "id": "a1_reviewer_needed",
+          "title": "Scout exits before required reviewer",
+          "contract_key": "a1_reviewer_needed",
+          "expected": {
+            "scout": "EXIT_BEFORE_REVIEWER"
+          }
+        },
+        {
+          "id": "a1_completion_proven",
+          "title": "Proven completion stops ceremonial work",
+          "contract_key": "a1_completion_proven",
+          "expected": {
+            "action": "STOP_WHEN_GREEN"
+          }
+        },
+        {
+          "id": "a1_stable_before_volatile",
+          "title": "Stable context precedes volatile state",
+          "contract_key": "a1_stable_before_volatile",
+          "expected": {
+            "action": "STABLE_PREFIX_DYNAMIC_SUFFIX"
+          }
+        },
+        {
+          "id": "a1_cache_without_telemetry",
+          "title": "Cache-friendly shape without telemetry makes no hit claim",
+          "contract_key": "a1_cache_without_telemetry",
+          "expected": {
+            "cache_claim": "UNVERIFIED_UNAVAILABLE"
+          }
+        },
+        {
+          "id": "a1_safe_checkpoint_compaction",
+          "title": "Long safe checkpoint permits compaction",
+          "contract_key": "a1_safe_checkpoint_compaction",
+          "expected": {
+            "compaction": "PERMITTED",
+            "checkpoint_required": true
+          }
+        },
+        {
+          "id": "a1_critical_midflight_compaction",
+          "title": "Critical mid-flight mutation defers compaction",
+          "contract_key": "a1_critical_midflight_compaction",
+          "expected": {
+            "compaction": "DEFERRED"
+          }
+        },
+        {
+          "id": "a1_duplicate_logs",
+          "title": "Duplicate logs compact conversationally",
+          "contract_key": "a1_duplicate_logs",
+          "expected": {
+            "action": "COMPACT_CONVERSATION",
+            "durable_lessons_preserved": true
+          }
+        },
+        {
+          "id": "a1_durable_audit_history",
+          "title": "Durable audit history is preserved",
+          "contract_key": "a1_durable_audit_history",
+          "expected": {
+            "action": "PRESERVE"
+          }
+        },
+        {
+          "id": "a1_unused_external_mcp",
+          "title": "Unused external MCP is not invoked and material expansion records a reason",
+          "contract_key": "a1_unused_external_mcp",
+          "expected": {
+            "action": "DO_NOT_INVOKE",
+            "material_expansion_requires_reason": true,
+            "reason_label": "TOOL_CONTEXT_EXPANSION_REASON"
+          }
+        },
+        {
+          "id": "a1_stable_tool_schema",
+          "title": "Stable tool schema avoids gratuitous churn",
+          "contract_key": "a1_stable_tool_schema",
+          "expected": {
+            "action": "PRESERVE_STABLE_SCHEMA"
+          }
+        },
+        {
+          "id": "a1_unrecorded_config_change",
+          "title": "Unrecorded mid-slice configuration change is a violation",
+          "contract_key": "a1_unrecorded_config_change",
+          "expected": {
+            "action": "VIOLATION"
+          }
+        },
+        {
+          "id": "a1_required_config_change",
+          "title": "Required configuration change records its contract",
+          "contract_key": "a1_required_config_change",
+          "expected": {
+            "action": "RECORD_CHANGE",
+            "required_fields": [
+              "CONFIG_CHANGE_REASON",
+              "OLD_VALUE",
+              "NEW_VALUE",
+              "AUTHORITY",
+              "EVIDENCE_INVALIDATED",
+              "ROLLBACK_REVERSION"
+            ]
+          }
+        },
+        {
+          "id": "a1_unsupported_efficiency_percentage",
+          "title": "Unsupported universal efficiency percentage is a violation",
+          "contract_key": "a1_unsupported_efficiency_percentage",
+          "expected": {
+            "action": "VIOLATION"
+          }
+        }
+      ]
+    }
+  }
 }

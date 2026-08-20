@@ -59,6 +59,24 @@ depth at one. Prefer read-only exploration, testing, or review to parallel
 writes; any child write requires isolated ownership and the repository's writer
 rules. A sequential task stays with the parent even when it is large.
 
+## Current/next-slice scouting
+
+An optional read-only scout may prepare one already authorized next slice while the
+sole writer finishes the current slice. The scout may not write or delegate. It is
+disabled for trivial, inferred, critical, destructive, migration, Production,
+provider, database, security-ambiguous, writer-conflicted, or dirty-unknown work.
+
+The parent records the scout baseline SHA, requires `STALE_IF`, and compares the
+packet with the current slice's ending SHA. Reuse only revalidated facts. Never auto-start
+the next slice; an unapproved next slice receives a handoff and stops.
+
+Where controllable, keep stable authority and workflow schemas before volatile SHA,
+failure, PR, provider, timestamp, and run state. Cache claims require runtime
+telemetry. Manual compaction requires a durable checkpoint and post-compaction Git
+and authority rehydration. Material tool-context expansion requires
+`TOOL_CONTEXT_EXPANSION_REASON`. Mid-slice configuration changes require their
+recorded reason, old and new values, authority, invalidated evidence, and rollback.
+
 ## Escalation
 
 Escalate one meaningful level at a time only when evidence shows the root cause

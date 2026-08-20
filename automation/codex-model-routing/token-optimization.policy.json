@@ -1,6 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "policy_id": "TOKEN-OPT-001",
+  "accepted_amendments": [
+    "TOKEN-OPT-001-A1"
+  ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
@@ -57,6 +60,139 @@
     "deployment_production_recovery_external_state",
     "truthful_evidence_and_reporting"
   ],
+  "current_next_slice_pipeline": {
+    "pipeline_name": "CURRENT_NEXT_SLICE_PIPELINE",
+    "zero_children_default": true,
+    "max_active_children": 1,
+    "max_depth": 1,
+    "one_writer": true,
+    "scout_read_only": true,
+    "scout_may_delegate": false,
+    "next_slice_must_be_authorized": true,
+    "auto_start_next_slice": false,
+    "scout_packet_required": true,
+    "ending_sha_revalidation_required": true,
+    "stale_if_required": true,
+    "critical_operation_disable_rules": true,
+    "project_stricter_rule_wins": true,
+    "cache_friendly_prompt_ordering": true,
+    "static_context_before_dynamic_context": true,
+    "cache_claim_requires_telemetry": true,
+    "context_compaction_supported": true,
+    "manual_compaction_requires_checkpoint": true,
+    "post_compaction_rehydration_required": true,
+    "durable_evidence_preserved": true,
+    "task_relevant_tool_context": true,
+    "tool_context_expansion_reason_required": true,
+    "tool_context_expansion_reason_label": "TOOL_CONTEXT_EXPANSION_REASON",
+    "progressive_disclosure_preferred": true,
+    "shared_mcp_disable_requires_separate_authority": true,
+    "stable_slice_configuration": true,
+    "config_change_reason_required": true,
+    "unsupported_efficiency_percentages_prohibited": true,
+    "scout_spawn_conditions": [
+      "named_next_slice_has_drafting_authority",
+      "bounded_independent_preparation_reduces_reconstruction",
+      "single_child_slot_available",
+      "current_writer_remains_sole_writer",
+      "read_paths_and_stop_conditions_explicit",
+      "no_stricter_project_prohibition"
+    ],
+    "scout_disable_conditions": [
+      "trivial_task",
+      "inferred_future_work",
+      "critical_or_destructive_operation",
+      "migration_or_production",
+      "provider_or_database_mutation",
+      "security_or_privacy_ambiguity",
+      "writer_conflict",
+      "dirty_unknown_state",
+      "missing_authority",
+      "child_slot_required_by_writer_or_reviewer"
+    ],
+    "scout_interrupt_conditions": [
+      "wrong_repository_branch_or_baseline",
+      "controlling_authority_conflict",
+      "writer_conflict",
+      "security_privacy_or_data_integrity_risk_affecting_current_work"
+    ],
+    "revalidation_states": [
+      "VALID",
+      "PARTIALLY_STALE",
+      "STALE",
+      "BLOCKED",
+      "NO_OP"
+    ],
+    "scout_packet_fields": [
+      "SCOUT_STATUS",
+      "NEXT_SLICE_ID",
+      "NEXT_SLICE_AUTHORITY",
+      "SCOUT_BASELINE_SHA",
+      "OBSERVED_AT",
+      "STALE_IF",
+      "FACTS",
+      "INFERENCES",
+      "UNVERIFIED",
+      "OBJECTIVE",
+      "IN_SCOPE",
+      "OUT_OF_SCOPE",
+      "LIKELY_OWNED_PATHS",
+      "EXCLUDED_PATHS",
+      "DEPENDENCIES",
+      "CURRENT_INVARIANTS",
+      "EXPECTED_ACCEPTANCE_CRITERIA",
+      "FOCUSED_TEST_PLAN",
+      "SECURITY_OR_PRIVACY_GATES",
+      "CONFIGURATION_GATES",
+      "OWNER_DECISIONS_REQUIRED",
+      "RISKS",
+      "BLOCKERS",
+      "DO_NOT_REPEAT",
+      "NO_WRITE_ATTESTATION"
+    ],
+    "stable_prompt_prefix": [
+      "authority_hierarchy",
+      "universal_safety_and_one_writer_rules",
+      "durable_project_rules",
+      "stable_workflow_contract",
+      "stable_tool_schemas"
+    ],
+    "dynamic_prompt_suffix": [
+      "current_slice",
+      "baseline_sha",
+      "current_failures_and_changed_paths",
+      "volatile_pr_provider_tool_state",
+      "timestamps_and_run_ids"
+    ],
+    "compaction_checkpoint_fields": [
+      "AUTHORITY",
+      "HEAD_TREE",
+      "WORKTREE",
+      "WRITER_LOCK",
+      "OBJECTIVE",
+      "COMPLETED",
+      "CHANGED_FILES",
+      "TESTS",
+      "BLOCKERS",
+      "NEXT_SAFE_ACTION",
+      "DO_NOT_REPEAT"
+    ],
+    "configuration_change_fields": [
+      "CONFIG_CHANGE_REASON",
+      "OLD_VALUE",
+      "NEW_VALUE",
+      "AUTHORITY",
+      "EVIDENCE_INVALIDATED",
+      "ROLLBACK_REVERSION"
+    ],
+    "static_validator_cannot_prove": [
+      "runtime_scout_zero_writes",
+      "cache_hit",
+      "token_quantity_saved",
+      "compaction_preserved_every_semantic_detail",
+      "mcp_token_consumption"
+    ]
+  },
   "behavior_contract": {
     "small_bug": {
       "action": "TARGETED_DISCOVERY",
@@ -117,6 +253,116 @@
         "privacy",
         "git_safety"
       ]
+    },
+    "a1_trivial_task": {
+      "scout": "DISABLED",
+      "reason": "TRIVIAL_TASK"
+    },
+    "a1_authorized_next_slice": {
+      "scout": "PERMITTED",
+      "next_slice_authorized": true,
+      "max_active_children": 1
+    },
+    "a1_inferred_next_slice": {
+      "scout": "DISABLED",
+      "reason": "NEXT_SLICE_NOT_AUTHORIZED"
+    },
+    "a1_critical_mutation": {
+      "scout": "DISABLED",
+      "reason": "CRITICAL_OPERATION"
+    },
+    "a1_scout_write_attempt": {
+      "action": "VIOLATION",
+      "scout_read_only": true
+    },
+    "a1_scout_child_spawn_attempt": {
+      "action": "VIOLATION",
+      "scout_may_delegate": false
+    },
+    "a1_second_active_child": {
+      "action": "VIOLATION",
+      "max_active_children": 1
+    },
+    "a1_stale_if_change": {
+      "action": "REVALIDATE_AND_CLASSIFY",
+      "stale_if_required": true
+    },
+    "a1_current_green_next_unapproved": {
+      "action": "HANDOFF_AND_STOP",
+      "auto_start_next_slice": false
+    },
+    "a1_stricter_project_rule": {
+      "action": "PROJECT_RULE_WINS"
+    },
+    "a1_scout_authority_conflict": {
+      "action": "INTERRUPT_CURRENT_SLICE",
+      "repair": false
+    },
+    "a1_same_sha_evidence": {
+      "action": "CHECK_INVALIDATORS_THEN_REUSE",
+      "git_revalidation_scope": "NONE_IF_SAME_SHA",
+      "required_invalidator_checks": [
+        "STALE_IF",
+        "RELEVANT_CONFIGURATION",
+        "ARTIFACT_IDENTITY",
+        "ENVIRONMENT",
+        "RELEVANT_EXTERNAL_STATE"
+      ]
+    },
+    "a1_writer_occupies_child_slot": {
+      "scout": "DEFERRED",
+      "reason": "CHILD_SLOT_OCCUPIED"
+    },
+    "a1_reviewer_needed": {
+      "scout": "EXIT_BEFORE_REVIEWER"
+    },
+    "a1_completion_proven": {
+      "action": "STOP_WHEN_GREEN"
+    },
+    "a1_stable_before_volatile": {
+      "action": "STABLE_PREFIX_DYNAMIC_SUFFIX"
+    },
+    "a1_cache_without_telemetry": {
+      "cache_claim": "UNVERIFIED_UNAVAILABLE"
+    },
+    "a1_safe_checkpoint_compaction": {
+      "compaction": "PERMITTED",
+      "checkpoint_required": true
+    },
+    "a1_critical_midflight_compaction": {
+      "compaction": "DEFERRED"
+    },
+    "a1_duplicate_logs": {
+      "action": "COMPACT_CONVERSATION",
+      "durable_lessons_preserved": true
+    },
+    "a1_durable_audit_history": {
+      "action": "PRESERVE"
+    },
+    "a1_unused_external_mcp": {
+      "action": "DO_NOT_INVOKE",
+      "material_expansion_requires_reason": true,
+      "reason_label": "TOOL_CONTEXT_EXPANSION_REASON"
+    },
+    "a1_stable_tool_schema": {
+      "action": "PRESERVE_STABLE_SCHEMA"
+    },
+    "a1_unrecorded_config_change": {
+      "action": "VIOLATION"
+    },
+    "a1_required_config_change": {
+      "action": "RECORD_CHANGE",
+      "required_fields": [
+        "CONFIG_CHANGE_REASON",
+        "OLD_VALUE",
+        "NEW_VALUE",
+        "AUTHORITY",
+        "EVIDENCE_INVALIDATED",
+        "ROLLBACK_REVERSION"
+      ]
+    },
+    "a1_unsupported_efficiency_percentage": {
+      "action": "VIOLATION"
     }
   }
 }
