@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "captured_at": "2026-08-19T11:14:05.977718Z",
+  "target": "hau-usc-logistics",
+  "gate": "BLOCKED_DIRTY_SECURITY_DOCUMENT_HANDOFF",
+  "candidate_prepared": false,
+  "repository": "https://github.com/invicta-ctrl/hau-usc-logistics-management-system",
+  "active_checkout": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system",
+  "branch": "governance/agents-main-sync",
+  "head": "43d1a55b7b5e85ec2064eeb1a2c1729524c739ed",
+  "upstream": "origin/governance/agents-main-sync",
+  "upstream_divergence": "0 ahead / 0 behind",
+  "pointer": {
+    "active_writer": "NONE",
+    "writer_lock": "RELEASED",
+    "handoff_status": "READY_FOR_HANDOFF",
+    "pointer_milestone": "V0.8.0 Inventory Truth and Ledger Lock",
+    "pointer_status": "RELEASED",
+    "placeholder_fields_present": true
+  },
+  "dirty_paths": [
+    {
+      "status": "M",
+      "path": "docs/SECURITY_AND_ACCESS.md",
+      "classification": "IN_PROGRESS_ADVISORY_LINK"
+    },
+    {
+      "status": "??",
+      "path": "docs/reference/SECURITY_AUDIT_CONSOLIDATED_RECOMMENDATIONS_2026-08-18.md",
+      "classification": "UNTRACKED_SECURITY_ADVISORY_INTAKE"
+    }
+  ],
+  "root_agents": {
+    "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\AGENTS.md",
+    "exists": true,
+    "bytes": 15741,
+    "sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596"
+  },
+  "reason": "A released lock is insufficient while the active checkout contains preserved, uncommitted security-document work. AGENTS synchronization would compete with or obscure that handoff.",
+  "writes_performed": false
+}

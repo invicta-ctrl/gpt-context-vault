@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "spec_id": "AGENTS-CONSOLIDATION-001",
+  "captured_at": "2026-08-19T11:13:09.892955Z",
+  "target": "global-codex",
+  "status": "ACTIVE_VERIFIED_MATCH",
+  "context_vault_activation": {
+    "pull_request": 8,
+    "head_commit": "7b4d9447181ccf658f1fde3592c8c1c21cf1ed2b",
+    "merge_commit": "e9e708f845c81cedb883b2179a6aef1d96182725",
+    "merged_at": "2026-08-19T09:53:20Z"
+  },
+  "live_root": {
+    "path": "C:\\Users\\adria\\.codex\\AGENTS.md",
+    "exists": true,
+    "bytes": 18562,
+    "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+  },
+  "canonical_source": {
+    "path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-odysseus-a1\\AGENTS.md",
+    "exists": true,
+    "bytes": 18562,
+    "sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+  },
+  "live_extension": {
+    "path": "C:\\Users\\adria\\.codex\\.agents\\PROJECT_POLICY.md",
+    "exists": true,
+    "bytes": 4834,
+    "sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d"
+  },
+  "extension_source": {
+    "path": "D:\\Documents\\Codex\\GitHub\\worktrees\\gpt-context-vault-agents-odysseus-a1\\governance\\agents\\extensions\\global-codex.PROJECT_POLICY.md",
+    "exists": true,
+    "bytes": 4834,
+    "sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d"
+  },
+  "config": {
+    "path": "C:\\Users\\adria\\.codex\\config.toml",
+    "exists": true,
+    "bytes": 9070,
+    "sha256": "4538eff11bd65f83da195e05e549afb1c74134b1629981fb64c902409037fdfe"
+  },
+  "managed_developer_instructions": {
+    "verification": "MATCH",
+    "root_governance_id": "EARL-UNIVERSAL-AGENTS-V1",
+    "extension_id": "EARL-GLOBAL-CODEX-EXT-V1",
+    "fresh_codex_debug_prompt_input": "PASS",
+    "post_startup_root_hash_stable": true
+  },
+  "verified_backups": [
+    {
+      "path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T081358Z\\AGENTS.md",
+      "exists": true,
+      "bytes": 13098,
+      "sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42"
+    },
+    {
+      "path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T090151Z\\config.toml",
+      "exists": true,
+      "bytes": 3950,
+      "sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c"
+    },
+    {
+      "path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T095406Z\\AGENTS.md",
+      "exists": true,
+      "bytes": 19205,
+      "sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e"
+    },
+    {
+      "path": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\20260819T090634Z\\config-before-lean-env.toml",
+      "exists": true,
+      "bytes": 9037,
+      "sha256": "166b7042e972b7b3177eaa17290265cf6bbba1f8dbb48eba9a9c1aa8bc63d422"
+    }
+  ],
+  "lean_ctx_drift_protection": {
+    "rules_injection": "off",
+    "setup_auto_inject_rules": false,
+    "config_validation": "PASS"
+  },
+  "targeted_verifier": "MATCH / MATCH / MATCH",
+  "unrelated_changes": false
+}
