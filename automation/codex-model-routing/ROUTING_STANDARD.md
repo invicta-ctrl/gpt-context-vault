@@ -73,8 +73,9 @@ the next slice; an unapproved next slice receives a handoff and stops.
 Where controllable, keep stable authority and workflow schemas before volatile SHA,
 failure, PR, provider, timestamp, and run state. Cache claims require runtime
 telemetry. Manual compaction requires a durable checkpoint and post-compaction Git
-and authority rehydration. Material tool-context or slice-configuration changes
-require their recorded reason, authority, invalidated evidence, and rollback.
+and authority rehydration. Material tool-context expansion requires
+`TOOL_CONTEXT_EXPANSION_REASON`. Mid-slice configuration changes require their
+recorded reason, old and new values, authority, invalidated evidence, and rollback.
 
 ## Escalation
 
