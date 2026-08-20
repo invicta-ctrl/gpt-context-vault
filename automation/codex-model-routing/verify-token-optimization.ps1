@@ -13,7 +13,7 @@ if ([string]::IsNullOrWhiteSpace($VaultRoot)) {
 }
 
 function Pass([string]$Name) {
-    Write-Output ("PASS " + $Name)
+    Write-Host ("PASS " + $Name)
 }
 
 function Assert-True([bool]$Condition, [string]$Name) {
@@ -26,6 +26,33 @@ function Assert-True([bool]$Condition, [string]$Name) {
 function Read-Required([string]$Path) {
     Assert-True (Test-Path -LiteralPath $Path -PathType Leaf) ("file exists: " + $Path)
     return [IO.File]::ReadAllText($Path)
+}
+
+function Assert-ReadRequiredPurity {
+    $tempPath = [IO.Path]::GetTempFileName()
+    $expected = "TOKEN_OPT_PRESENT_MARKER"
+
+    try {
+        [IO.File]::WriteAllText($tempPath, $expected)
+        $actual = Read-Required $tempPath
+
+        Assert-True (($actual -is [string]) -and ($actual -ceq $expected)) "Read-Required returns file content only"
+        Assert-True $actual.Contains("TOKEN_OPT_PRESENT_MARKER") "regression marker present passes"
+
+        $missingMarkerFailed = $false
+        try {
+            Assert-True $actual.Contains("TOKEN_OPT_ABSENT_MARKER") "regression marker absent"
+        }
+        catch {
+            $missingMarkerFailed = $_.Exception.Message -eq "FAIL regression marker absent"
+        }
+        Assert-True $missingMarkerFailed "regression marker absent fails"
+    }
+    finally {
+        if ([IO.File]::Exists($tempPath)) {
+            [IO.File]::Delete($tempPath)
+        }
+    }
 }
 
 function Get-SingleStringSetting([string]$Text, [string]$Key, [string]$Label) {
@@ -41,6 +68,8 @@ function Get-SingleIntSetting([string]$Text, [string]$Key, [string]$Label) {
     Assert-True ($matches.Count -eq 1) ("single active setting: " + $Label)
     return [int]$matches[0].Groups[1].Value
 }
+
+Assert-ReadRequiredPurity
 
 $policyMarkdownPath = Join-Path $VaultRoot "protocols\CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md"
 $policyJsonPath = Join-Path $VaultRoot "automation\codex-model-routing\token-optimization.policy.json"

@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: protocols
-last_reviewed: 2026-07-17
+last_reviewed: 2026-08-20
 ---
 
 # Context Retrieval Protocol
@@ -13,14 +13,15 @@ last_reviewed: 2026-07-17
 2. Determine the request's intent, target, authority, risk, deliverable, and verification needs.
 3. Scan the available skill descriptions and select only directly relevant playbooks.
 4. Retrieve the minimum relevant Context Vault files.
-5. For registered project work, consult [`../projects/PROJECT_REGISTRY.md`](../projects/PROJECT_REGISTRY.md), then use the project repository as authority.
-6. In the project repository, read its applicable `AGENTS.md` files and `.codex/CURRENT.md` when present.
-7. Use [`../START_HERE.md`](../START_HERE.md) and [`../CONTEXT_INDEX.md`](../CONTEXT_INDEX.md) only when routing remains unresolved or non-project context must be located.
-8. Stop retrieving once the request is sufficiently grounded.
-9. Do not pull unrelated personal context.
-10. Do not treat archived or superseded material as active.
-11. Identify uncertainty and conflicts.
-12. Prefer Earl's current instruction over stored context, while recording material project scope changes as amendments.
+5. When token, context, delegation, evidence reuse, review, or verification efficiency is in scope, follow the canonical [`CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md) at repository path `protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`.
+6. For registered project work, consult [`../projects/PROJECT_REGISTRY.md`](../projects/PROJECT_REGISTRY.md) only when routing remains unresolved, then use the project repository as authority.
+7. In the project repository, read its applicable `AGENTS.md` files and `.codex/CURRENT.md` when present.
+8. Use [`../START_HERE.md`](../START_HERE.md) and [`../CONTEXT_INDEX.md`](../CONTEXT_INDEX.md) only when routing remains unresolved or non-project context must be located.
+9. Stop retrieving once the request is sufficiently grounded.
+10. Do not pull unrelated personal context.
+11. Do not treat archived or superseded material as active.
+12. Identify uncertainty and conflicts.
+13. Prefer Earl's current instruction over stored context, while recording material project scope changes as amendments.
 
 ## Project implementation retrieval
 
