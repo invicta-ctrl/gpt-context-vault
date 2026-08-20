@@ -60,7 +60,9 @@ context, and stable per-slice configuration.
 2. Spawn no scout unless all scout gates pass.
 3. Finish and verify the current slice through its authorized path.
 4. Record the ending SHA and worktree state.
-5. Compare the scout baseline with the ending SHA and inspect only invalidating changes.
+5. Compare the scout baseline with the ending SHA. Same SHA skips only Git-delta
+   revalidation after checking `STALE_IF`, relevant configuration, artifact identity,
+   environment, and relevant external state; inspect any triggered invalidators.
 6. Classify the packet as `VALID`, `PARTIALLY_STALE`, `STALE`, `BLOCKED`, or `NO_OP`.
 7. Adopt only revalidated facts.
 8. If the next slice lacks approval, produce a handoff and stop.
@@ -201,7 +203,7 @@ They must not copy the complete account-wide policy into a competing local autho
   `eb5314d707734395ebf2a23b9294cda6855a2dfbeacf6e4645fba1de5513ba58`.
 - Prove the A1 suite contains exactly 26 unique fixtures with policy parity.
 - Preserve and pass file-content purity, marker-present, and marker-absent regressions.
-- Search active governance, excluding archive and history, for material contradictions.
+- Run a bounded active-governance contradiction scan, excluding archive and history.
 - Run repository-only validation before personal checks.
 - Run `git diff --check`, changed-path allowlist, redaction scan, and complete diff review.
 - Prove zero HAU, A2, provider, database, deployment, migration, Production, and Figma changes.

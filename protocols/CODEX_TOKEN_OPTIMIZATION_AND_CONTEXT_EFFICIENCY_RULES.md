@@ -408,6 +408,10 @@ inspect only the delta capable of invalidating the packet. Classify it as `VALID
 `PARTIALLY_STALE`, `STALE`, `BLOCKED`, or `NO_OP`. Static policy cannot prove runtime
 zero-write behavior; parent-observed before/after Git state is required.
 
+An identical ending SHA skips only Git-delta revalidation. Before reusing evidence,
+check `STALE_IF`, relevant configuration, artifact identity, environment, and relevant
+external state; any triggered invalidator requires scoped revalidation.
+
 ## Cache-friendly prompt ordering
 
 Where ordering is controllable, place stable authority, safety rules, durable project

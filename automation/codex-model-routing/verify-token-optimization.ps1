@@ -327,7 +327,7 @@ foreach ($fixture in $a1Fixtures) {
     Assert-True ($actualJson -eq $expectedJson) ("A1 behavior fixture: " + $fixture.id)
 }
 
-$activeGovernance = @(
+$boundedActiveGovernance = @(
     $agents,
     $start,
     $index,
@@ -351,10 +351,10 @@ $contradictionPatterns = @(
     '(?i)reviewer on every task'
 )
 foreach ($pattern in $contradictionPatterns) {
-    Assert-True (-not [regex]::IsMatch($activeGovernance, $pattern)) ("active contradiction absent: " + $pattern)
+    Assert-True (-not [regex]::IsMatch($boundedActiveGovernance, $pattern)) ("bounded active-governance contradiction absent: " + $pattern)
 }
-Assert-True (-not [regex]::IsMatch($activeGovernance, '\b\d+(?:\.\d+)?\s*%')) "unsupported universal percentage absent"
-Pass "active governance scan excludes archive and history"
+Assert-True (-not [regex]::IsMatch($boundedActiveGovernance, '\b\d+(?:\.\d+)?\s*%')) "unsupported universal percentage absent"
+Pass "bounded active-governance contradiction scan excludes archive and history"
 
 if (-not $SkipPersonal) {
     $configPath = Join-Path $CodexHome "config.toml"

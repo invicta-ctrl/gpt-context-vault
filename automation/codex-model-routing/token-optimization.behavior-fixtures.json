@@ -223,11 +223,18 @@
         },
         {
           "id": "a1_same_sha_evidence",
-          "title": "Same-SHA evidence is reused",
+          "title": "Same SHA skips only Git revalidation after invalidator checks",
           "contract_key": "a1_same_sha_evidence",
           "expected": {
-            "action": "REUSE_EVIDENCE",
-            "revalidation_scope": "NONE"
+            "action": "CHECK_INVALIDATORS_THEN_REUSE",
+            "git_revalidation_scope": "NONE_IF_SAME_SHA",
+            "required_invalidator_checks": [
+              "STALE_IF",
+              "RELEVANT_CONFIGURATION",
+              "ARTIFACT_IDENTITY",
+              "ENVIRONMENT",
+              "RELEVANT_EXTERNAL_STATE"
+            ]
           }
         },
         {
