@@ -1,0 +1,167 @@
+{
+  "observed_at": "2026-08-21T00:46:52.752851+00:00",
+  "repository": "invicta-ctrl/hau-usc-logistics-management-system",
+  "canonical_agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+  "canonical_extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+  "protected_recovery_branches": [
+    "backup/last-known-good",
+    "regression/r1",
+    "regression/r2",
+    "regression/r3"
+  ],
+  "protection_reason": "Recovery pointers remain exact verified historical production states; their trees were intentionally not mutated.",
+  "branches": [
+    {
+      "branch": "backup/last-known-good",
+      "head": "f3addc1e55711641f5977a80c84e844c88f68dff",
+      "agents_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+      "extension_sha256": null,
+      "agents_state": "PRESERVED_RECOVERY",
+      "extension_state": "PRESERVED_RECOVERY"
+    },
+    {
+      "branch": "fix/v0.8.3-account-application-repository-prettier",
+      "head": "29df15c09fa8821318833e9f231670502ad4f413",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "frontend-design-integration",
+      "head": "19232a20d7a5d2c1e4aed6494b17fba4612f6720",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "governance/agents-main-sync",
+      "head": "b96c44bbf5b1a60d8e3154f47c7b6b2ced5ad2dc",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "main",
+      "head": "a2d205c3dbe93e56bf448fca14304351ee54b068",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "regression/r1",
+      "head": "b08653f02a7461084a4a34dfae1de67d5cb8ca57",
+      "agents_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+      "extension_sha256": null,
+      "agents_state": "PRESERVED_RECOVERY",
+      "extension_state": "PRESERVED_RECOVERY"
+    },
+    {
+      "branch": "regression/r2",
+      "head": "84eacfcdb47a3985fed48e3ba14bb413946d4410",
+      "agents_sha256": "c65388833eff0ae64de00930c0d20047bf125f86a5aea2e4bfb9c9e9a8cf1d08",
+      "extension_sha256": null,
+      "agents_state": "PRESERVED_RECOVERY",
+      "extension_state": "PRESERVED_RECOVERY"
+    },
+    {
+      "branch": "regression/r3",
+      "head": "e49311f7a712b56da3d5d2913e3c8bf2d0fe4f90",
+      "agents_sha256": "c65388833eff0ae64de00930c0d20047bf125f86a5aea2e4bfb9c9e9a8cf1d08",
+      "extension_sha256": null,
+      "agents_state": "PRESERVED_RECOVERY",
+      "extension_state": "PRESERVED_RECOVERY"
+    },
+    {
+      "branch": "release/v0.8.0-inventory-truth-ledger-lock",
+      "head": "0b452a2ddc35ebe3f635cb5cf6ee127b031a2a7a",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.1-isolated-staging-playground",
+      "head": "b651b25310a26a5bdd30d9100b670b20bbd2ee63",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.3-eight-digit-verification",
+      "head": "d0dff70066343540fcb8886af34f6efc009aa1fd",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.3-identity-foundation",
+      "head": "d3f0004bde3bbdb2389d1f40ec8f5ed9d5c2808d",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.3-staff-account-activity-history",
+      "head": "c0d97ed9d99c3693f4758579badd2e5fdc7d7e79",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.3-staff-directory-projection",
+      "head": "60dbe374feadefc7546ec0d052064e5716bf8901",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "release/v0.8.4-live-operations-performance",
+      "head": "c58088ceb2456ccfa24e0a427f47e6e1444fb535",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "research/v83-idc-gate-a-audit-prep-2026-08-16",
+      "head": "8aaad8f37b68c000925ad73cc17f839ad57de1ee",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "test/v0.8.3-disabled-enablement-gate",
+      "head": "889edd57c213e84fd19283eab97c8c19dabf19b3",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "test/v0.8.3-gate-a-fixture",
+      "head": "993f75be15526156eb907c9f5cb71aba82fbf063",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    },
+    {
+      "branch": "test/v0.8.3-id-c-source-projection-probe",
+      "head": "a86347b084034b153f7840c9088766448397b41a",
+      "agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6",
+      "agents_state": "MATCH",
+      "extension_state": "MATCH"
+    }
+  ]
+}

@@ -54,23 +54,7 @@ function Get-RegisteredWorktreeTargets {
                 continue
             }
 
-            $resolvedRoot = $null
-            try {
-                $resolvedRoot = (& git -C $directory.FullName rev-parse --show-toplevel 2>$null | Select-Object -First 1)
-            }
-            catch {
-                $resolvedRoot = $null
-            }
-            $identityOk = $false
-            if ($resolvedRoot) {
-                try {
-                    $identityOk = [IO.Path]::GetFullPath([string]$resolvedRoot).TrimEnd('\') -eq
-                        [IO.Path]::GetFullPath($directory.FullName).TrimEnd('\')
-                }
-                catch {
-                    $identityOk = $false
-                }
-            }
+            $identityOk = Test-Path -LiteralPath $gitMarker
 
             $safeName = $directory.Name -replace '[^A-Za-z0-9._-]', '_'
             $targets.Add([pscustomobject]@{

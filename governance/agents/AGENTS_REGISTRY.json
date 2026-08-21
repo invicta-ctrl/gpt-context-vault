@@ -68,7 +68,7 @@
       "conditional": false,
       "sync_allowed": true,
       "gate_status": "ACTIVE_VERIFIED_MATCH",
-      "prechange_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
+      "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
       "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-002\\<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",

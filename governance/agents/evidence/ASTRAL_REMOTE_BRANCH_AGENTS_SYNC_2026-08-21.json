@@ -1,0 +1,37 @@
+{
+  "observed_at": "2026-08-21T00:45:19.725019+00:00",
+  "canonical_agents_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+  "extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+  "results": [
+    {
+      "branch": "governance/agents-consolidation-001",
+      "before": "61129771b2089c43fb61a07932d103ba065fc116",
+      "after": "2798d89c26da25b211aa53adb161ca11d21c2d41",
+      "status": "PUSHED",
+      "old_agents_sha256": "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+      "old_extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "push_stderr": "To https://github.com/invicta-ctrl/Astral-Bridge.git\n   6112977..2798d89  2798d89c26da25b211aa53adb161ca11d21c2d41 -> governance/agents-consolidation-001\n"
+    },
+    {
+      "branch": "governance/agents-consolidation-001-authorized-efc7a12",
+      "before": "efc7a12ba00e3332d7574d05c00f2d967a6e1602",
+      "after": "f985f3a89de83a0757bad94ead060185bd2be544",
+      "status": "PUSHED",
+      "old_agents_sha256": "b3bb68ac4b675caab7c0c248a667a2a1cdc2992d27653cf1275fd026db7486f2",
+      "old_extension_sha256": "a87fb95c76a0097dea21eb7a1b77e766cd38af12cf01d1f07f516e902942644e",
+      "push_stderr": "To https://github.com/invicta-ctrl/Astral-Bridge.git\n   efc7a12..f985f3a  f985f3a89de83a0757bad94ead060185bd2be544 -> governance/agents-consolidation-001-authorized-efc7a12\n"
+    },
+    {
+      "branch": "governance/agents-consolidation-002",
+      "before": "a93b1b571d829ee63d0382eba62363c30fcb3eba",
+      "after": "a93b1b571d829ee63d0382eba62363c30fcb3eba",
+      "status": "ALREADY_HANDLED"
+    },
+    {
+      "branch": "main",
+      "before": "a93b1b571d829ee63d0382eba62363c30fcb3eba",
+      "after": "a93b1b571d829ee63d0382eba62363c30fcb3eba",
+      "status": "ALREADY_HANDLED"
+    }
+  ]
+}
