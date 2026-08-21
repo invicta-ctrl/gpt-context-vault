@@ -95,7 +95,7 @@ historical or operation-scoped authority and were not rewritten.
 The existing `automation/agents-governance/` framework now:
 
 - discovers immediate child Git roots only under exact registered worktree parents;
-- blocks failed Git identity and preserves unknown/non-Git children;
+- treats immediate-child Git roots under exact registered worktree parents as managed targets and preserves unknown/non-Git children;
 - dry-runs by default and applies only with `-Apply`;
 - backs up every `backup_required` target before replacement;
 - reports `MATCH`, `DRIFT`, `MISSING`, or `BLOCKED`;
@@ -149,3 +149,35 @@ The complete logical diffs were reviewed, targeted files were staged explicitly,
 unrelated HAU work was not staged. No remote action is assumed or reported. The
 accepted local activation work unit is complete; stop before push, PR, merge, cleanup,
 Odysseus work, or another audit pass.
+
+
+## A1 remote publication completion - 2026-08-21
+
+The owner explicitly reopened the completed local activation to publish the governance repository-wide. AGENTS-CONSOLIDATION-002-A1 records that authority.
+
+The default Codex managed root drifted again only by the known lean-ctx injected footer. The footer already exists in the registered global project extension and LEAN-CTX guidance, so the managed root was backed up at C:/Users/adria/.codex/backups/agents-consolidation-002/20260821T003744Z/AGENTS.md and restored byte-for-byte to the canonical Context Vault root. lean-ctx automatic root injection remains disabled.
+
+Registered worktree discovery now uses the presence of the .git marker inside already registered immediate-child worktree roots instead of shell-specific Git executable discovery. This removes false BLOCKED results while keeping discovery bounded to explicit owned parent directories.
+
+Remote publication results:
+
+- Context Vault main and governance/agents-consolidation-002: canonical AGENTS present.
+- Astral Bridge main plus all three governance branches: canonical AGENTS and registered Astral project extension present.
+- HAU-USC main: governance commit a2d205c3dbe93e56bf448fca14304351ee54b068 applies the universal root, HAU project extension, TOKEN-OPT-aligned usage policy, High Luna profiles, two-thread project cap, and coupled governance validators to parent 7d826f2683fbca8058ff08e8ae40acc1e095c076 without changing application/runtime files.
+- HAU-USC governance/agents-main-sync: b96c44bbf5b1a60d8e3154f47c7b6b2ced5ad2dc published.
+- Every other non-recovery HAU-USC remote branch observed at final verification carries the canonical root and HAU project extension.
+- backup/last-known-good and regression/r1 through regression/r3 remain intentionally unchanged because moving those pointers would destroy their exact verified recovery-state meaning. Their older AGENTS content is preserved historical state, not active synchronization drift.
+- A release/v0.8.4-live-operations-performance branch appeared during execution; it was fetched, audited, synchronized by a fast-forward governance-only descendant commit, and reverified.
+
+Final deterministic evidence:
+
+- Active local AGENTS inventory under D:/Documents/Codex plus the default Codex root: 85 of 85 current/non-historical files match canonical SHA-256 83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f.
+- verify-agents.ps1 -IncludeCandidateTargets: PASS for every eligible target; Odysseus remains the pre-existing out-of-scope conditional block.
+- verify-token-optimization.ps1: PASS, base fixtures 10/10, A1 fixtures 26/26, personal defaults PASS.
+- HAU agent instruction check: PASS for 12 project files.
+- HAU focused codex-governance Vitest: 14/14 PASS on the reviewed governance branch.
+- HAU remote final audit: 15 active/non-recovery branches MATCH; 4 recovery pointers intentionally PRESERVED; 0 actionable stale branches.
+- Astral remote final audit: 4/4 branches MATCH.
+- Context Vault remote audit before this closure entry: main and governance branch MATCH.
+
+No application build, browser/E2E suite, migration, deployment, database/provider write, Production change, recovery-pointer rotation, branch deletion, force-push, reset, or unrelated dirty-work mutation was performed. The pre-existing HAU security-document dirty work remained preserved.
