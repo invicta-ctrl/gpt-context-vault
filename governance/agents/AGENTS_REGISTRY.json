@@ -118,13 +118,16 @@
       "conditional": false,
       "sync_allowed": true,
       "gate_status": "ACTIVE_AGENTS_CONSOLIDATION_002",
-      "prechange_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+      "prechange_sha256": "379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438",
+      "allowed_prechange_sha256": ["83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f"],
+      "prechange_extension_exists": true,
+      "prechange_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04",
       "rollback": "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\<timestamp>\\active\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
-      "active_root_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
-      "active_extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6"
+      "active_root_sha256": "379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438",
+      "active_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04"
     },
     {
       "id": "astral-bridge",
