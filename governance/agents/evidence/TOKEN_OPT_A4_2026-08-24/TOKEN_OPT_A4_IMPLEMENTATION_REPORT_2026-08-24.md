@@ -1,12 +1,14 @@
 # TOKEN-OPT-001-A4 Implementation Report
 
-STATUS: VERIFIED IMPLEMENTATION; closure checkpoint pending commit.
+STATUS: COMPLETE.
 
 ## Identity and publication receipt
 
 - Baseline: `9a00eeb8bce54bb315d83d1480ef3750ceea8056` on `governance/agents-consolidation-002`.
 - Implementation commit: `bf242fab64c346638aaac60f8739984745f54502` (`feat(governance): implement TOKEN-OPT-001-A4`).
 - Verified upstream: `origin/governance/agents-consolidation-002` = `bf242fab64c346638aaac60f8739984745f54502`; local/upstream divergence `0/0` immediately after normal push.
+- Closure checkpoint: `1b2432a9203e4f670c435380fc9d794fc98c5137` (`docs(governance): close TOKEN-OPT-001-A4`).
+- Verified closure push: `origin/governance/agents-consolidation-002` = `1b2432a9203e4f670c435380fc9d794fc98c5137`; local/upstream divergence `0/0` and the remote branch matched immediately after publication.
 - A2 preserved SHA-256: `fda3b018dbdf7e3f597cfb07d797633cc8ebbb30cab23f94e1806f9d960918e2`.
 - A3 preserved SHA-256: `dc31c20cef4bc39f4165339e323ebee07c26a3499b8705f840648932f9eec8be`.
 - A4 execution-spec SHA-256 at resume: `d9c94e95430b8f4e510620d2262aa788acfc6160d5be0dcb3a98aa38ece27fa2`.
