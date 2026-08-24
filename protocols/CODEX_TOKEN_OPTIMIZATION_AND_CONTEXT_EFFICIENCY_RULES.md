@@ -3,7 +3,7 @@ schema_version: 1
 status: active
 scope: account-wide
 policy_id: TOKEN-OPT-001
-last_reviewed: 2026-08-21
+last_reviewed: 2026-08-24
 ---
 
 # Codex Token Optimization and Context-Efficiency Rules
@@ -89,6 +89,51 @@ CONTEXT_EXPANSION_REASON:
 Do not require this record for an obvious cheap read that is already inside accepted
 scope.
 
+## Complementary capability routing
+
+Use one primary capability per question. Do not send the same repository question to
+Serena, lean-ctx, and CodeGraph in parallel.
+
+- **Context7:** current, version-specific third-party library, framework, SDK, and API
+  documentation only. It does not inspect the local repository.
+- **lean-ctx:** broad repository discovery, compressed file reads, large search or command
+  output, and context continuity.
+- **Serena:** declarations, references, implementations, language-server diagnostics,
+  precise symbol edits, and safe renames after the relevant area is known.
+- **CodeGraph:** read-only callers/callees, cross-module flow, change impact, and affected
+  tests when a bounded dependency question remains after targeted lean-ctx or Serena work.
+
+```text
+known file or symbol -> Serena
+broad discovery or large output -> lean-ctx
+cross-module impact uncertainty -> CodeGraph
+external API or library uncertainty -> Context7
+```
+
+Stop after the first capability establishes the needed fact. Use a second capability only
+for a distinct unanswered dimension or verification. A2's Headroom retirement decision is
+superseded only by A3: use Headroom only through A3's separately accepted local
+configuration as a downstream LeanCTX proxy/compression layer, never as a duplicate
+repository-memory or code-graph authority.
+
+## Hallmark and Impeccable composition
+
+- Hallmark owns design direction: design DNA, anti-generic structure, page archetype,
+  visual world, macro-layout, and the initial direction contract for greenfield surfaces
+  or substantial redesigns.
+- Impeccable owns execution quality: UX critique, accessibility, responsive behavior,
+  hierarchy, typography, motion, edge cases, performance, hardening, and bounded final
+  polish.
+- Greenfield or substantial redesign work follows Hallmark once, implementation within
+  that accepted direction, one bounded Impeccable audit/refinement pass, and at most one
+  confirmation pass.
+- Narrow component fixes, accessibility, responsiveness, copy, motion, spacing, or
+  production hardening use Impeccable alone.
+- Impeccable preserves an accepted Hallmark direction unless Earl explicitly authorizes
+  a direction change. Hallmark re-enters only when the structural concept itself is
+  rejected or proven unsuitable.
+- Do not alternate the tools in an open-ended polish loop.
+
 ## Accepted scope is a hard boundary
 
 Before changing a file, identify the accepted criterion or required dependency that
@@ -124,41 +169,48 @@ Prefer the smallest direct implementation that satisfies the accepted requiremen
 “Cleaner,” “more scalable,” “best practice,” or “might be useful later” is not a current
 accepted requirement.
 
-## Model and reasoning defaults
+## Current routing profile and capacity
+
+Stable policy governs safety and contracts; the live role assignment is the machine-readable
+[`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json).
+The compiler validates the catalog and supported efforts before dispatch. Its current roles
+are `gpt-5.6-sol` at High as orchestrator, `gpt-5.6-terra` at Max as the sole writer,
+`gpt-5.6-luna` at Max as the durable read-only worker, and
+`openrouter/stealth/ox-alpha` at High only as an eligible ephemeral read-only worker.
 
 ```text
-ORDINARY MODEL: gpt-5.6-sol
-ORDINARY REASONING: high or lower
-ULTRA / MAX / XHIGH: risk-gated exceptions only
+ONE TERRA WRITER PLUS TWO READ-ONLY WORKERS BY DEFAULT
+NORMAL ADAPTIVE CAPACITY: ONE WRITER PLUS TWO TO FOUR READ-ONLY WORKERS
+INDEPENDENT BURST: AT MOST SIX TOTAL ACTIVE WORKERS
+OVERLAPPING WRITERS: ONE
+RECURSIVE WORKER SPAWNING: DISABLED
+ORDINARY DUPLICATE WORK: PROHIBITED
 ```
 
-Task size alone does not justify higher-than-High reasoning. Escalation requires a
-bounded high-consequence decision involving material architecture ambiguity,
-security/authorization, migration versus no migration, a difficult reproduced P0/P1
-defect, irreversible data, Production/recovery, or material UX architecture that
-deterministic evidence cannot decide.
+Workers are read-only, non-delegating, and use the shared Luna/Ox contract. Terra uses the
+bounded writer contract. The default is one Terra writer plus two read-only workers. The parent validates explicit ownership, no shared-state conflict,
+context envelope, and a stop condition before any dispatch. Independent review remains
+risk-triggered, not a routine parallel lane.
 
-## Delegation
+Ox is used only when its provider is available, prompt and completion prices are exactly
+zero, health is acceptable, and the data classification is suitable. Cache that verdict at
+the profile's bounded run/session cadence. On one Ox failure, mark it ineligible for that
+run and fail over once to Luna with the same contract; never retry-loop. The system remains
+fully usable with Ox disabled. `deepseek-v4-pro` and `deepseek/deepseek-v4-pro` are disabled
+and may not appear in active or fallback routing.
+
+## Context envelope
 
 ```text
-ZERO CHILDREN BY DEFAULT
-ONE ACTIVE CHILD MAX
-DELEGATION DEPTH: 1
+DISPATCH SEED <= 12K TOKENS
+WORKER WORKING CONTEXT <= 32K TOKENS
+NORMAL HARD CEILING <= 64K TOKENS
+ABOVE 64K -> OVERSIZE_CONTEXT_REASON
+ABOVE 100K -> SPLIT OR EXPLICIT CORRECTNESS/SAFETY EXCEPTION
 ```
 
-Use deterministic tools or the parent first. A child is justified only when:
-
-- deterministic tools are insufficient;
-- the work is genuinely independent or requires the governed writer/reviewer role;
-- it has one bounded output;
-- owned and excluded paths are explicit;
-- total context or latency is expected to decrease;
-- one stop condition is explicit;
-- no concurrent writer or shared-state conflict exists.
-
-Do not run writer and reviewer children concurrently by default. Finish the writer,
-review the complete diff, and add one bounded independent review only when material
-risk or uncertainty remains.
+The compiler rejects envelope, recursion, duplicate-work, writer-capacity, and unsupported
+model violations deterministically. A project extension may impose stricter limits.
 
 ## Evidence reuse
 
@@ -183,6 +235,12 @@ Did relevant configuration change?
 Did the artifact change?
 Did the relevant environment or external state change?
 ```
+
+For routing enforcement, persist a redacted verification receipt keyed by SHA-256
+fingerprints for source, configuration, test, dependency, and relevant external state. A
+receipt is reusable only when every fingerprint matches and its prior status is `PASS`.
+Do not write raw commands, prompts, source, credentials, or raw external state into a
+verification receipt.
 
 When every answer is no, reuse the prior pass. When any answer is yes, record:
 
@@ -462,22 +520,17 @@ ROLLBACK / REVERSION
 
 ## Deterministic anti-drift defaults
 
-Active account-wide defaults:
+The global parent remains `gpt-5.6-sol` at `high`. Native Codex permits up to six threads
+per session so the governed A4 capacity can operate; the routing profile—not this Markdown
+policy—selects live child models and efforts. Sol is disabled as a child. Terra, Luna, and
+Ox are eligible only through their respective contracts, with `max`, `max`, and `high`
+child efforts. DeepSeek V4 Pro aliases remain disabled.
 
-```text
-model = gpt-5.6-sol
-model_reasoning_effort = high
-max concurrent threads per session <= 2
-default children = 0
-max active children = 1
-max delegation depth = 1
-routine independent review = false
-routine full suite after each small module = false
-```
-
-The machine-readable defaults, the unchanged ten-fixture base suite, the versioned
-26-fixture A1 suite, and the focused validator live under
-`automation/codex-model-routing/`.
+The machine-readable current profile, contracts, compiler, redacted telemetry, verification
+receipt tool, seven-day observed-only benchmark command, unchanged ten-fixture base suite,
+versioned 26-fixture A1 suite, A4 fixture suite, and focused validator live under
+`automation/codex-model-routing/`. The A1 one-scout pipeline below remains a specialized
+current/next-slice rule; it does not cap A4's total current-slice read-only capacity.
 
 ## Stop condition
 

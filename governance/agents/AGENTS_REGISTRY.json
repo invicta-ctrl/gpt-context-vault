@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "spec_id": "AGENTS-CONSOLIDATION-002",
-  "updated_at": "2026-08-20T17:41:27.1701728Z",
+  "updated_at": "2026-08-24T15:47:59Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -26,7 +26,7 @@
     "line_ending_pr": 7,
     "line_ending_merge_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
     "prechange_sha256": "ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d",
-    "active_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+    "active_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
     "local_checkout_verified": true,
     "local_checkout_preserved_untracked": null
   },
@@ -37,6 +37,11 @@
     "recursive": true
   },
   "extension_sources": [
+    {
+      "id": "minimal-project-extension-template",
+      "source_relative_path": "templates/PROJECT_POLICY_TEMPLATE.md",
+      "target_path": null
+    },
     {
       "id": "global-codex-extension-source",
       "source_relative_path": "governance/agents/extensions/global-codex.PROJECT_POLICY.md",
@@ -69,6 +74,9 @@
       "sync_allowed": true,
       "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
+      "allowed_prechange_sha256": [
+        "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28"
+      ],
       "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-002\\<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",
@@ -94,7 +102,7 @@
         "setup_auto_inject_rules": false,
         "config_validation": "PASS"
       },
-      "active_root_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "active_root_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
       "active_extension_sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
       "last_drift_repair": {
         "observed_at": "2026-08-19T15:59:19.830132Z",
@@ -126,7 +134,7 @@
       "backup_required": true,
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
-      "active_root_sha256": "379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438",
+      "active_root_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
       "active_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04"
     },
     {

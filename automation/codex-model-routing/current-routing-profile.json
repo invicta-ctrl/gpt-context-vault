@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "profile_id": "TOKEN-OPT-001-A4-current",
+  "policy_id": "TOKEN-OPT-001",
+  "accepted_amendment": "TOKEN-OPT-001-A4",
+  "last_reviewed": "2026-08-24",
+  "catalog": {
+    "required_models": [
+      {
+        "id": "gpt-5.6-sol",
+        "effort": "high",
+        "role": "orchestrator"
+      },
+      {
+        "id": "gpt-5.6-terra",
+        "effort": "max",
+        "role": "writer"
+      },
+      {
+        "id": "gpt-5.6-luna",
+        "effort": "max",
+        "role": "durable_read_only_worker"
+      },
+      {
+        "id": "openrouter/stealth/ox-alpha",
+        "effort": "high",
+        "role": "ephemeral_read_only_worker"
+      }
+    ],
+    "disabled_models": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro"
+    ]
+  },
+  "roles": {
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "read_only": false,
+      "child_eligible": false
+    },
+    "writer": {
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "max",
+      "read_only": false,
+      "child_eligible": true,
+      "contract": "contracts/terra-writer-contract.json"
+    },
+    "read_only_worker": {
+      "durable": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max"
+      },
+      "ephemeral": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high"
+      },
+      "contract": "contracts/read-only-worker-contract.json"
+    }
+  },
+  "fallbacks": {
+    "ox": [
+      "gpt-5.6-luna"
+    ],
+    "forbidden": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro"
+    ]
+  },
+  "ox_eligibility": {
+    "provider": "openrouter",
+    "cache_cadence_seconds": 900,
+    "acceptable_health": [
+      "healthy",
+      "acceptable"
+    ],
+    "allowed_data_classifications": [
+      "public",
+      "internal",
+      "non_sensitive"
+    ],
+    "failure_behavior": "mark_ineligible_for_run_then_fail_over_once_to_luna_without_retry"
+  },
+  "concurrency": {
+    "max_overlapping_writers": 1,
+    "default_read_only_workers": 2,
+    "adaptive_read_only_workers_min": 2,
+    "adaptive_read_only_workers_max": 4,
+    "independent_burst_total_workers_max": 6,
+    "recursive_worker_spawning": false,
+    "ordinary_duplicate_work": "prohibited",
+    "stop_when_green": true
+  },
+  "context_envelope": {
+    "dispatch_seed_tokens_max": 12000,
+    "worker_working_tokens_max": 32000,
+    "normal_hard_ceiling_tokens": 64000,
+    "oversize_reason_label": "OVERSIZE_CONTEXT_REASON",
+    "split_or_exception_threshold_tokens": 100000,
+    "exception_types": [
+      "correctness",
+      "safety"
+    ]
+  },
+  "verification_receipts": {
+    "fingerprint_fields": [
+      "source",
+      "configuration",
+      "test",
+      "dependency",
+      "external_state"
+    ],
+    "reuse_requires": "all_fingerprints_match_and_prior_status_is_PASS"
+  },
+  "telemetry": {
+    "redacted": true,
+    "prohibited_fields": [
+      "prompt",
+      "completion",
+      "credentials",
+      "provider_keys",
+      "raw_external_state",
+      "raw_source_content"
+    ]
+  },
+  "benchmark": {
+    "window_days": 7,
+    "quality_claim_rule": "compare_only_observed_quality_evidence",
+    "quota_metric": "native_weighted_quota"
+  }
+}

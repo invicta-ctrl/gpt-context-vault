@@ -1,19 +1,65 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "policy_id": "TOKEN-OPT-001",
   "accepted_amendments": [
-    "TOKEN-OPT-001-A1"
+    "TOKEN-OPT-001-A1",
+    "TOKEN-OPT-001-A2",
+    "TOKEN-OPT-001-A3",
+    "TOKEN-OPT-001-A4"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
     "ordinary_reasoning_effort": "high",
-    "max_concurrent_threads_per_session": 2,
-    "default_children": 0,
-    "max_active_children": 1,
-    "max_delegation_depth": 1,
+    "max_concurrent_threads_per_session": 6,
+    "default_read_only_workers": 2,
+    "max_adaptive_read_only_workers": 4,
+    "max_total_active_workers": 6,
+    "max_overlapping_writers": 1,
+    "recursive_worker_spawning": false,
     "routine_independent_review": false,
     "routine_full_suite_after_small_module": false
+  },
+  "current_routing_v2": {
+    "profile_path": "automation/codex-model-routing/current-routing-profile.json",
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high"
+    },
+    "writer": {
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "max",
+      "overlapping_writers": 1
+    },
+    "read_only_worker": {
+      "durable": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max"
+      },
+      "ephemeral": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "eligibility": "provider_available_and_zero_prompt_and_zero_completion_and_acceptable_health_and_suitable_data"
+      },
+      "ox_fallback": "mark_ineligible_for_run_then_fail_over_once_to_luna_without_retry"
+    },
+    "disabled_models": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro"
+    ],
+    "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
+    "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json"
+  },
+  "context_envelope_v2": {
+    "dispatch_seed_tokens_max": 12000,
+    "worker_working_tokens_max": 32000,
+    "normal_hard_ceiling_tokens": 64000,
+    "oversize_reason_label": "OVERSIZE_CONTEXT_REASON",
+    "split_or_exception_threshold_tokens": 100000,
+    "oversize_exception_types": [
+      "correctness",
+      "safety"
+    ]
   },
   "context": {
     "normal_route": [
@@ -38,13 +84,14 @@
   },
   "verification": {
     "reuse_keys": [
-      "commit_sha",
-      "artifact_hash",
+      "source",
       "configuration",
-      "environment",
+      "test",
+      "dependency",
       "external_state"
     ],
     "reverify_reason_label": "REVERIFY_REASON",
+    "receipt_reuse_requires": "all_fingerprints_match_and_prior_status_is_PASS",
     "test_route": [
       "targeted",
       "affected_subsystem",
@@ -363,6 +410,121 @@
     },
     "a1_unsupported_efficiency_percentage": {
       "action": "VIOLATION"
+    },
+    "a4_catalog_validation": {
+      "action": "VALIDATE_CATALOG",
+      "required_models": [
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna",
+        "openrouter/stealth/ox-alpha"
+      ]
+    },
+    "a4_sol_high": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high"
+    },
+    "a4_terra_writer": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "max",
+      "writers": 1
+    },
+    "a4_luna_worker": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "read_only": true
+    },
+    "a4_ox_eligible": {
+      "action": "ROUTE",
+      "model": "openrouter/stealth/ox-alpha",
+      "reasoning_effort": "high",
+      "read_only": true
+    },
+    "a4_ox_provider_unavailable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "PROVIDER_UNAVAILABLE"
+    },
+    "a4_ox_price_nonzero": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "PRICE_NOT_EXACTLY_ZERO"
+    },
+    "a4_ox_health_unacceptable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "HEALTH_UNACCEPTABLE"
+    },
+    "a4_ox_data_unsuitable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "DATA_CLASSIFICATION_UNSUITABLE"
+    },
+    "a4_ox_failure": {
+      "action": "MARK_INELIGIBLE_AND_FALLBACK_ONCE",
+      "retry": false
+    },
+    "a4_disabled_deepseek": {
+      "action": "REJECT",
+      "models": [
+        "deepseek-v4-pro",
+        "deepseek/deepseek-v4-pro"
+      ]
+    },
+    "a4_context_envelope": {
+      "dispatch_seed_max": 12000,
+      "worker_working_max": 32000,
+      "normal_hard_ceiling": 64000,
+      "oversize_reason": "OVERSIZE_CONTEXT_REASON"
+    },
+    "a4_context_split": {
+      "action": "SPLIT_OR_EXCEPTION",
+      "threshold": 100000,
+      "exception_types": [
+        "correctness",
+        "safety"
+      ]
+    },
+    "a4_concurrency": {
+      "writers": 1,
+      "default_read_only_workers": 2,
+      "adaptive_read_only_workers_max": 4,
+      "total_workers_max": 6
+    },
+    "a4_recursion": {
+      "action": "REJECT",
+      "recursive_worker_spawning": false
+    },
+    "a4_duplicate_work": {
+      "action": "REJECT",
+      "ordinary_duplicate_work": false
+    },
+    "a4_receipt_reuse": {
+      "action": "REUSE",
+      "required_fingerprints": [
+        "source",
+        "configuration",
+        "test",
+        "dependency",
+        "external_state"
+      ]
+    },
+    "a4_receipt_invalidation": {
+      "action": "REVERIFY",
+      "changed_fingerprint_invalidates": true
+    },
+    "a4_findings": {
+      "action": "DEDUPLICATE_MATERIAL_FINDINGS"
+    },
+    "a4_benchmark": {
+      "action": "REPORT_OBSERVED_ONLY",
+      "window_days": 7,
+      "quality_from_lower_tokens": false
+    },
+    "a4_stop_when_green": {
+      "action": "STOP_WHEN_GREEN"
+    },
+    "a4_profile_replacement": {
+      "action": "REPLACE_PROFILE_WITHOUT_GLOBAL_POLICY_REWRITE"
     }
   }
 }

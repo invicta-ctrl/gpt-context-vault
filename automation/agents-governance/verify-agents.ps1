@@ -37,6 +37,16 @@ function Get-OptionalProperty {
     return $Default
 }
 
+function Get-TargetWriterState {
+    param([Parameter(Mandatory)][string]$TargetRoot)
+    $pointer = Join-Path $TargetRoot '.codex\CURRENT.md'
+    if (-not (Test-Path -LiteralPath $pointer -PathType Leaf)) { return 'NO_POINTER' }
+    $text = [IO.File]::ReadAllText($pointer)
+    $match = [regex]::Match($text, '(?m)^ACTIVE_WRITER:\s*(?<writer>[^\r\n]+)')
+    if (-not $match.Success) { return 'POINTER_WITHOUT_WRITER_FIELD' }
+    return $match.Groups['writer'].Value.Trim()
+}
+
 function Resolve-ExtensionSource {
     param(
         [Parameter(Mandatory)]$Registry,
@@ -104,6 +114,25 @@ foreach ($replica in $allReplicas) {
             ReplicaPath = $path
             ExtensionPath = $extensionPath
             Detail = [string]$replica.gate_status
+        })
+        if ($FailOnBlocked -and [bool]$replica.required) {
+            $failureCount++
+        }
+        continue
+    }
+
+    $targetRoot = [IO.Path]::GetFullPath((Split-Path -Parent $path))
+    $writerState = Get-TargetWriterState -TargetRoot $targetRoot
+    if ($writerState -notin @('NO_POINTER', 'NONE')) {
+        $results.Add([pscustomobject]@{
+            Id = $replica.id
+            Mode = $mode
+            Replica = 'BLOCKED'
+            Extension = 'BLOCKED'
+            Activation = 'BLOCKED'
+            ReplicaPath = $path
+            ExtensionPath = $extensionPath
+            Detail = "active writer state=$writerState"
         })
         if ($FailOnBlocked -and [bool]$replica.required) {
             $failureCount++
@@ -191,7 +220,14 @@ if ($registry.PSObject.Properties.Name -contains 'preserved_worktree_appendices'
         $expectedHash = [string]$appendix.sha256
         $state = 'MISSING'
         $detail = "expected=$expectedHash"
-        if (Test-Path -LiteralPath $appendixPath -PathType Leaf) {
+        $worktreeRoot = Split-Path -Parent (Split-Path -Parent $appendixPath)
+        $worktreeGitMarker = Join-Path $worktreeRoot '.git'
+        if (-not (Test-Path -LiteralPath $worktreeRoot -PathType Container) -or
+            -not (Test-Path -LiteralPath $worktreeGitMarker)) {
+            $state = 'BLOCKED'
+            $detail = "registered appendix target is not an available worktree; hash record preserved and no replacement was created: $worktreeRoot"
+        }
+        elseif (Test-Path -LiteralPath $appendixPath -PathType Leaf) {
             $actualHash = Get-Sha256 $appendixPath
             if ($actualHash -eq $expectedHash) {
                 $state = 'MATCH'
@@ -207,7 +243,7 @@ if ($registry.PSObject.Properties.Name -contains 'preserved_worktree_appendices'
             Path = $appendixPath
             Detail = $detail
         })
-        if ($state -ne 'MATCH') {
+        if ($state -ne 'MATCH' -and -not ($state -eq 'BLOCKED' -and -not $FailOnBlocked)) {
             $failureCount++
         }
     }

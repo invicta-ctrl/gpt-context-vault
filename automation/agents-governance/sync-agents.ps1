@@ -2,7 +2,8 @@
 param(
     [switch]$Apply,
     [switch]$IncludeCandidateTargets,
-    [string[]]$TargetId
+    [string[]]$TargetId,
+    [string]$EvidencePath
 )
 
 Set-StrictMode -Version Latest
@@ -43,6 +44,23 @@ function Get-RepoRoot {
         throw "Canonical AGENTS.md is missing from repository root: $root"
     }
     $root
+}
+
+function Test-PathWithinRoot {
+    param([Parameter(Mandatory)][string]$Path, [Parameter(Mandatory)][string]$Root)
+    $fullPath = [IO.Path]::GetFullPath($Path).TrimEnd('\\')
+    $fullRoot = [IO.Path]::GetFullPath($Root).TrimEnd('\\')
+    return $fullPath.StartsWith($fullRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)
+}
+
+function Get-TargetWriterState {
+    param([Parameter(Mandatory)][string]$TargetRoot)
+    $pointer = Join-Path $TargetRoot '.codex\CURRENT.md'
+    if (-not (Test-Path -LiteralPath $pointer -PathType Leaf)) { return 'NO_POINTER' }
+    $text = [IO.File]::ReadAllText($pointer)
+    $match = [regex]::Match($text, '(?m)^ACTIVE_WRITER:\s*(?<writer>[^\r\n]+)')
+    if (-not $match.Success) { return 'POINTER_WITHOUT_WRITER_FIELD' }
+    return $match.Groups['writer'].Value.Trim()
 }
 
 function Resolve-ExtensionSource {
@@ -101,6 +119,45 @@ function Get-PlannedAction {
     return 'WOULD_CREATE'
 }
 
+function Write-SyncEvidence {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][bool]$Applying,
+        [Parameter(Mandatory)][string]$CanonicalPath,
+        [Parameter(Mandatory)][string]$CanonicalHash,
+        [Parameter(Mandatory)][string]$RunTimestamp,
+        [Parameter(Mandatory)][object[]]$Results,
+        [Parameter(Mandatory)][AllowEmptyCollection()][string[]]$Failures
+    )
+
+    $fullPath = [IO.Path]::GetFullPath($Path)
+    $parent = Split-Path -Parent $fullPath
+    if ([string]::IsNullOrWhiteSpace($parent)) {
+        throw "Evidence path has no parent directory: $Path"
+    }
+    if (-not (Test-Path -LiteralPath $parent -PathType Container)) {
+        New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    }
+
+    $counts = @($Results | Group-Object ReplicaAction | Sort-Object Name | ForEach-Object {
+        [ordered]@{ action = $_.Name; count = $_.Count }
+    })
+    $document = [ordered]@{
+        schema_version = 1
+        generated_at = (Get-Date).ToUniversalTime().ToString('o')
+        apply = $Applying
+        timestamp = $RunTimestamp
+        canonical_path = $CanonicalPath
+        canonical_sha256 = $CanonicalHash
+        counts = $counts
+        results = @($Results)
+        failures = @($Failures)
+    }
+    $utf8NoBom = [Text.UTF8Encoding]::new($false)
+    [IO.File]::WriteAllText($fullPath, (($document | ConvertTo-Json -Depth 8) + "`n"), $utf8NoBom)
+    Write-Host "EVIDENCE $fullPath"
+}
+
 $repoRoot = Get-RepoRoot
 $registryPath = Join-Path $repoRoot 'governance\agents\AGENTS_REGISTRY.json'
 if (-not (Test-Path -LiteralPath $registryPath -PathType Leaf)) {
@@ -148,6 +205,10 @@ foreach ($replica in $allReplicas) {
             ActivationAction = $blockedActivationAction
             ReplicaPath = $targetPath
             ExtensionPath = $extensionPath
+            BackupPath = $null
+            BackupReplicaSha256 = $null
+            ExtensionBackupPath = $null
+            BackupExtensionSha256 = $null
             Detail = [string]$replica.gate_status
         })
         continue
@@ -161,6 +222,30 @@ foreach ($replica in $allReplicas) {
     if ([string]::IsNullOrWhiteSpace($extensionPath) -or
         -not [IO.Path]::IsPathRooted($extensionPath)) {
         $failures.Add("$($replica.id): unsafe or non-absolute extension path")
+        continue
+    }
+
+    $targetRoot = [IO.Path]::GetFullPath((Split-Path -Parent $targetPath))
+    if (-not (Test-PathWithinRoot -Path $extensionPath -Root $targetRoot)) {
+        $failures.Add("$($replica.id): extension path escapes target root")
+        continue
+    }
+    $writerState = Get-TargetWriterState -TargetRoot $targetRoot
+    if ($writerState -notin @('NO_POINTER', 'NONE')) {
+        $results.Add([pscustomobject]@{
+            Id = $replica.id
+            Mode = $mode
+            ReplicaAction = 'BLOCKED'
+            ExtensionAction = 'BLOCKED'
+            ActivationAction = 'BLOCKED'
+            ReplicaPath = $targetPath
+            ExtensionPath = $extensionPath
+            BackupPath = $null
+            BackupReplicaSha256 = $null
+            ExtensionBackupPath = $null
+            BackupExtensionSha256 = $null
+            Detail = "active writer state=$writerState"
+        })
         continue
     }
 
@@ -184,6 +269,7 @@ foreach ($replica in $allReplicas) {
         $prechangeProperty = if ($mode -eq 'candidate') { 'candidate_prechange_sha256' } else { 'prechange_sha256' }
         $expected = @([string](Get-OptionalProperty -Object $replica -Name $prechangeProperty -Default ''))
         $expected += @((Get-OptionalProperty -Object $replica -Name 'allowed_prechange_sha256' -Default @()) | ForEach-Object { [string]$_ })
+        $expected += @([string](Get-OptionalProperty -Object $replica -Name 'active_root_sha256' -Default ''))
         $expected = @($expected | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
         if ($replicaCurrentHash -notin $expected) {
             $failures.Add(
@@ -199,12 +285,14 @@ foreach ($replica in $allReplicas) {
         $extensionHashProperty = if ($mode -eq 'candidate') { 'candidate_prechange_extension_sha256' } else { 'prechange_extension_sha256' }
         $expectedExtensionExists = [bool](Get-OptionalProperty -Object $replica -Name $extensionExistsProperty -Default $false)
         $expectedExtensionHash = [string](Get-OptionalProperty -Object $replica -Name $extensionHashProperty -Default '')
-        if (-not $expectedExtensionExists -or
-            [string]::IsNullOrWhiteSpace($expectedExtensionHash) -or
-            $extensionCurrentHash -ne $expectedExtensionHash) {
+        $expectedExtensionHashes = @($expectedExtensionHash)
+        $expectedExtensionHashes += @([string](Get-OptionalProperty -Object $replica -Name 'active_extension_sha256' -Default ''))
+        $expectedExtensionHashes = @($expectedExtensionHashes | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        if ((-not $expectedExtensionExists -and $expectedExtensionHashes.Count -eq 0) -or
+            $extensionCurrentHash -notin $expectedExtensionHashes) {
             $failures.Add(
                 "$($replica.id): extension is unexpected or changed since preflight; " +
-                "expected=$expectedExtensionHash found=$extensionCurrentHash"
+                "expected=$($expectedExtensionHashes -join ',') found=$extensionCurrentHash"
             )
             continue
         }
@@ -227,6 +315,19 @@ foreach ($replica in $allReplicas) {
     $replicaAction = Get-PlannedAction -Exists $replicaExists -CurrentHash $replicaCurrentHash -DesiredHash $canonicalHash -Applying ([bool]$Apply)
     $extensionAction = Get-PlannedAction -Exists $extensionExists -CurrentHash $extensionCurrentHash -DesiredHash $extensionSourceHash -Applying ([bool]$Apply)
     $activationAction = if ($null -ne $activationPlan) { [string]$activationPlan.Action } else { 'N/A' }
+    $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
+    $backupPath = $null
+    $backupReplicaHash = $null
+    $extensionBackup = $null
+    $backupExtensionHash = $null
+    if ($backupRequired) {
+        $backupPattern = [string]$replica.rollback
+        if ([string]::IsNullOrWhiteSpace($backupPattern) -or $backupPattern -notmatch '<timestamp>') {
+            throw "$($replica.id): backup-required target has no timestamped rollback path"
+        }
+        $backupPath = $backupPattern.Replace('<timestamp>', $timestamp)
+        $extensionBackup = Join-Path (Split-Path -Parent $backupPath) 'PROJECT_POLICY.md'
+    }
 
     if (-not $Apply) {
         $results.Add([pscustomobject]@{
@@ -237,32 +338,31 @@ foreach ($replica in $allReplicas) {
             ActivationAction = $activationAction
             ReplicaPath = $targetPath
             ExtensionPath = $extensionPath
-            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction"
+            BackupPath = $backupPath
+            BackupReplicaSha256 = $backupReplicaHash
+            ExtensionBackupPath = $extensionBackup
+            BackupExtensionSha256 = $backupExtensionHash
+            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction writer=$writerState"
         })
         continue
     }
 
-    $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
     if ($backupRequired) {
-        $backupPattern = [string]$replica.rollback
-        if ([string]::IsNullOrWhiteSpace($backupPattern) -or $backupPattern -notmatch '<timestamp>') {
-            throw "$($replica.id): backup-required target has no timestamped rollback path"
-        }
-        $backupPath = $backupPattern.Replace('<timestamp>', $timestamp)
         $backupDir = Split-Path -Parent $backupPath
         New-Item -ItemType Directory -Force -Path $backupDir | Out-Null
 
         if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash) {
             Copy-Item -LiteralPath $targetPath -Destination $backupPath
-            if ((Get-Sha256 $backupPath) -ne $replicaCurrentHash) {
+            $backupReplicaHash = Get-Sha256 $backupPath
+            if ($backupReplicaHash -ne $replicaCurrentHash) {
                 throw "$($replica.id): replica backup hash verification failed"
             }
         }
 
         if ($extensionExists -and $extensionCurrentHash -ne $extensionSourceHash) {
-            $extensionBackup = Join-Path $backupDir 'PROJECT_POLICY.md'
             Copy-Item -LiteralPath $extensionPath -Destination $extensionBackup
-            if ((Get-Sha256 $extensionBackup) -ne $extensionCurrentHash) {
+            $backupExtensionHash = Get-Sha256 $extensionBackup
+            if ($backupExtensionHash -ne $extensionCurrentHash) {
                 throw "$($replica.id): extension backup hash verification failed"
             }
         }
@@ -306,11 +406,28 @@ foreach ($replica in $allReplicas) {
         ActivationAction = $activationAction
         ReplicaPath = $targetPath
         ExtensionPath = $extensionPath
-        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction"
+        BackupPath = $backupPath
+        BackupReplicaSha256 = $backupReplicaHash
+        ExtensionBackupPath = $extensionBackup
+        BackupExtensionSha256 = $backupExtensionHash
+        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction writer=$writerState"
     })
 }
 
 $results | Format-Table -AutoSize | Out-String | Write-Host
+
+if (-not [string]::IsNullOrWhiteSpace($EvidencePath)) {
+    $evidenceArguments = @{
+        Path = $EvidencePath
+        Applying = [bool]$Apply
+        CanonicalPath = $canonicalPath
+        CanonicalHash = $canonicalHash
+        RunTimestamp = $timestamp
+        Results = [object[]]$results.ToArray()
+        Failures = [string[]]$failures.ToArray()
+    }
+    Write-SyncEvidence @evidenceArguments
+}
 
 if ($failures.Count -gt 0) {
     foreach ($failure in $failures) {

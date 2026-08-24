@@ -21,6 +21,9 @@
 ## Routing core
 
 - [ ] Maintain an allowlist of models, reasoning values, agents, and profiles.
+- [ ] Consume the account-wide current routing profile rather than duplicating live model assignments.
+- [ ] Enforce one Terra writer, read-only Luna/Ox contracts, bounded A4 context envelopes, no recursion, and no duplicate ordinary work.
+- [ ] Keep Ox optional; require current provider/zero-price/health/data eligibility and one-way Luna fallback.
 - [ ] Add route examples and deterministic fixtures.
 - [ ] Decide subagents and worktrees from ownership, not task size.
 - [ ] Map each route to an allowlisted verification profile.
@@ -34,6 +37,7 @@
 - [ ] Never execute arbitrary model-generated shell commands.
 - [ ] Run deterministic verification, then independent review.
 - [ ] Document disable and rollback behavior.
+- [ ] Store only redacted route telemetry and verify receipt reuse through source/configuration/test/dependency/external-state fingerprints.
 
 ## Vault hygiene
 

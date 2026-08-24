@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "contract_id": "TOKEN-OPT-001-A4-terra-writer",
+  "role": "writer",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "max",
+  "sandbox": "workspace-write",
+  "max_overlapping_writers": 1,
+  "may_spawn_workers": false,
+  "recursive_worker_spawning": false,
+  "required_before_mutation": [
+    "accepted_authority",
+    "repository_handshake",
+    "writer_lock_check",
+    "unknown_work_preservation"
+  ],
+  "required_completion": [
+    "focused_verification",
+    "complete_logical_diff_review",
+    "durable_checkpoint_when_required",
+    "stop_when_green"
+  ],
+  "prohibited": [
+    "second_overlapping_writer",
+    "recursive_delegation",
+    "duplicate_ordinary_work",
+    "automatic_next_slice_start",
+    "unapproved_external_write"
+  ]
+}

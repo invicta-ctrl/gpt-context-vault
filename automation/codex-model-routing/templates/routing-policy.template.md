@@ -1,5 +1,11 @@
 # Project routing policy
 
+## Current routing profile
+
+Reference the account-wide `current-routing-profile.json` and verify the installed
+catalog before dispatch. Do not duplicate model assignments in this project policy;
+record only approved project-specific stricter limits or exclusions.
+
 ## Verified capability catalog
 
 Record the exact installed Codex version and the model aliases, reasoning
@@ -8,8 +14,8 @@ project. Unknown values must be rejected.
 
 ## Logical routes
 
-Map `fast`, `implementation`, `exploration`, `judgment`, and `deep_review` to
-verified model/reasoning pairs. Record the evidence and review date.
+Map task tiers to the current profile's orchestrator, single Terra writer, and
+read-only worker roles. Record catalog evidence, Ox eligibility state, and review date.
 
 ## Safe stops
 
@@ -20,5 +26,7 @@ mismatches.
 ## Verification
 
 Name the allowlisted deterministic commands for documentation, focused, full,
-and release profiles. Do not permit a worker to invent shell commands.
+and release profiles. Reuse verification only when the redacted source,
+configuration, test, dependency, and external-state fingerprints all match.
+Do not permit a worker to invent shell commands.
 

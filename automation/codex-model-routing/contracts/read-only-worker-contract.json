@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "contract_id": "TOKEN-OPT-001-A4-read-only-worker",
+  "role": "read_only_worker",
+  "models": [
+    "gpt-5.6-luna",
+    "openrouter/stealth/ox-alpha"
+  ],
+  "sandbox": "read-only",
+  "may_write": false,
+  "may_delegate": false,
+  "may_spawn_workers": false,
+  "required_output": [
+    "facts",
+    "inferences",
+    "unverified",
+    "material_findings",
+    "focused_verification_suggestions",
+    "no_write_attestation"
+  ],
+  "prohibited": [
+    "repository_mutation",
+    "external_write",
+    "credential_or_secret_output",
+    "recursive_delegation",
+    "duplicate_ordinary_work",
+    "next_slice_auto_start"
+  ],
+  "completion": "return bounded evidence and stop"
+}

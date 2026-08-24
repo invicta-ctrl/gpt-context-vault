@@ -18,15 +18,28 @@
 
 ## Selected route
 
+- Current profile:
 - Logical tier:
 - Model:
 - Reasoning effort:
 - Agent role:
+- Contract:
 - Sandbox:
 - Approval policy:
 - Verification profile:
 - Subagents:
 - Worktrees:
+
+## A4 route controls
+
+- Run/session state path:
+- Ox eligibility observation or Luna fallback reason:
+- Active writers / read-only workers / total workers:
+- Dispatch seed / working context / total context:
+- `OVERSIZE_CONTEXT_REASON` or split/exception when required:
+- Duplicate ordinary-work key:
+- Verification receipt fingerprint state:
+- Telemetry path (redacted):
 
 ## Cost and alternatives
 

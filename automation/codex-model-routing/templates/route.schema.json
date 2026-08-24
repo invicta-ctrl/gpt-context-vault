@@ -4,14 +4,15 @@
   "title": "Codex route decision",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "route_id", "safe_to_execute", "model", "reasoning_effort", "agent", "sandbox", "verification_profile", "use_subagents", "use_worktrees", "usage_justification", "why_not_cheaper", "why_not_more_expensive"],
+  "required": ["schema_version", "route_id", "safe_to_execute", "model", "reasoning_effort", "agent", "agent_role", "sandbox", "verification_profile", "use_subagents", "use_worktrees", "usage_justification", "why_not_cheaper", "why_not_more_expensive"],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "const": 2 },
     "route_id": { "type": "string", "minLength": 1 },
     "safe_to_execute": { "type": "boolean" },
     "model": { "type": "string", "minLength": 1 },
-    "reasoning_effort": { "enum": ["minimal", "low", "medium", "high", "xhigh"] },
+    "reasoning_effort": { "enum": ["minimal", "low", "medium", "high", "xhigh", "max", "ultra"] },
     "agent": { "type": "string", "minLength": 1 },
+    "agent_role": { "enum": ["orchestrator", "writer", "read_only_worker"] },
     "sandbox": { "enum": ["read-only", "workspace-write"] },
     "verification_profile": { "type": "string", "minLength": 1 },
     "use_subagents": { "type": "boolean" },
@@ -21,6 +22,30 @@
     "why_not_more_expensive": { "type": "string", "minLength": 1 },
     "requires_user_approval": { "type": "boolean" },
     "stop_reasons": { "type": "array", "items": { "type": "string" } },
-    "escalation": { "type": ["object", "null"] }
+    "escalation": { "type": ["object", "null"] },
+    "routing_profile": { "type": "string", "minLength": 1 },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dispatch_seed_tokens": { "type": "integer", "minimum": 0, "maximum": 12000 },
+        "worker_working_tokens": { "type": "integer", "minimum": 0, "maximum": 32000 },
+        "context_tokens": { "type": "integer", "minimum": 0 },
+        "oversize_context_reason": { "type": "string" },
+        "split_plan": { "type": "string" },
+        "oversize_exception_type": { "enum": ["correctness", "safety"] }
+      }
+    },
+    "verification_fingerprints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "pattern": "^[a-f0-9]{64}$" },
+        "configuration": { "pattern": "^[a-f0-9]{64}$" },
+        "test": { "pattern": "^[a-f0-9]{64}$" },
+        "dependency": { "pattern": "^[a-f0-9]{64}$" },
+        "external_state": { "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
   }
 }

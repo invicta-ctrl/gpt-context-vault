@@ -7,7 +7,7 @@ canonical_repository: invicta-ctrl/gpt-context-vault
 canonical_relative_path: AGENTS.md
 managed_replica_policy: byte-identical-generated
 project_extension_path: .agents/PROJECT_POLICY.md
-last_reviewed: 2026-08-22
+last_reviewed: 2026-08-24
 ---
 
 # Universal Agent Governance
@@ -107,6 +107,11 @@ Expand context only through acceptance criteria, direct dependencies, verificati
 Do not repeat expensive reads, tests, builds, reviews, migrations, deployments, or analyses while the relevant source, artifact, configuration, and external state remain unchanged.
 
 The canonical token and context-efficiency policy is [protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md). It governs ordinary reasoning, delegation, evidence reuse, review, verification escalation, abnormal-route reasons, and stop-when-green behavior. Project rules may be stricter but may not weaken safety.
+
+Current model-role, context-envelope, and fallback enforcement is the dedicated
+[`automation/codex-model-routing/current-routing-profile.json`](automation/codex-model-routing/current-routing-profile.json)
+plus its deterministic compiler; do not substitute disabled models or bypass its writer,
+read-only-worker, receipt, or stop-when-green contracts.
 
 ## Project incremental-context rule
 
@@ -213,7 +218,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Default to zero children. Use at most one active child only when the work is bounded, independent, non-overlapping, explicitly justified, and expected to reduce total context or latency without weakening verification.
+- Apply the current TOKEN-OPT routing profile: one Terra writer plus two read-only workers by default, two to four read-only workers adaptively, at most six total active workers, one overlapping writer, no recursive worker spawning, and no duplicate ordinary work. A1's at-most-one read-only scout remains a specialized current/next-slice rule.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.

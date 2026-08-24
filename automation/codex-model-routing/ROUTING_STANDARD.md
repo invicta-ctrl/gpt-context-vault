@@ -26,9 +26,10 @@ catalog:
 | `deep_review` | High-risk work, release blockers, or a lower tier failed with evidence |
 
 Reasoning should be `low` or `medium` for fast work and may use `high` for
-ordinary implementation, exploration, or consequential judgment. Ordinary work
-does not exceed High by default. Higher installed values are risk-gated
-exceptions, not routine routing choices. Never use an unsupported value.
+ordinary implementation, exploration, or consequential judgment. The accepted A4
+current profile is the explicit role-specific exception: Sol uses `high`, Terra
+writer and Luna durable worker use `max`, and eligible Ox uses `high`. Never use
+an unsupported value or substitute a model outside the current profile.
 
 ## Current Codex compatibility rule
 
@@ -50,21 +51,27 @@ another UI label as a CLI reasoning value.
 - Explain why a cheaper tier is insufficient and why a more expensive tier is
   unnecessary.
 
-## Subagents and worktrees
+## Current worker capacity and worktrees
 
-Use zero children by default. Permit one active child maximum only when the work
-is bounded, independent, non-overlapping, explicitly justified, and expected to
-reduce total context or latency without weakening verification. Keep delegation
-depth at one. Prefer read-only exploration, testing, or review to parallel
-writes; any child write requires isolated ownership and the repository's writer
-rules. A sequential task stays with the parent even when it is large.
+Use the current profile and compiler rather than hand-selecting a child model.
+Default capacity is one Terra writer plus two read-only workers; adaptive capacity
+is one writer plus two-to-four read-only workers, and an independent burst never
+exceeds six total active workers. There is exactly one overlapping writer.
+
+Luna and Ox share one read-only, non-delegating contract. Terra alone owns the
+bounded workspace-write contract. Recursive worker spawning and duplicate ordinary
+work are prohibited. Ox is eligible only with observed provider availability,
+exactly-zero prompt and completion prices, acceptable health, and a suitable data
+class; on one failure it becomes ineligible for the run and falls back once to
+Luna. A sequential task stays with the parent even when it is large.
 
 ## Current/next-slice scouting
 
-An optional read-only scout may prepare one already authorized next slice while the
+An optional read-only A1 scout may prepare one already authorized next slice while the
 sole writer finishes the current slice. The scout may not write or delegate. It is
 disabled for trivial, inferred, critical, destructive, migration, Production,
 provider, database, security-ambiguous, writer-conflicted, or dirty-unknown work.
+This specialized one-scout rule does not reduce the A4 current-slice read-only capacity.
 
 The parent records the scout baseline SHA, requires `STALE_IF`, and compares the
 packet with the current slice's ending SHA. Reuse only revalidated facts. Never auto-start
@@ -90,9 +97,9 @@ Every route names an allowlisted verification profile. Use targeted checks
 first, then affected and required acceptance checks. Do not run a full suite after every small module.
 Independent review is conditional on material risk,
 uncertainty, or explicit owner request rather than routine ceremony. Reuse
-same-SHA evidence while its source, configuration, environment, artifact, and
-external-state assumptions remain valid, and stop when accepted evidence is
-green.
+same-SHA evidence only through a passing verification receipt whose source,
+configuration, test, dependency, and external-state fingerprints all match. Record
+only redacted telemetry and stop when accepted evidence is green.
 
 Block when the refinement is invalid, the route is unsupported, the worktree
 is unsafe, documentation conflicts materially, or a destructive/deployment/
