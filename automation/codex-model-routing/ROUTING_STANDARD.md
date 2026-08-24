@@ -6,6 +6,17 @@ Select the least expensive model and reasoning level that can reliably complete
 the validated brief. Routing is a constrained decision, not a claim that the
 largest model is always better.
 
+## Manual execution boundary
+
+Routing is selection metadata, not permission to spend Codex allowance. Under A6, the
+default is locked. ChatGPT Web, Astral Bridge, automation, scheduling, prior prompts,
+and accepted autonomous continuations may not start or resume Codex. “Absolutely
+necessary” means stop and obtain Earl's new per-run approval.
+
+One permit names one exact purpose, model, reasoning level, and role. It authorizes at
+most one primary process and zero children, retries, fallbacks, or background
+continuations. The route compiler never dispatches a process.
+
 ## Dimensions
 
 Score the refined brief for ambiguity, repository exploration, breadth, required
@@ -33,12 +44,10 @@ an unsupported value or substitute a model outside the current profile.
 
 ## Current Codex compatibility rule
 
-The project must verify actual model aliases before routing. Current local
-profiles may expose account-specific aliases such as `gpt-5.6-terra`,
-`gpt-5.6-luna`, and `gpt-5.6-sol`; public Codex documentation also describes
-`gpt-5.6`, `gpt-5.6-terra`, and `gpt-5.3-codex-spark`. The route schema must
-allow only the project's verified set. Do not silently treat `Ultra`, `Max`, or
-another UI label as a CLI reasoning value.
+Use the static local catalog to validate exact aliases and supported reasoning values.
+A real capability probe is billable Codex execution and must not be launched by ChatGPT
+Web, Astral Bridge, or automation. A probe requires its own manual permit. Never treat a
+UI label as a CLI value or silently substitute another model.
 
 ## Selection guidance
 
@@ -51,45 +60,34 @@ another UI label as a CLI reasoning value.
 - Explain why a cheaper tier is insufficient and why a more expensive tier is
   unnecessary.
 
-## Current worker capacity and worktrees
+## Current execution capacity
 
-Use the current profile and compiler rather than hand-selecting a child model.
-Default capacity is one Terra writer plus two read-only workers; adaptive capacity
-is one writer plus two-to-four read-only workers, and an independent burst never
-exceeds six total active workers. There is exactly one overlapping writer.
+```text
+DEFAULT PROCESSES: 0
+MANUALLY PERMITTED PRIMARY PROCESSES: 1
+CHILDREN OR SUBAGENTS: 0
+BACKGROUND CONTINUATION: 0
+AUTOMATIC FALLBACK: 0
+```
 
-Luna and Ox share one read-only, non-delegating contract. Terra alone owns the
-bounded workspace-write contract. Recursive worker spawning and duplicate ordinary
-work are prohibited. Ox is eligible only with observed provider availability,
-exactly-zero prompt and completion prices, acceptable health, and a suitable data
-class; on one failure it becomes ineligible for the run and falls back once to
-Luna. A sequential task stays with the parent even when it is large.
+A4's Terra/Luna/Ox role catalog remains dormant reference metadata. A manually
+approved process may use one exact role and model, but it is still the sole primary
+process. Recursive spawning, delegated workers, parallel writers, retry processes,
+duplicate work, and fallback processes are prohibited. An Ox failure records
+ineligibility and stops; Luna requires a separate manual permit.
 
-## Current/next-slice scouting
+## Historical current/next-slice scouting
 
-An optional read-only A1 scout may prepare one already authorized next slice while the
-sole writer finishes the current slice. The scout may not write or delegate. It is
-disabled for trivial, inferred, critical, destructive, migration, Production,
-provider, database, security-ambiguous, writer-conflicted, or dirty-unknown work.
-This specialized one-scout rule does not reduce the A4 current-slice read-only capacity.
-
-The parent records the scout baseline SHA, requires `STALE_IF`, and compares the
-packet with the current slice's ending SHA. Reuse only revalidated facts. Never auto-start
-the next slice; an unapproved next slice receives a handoff and stops.
-
-Where controllable, keep stable authority and workflow schemas before volatile SHA,
-failure, PR, provider, timestamp, and run state. Cache claims require runtime
-telemetry. Manual compaction requires a durable checkpoint and post-compaction Git
-and authority rehydration. Material tool-context expansion requires
-`TOOL_CONTEXT_EXPANSION_REASON`. Mid-slice configuration changes require their
-recorded reason, old and new values, authority, invalidated evidence, and rollback.
+A1 scout-ahead semantics remain preserved as historical policy evidence. A6 disables
+billable Codex scouts and children account-wide. Deterministic non-model tools may
+prepare bounded evidence when otherwise authorized, but they do not create a Codex
+child and may not auto-start the next slice.
 
 ## Escalation
 
-Escalate one meaningful level at a time only when evidence shows the root cause
-is unresolved, architecture is more ambiguous, scope expanded, tests reveal
-broader risk, or security/data-integrity impact is higher than routed. Do not
-escalate merely because a worker took time.
+Escalation to a different model, reasoning level, role, retry, or fallback requires a
+new exact manual permit. Evidence may justify asking Earl, but it never authorizes
+the route automatically. Do not escalate merely because work took time.
 
 ## Verification and safe stops
 
@@ -101,8 +99,9 @@ same-SHA evidence only through a passing verification receipt whose source,
 configuration, test, dependency, and external-state fingerprints all match. Record
 only redacted telemetry and stop when accepted evidence is green.
 
-Block when the refinement is invalid, the route is unsupported, the worktree
-is unsafe, documentation conflicts materially, or a destructive/deployment/
-migration/external-write action lacks explicit approval. A hook can add context
+Block when the refinement is invalid, the route is unsupported, a fresh exact manual
+permit is missing, the origin is ChatGPT Web/Astral/automation, another Codex process
+exists, the worktree is unsafe, documentation conflicts materially, or a destructive/
+deployment/migration/external-write action lacks explicit approval. A hook can add context
 or block supported tool calls, but it is not the sole routing boundary.
 

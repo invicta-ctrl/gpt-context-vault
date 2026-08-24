@@ -5,7 +5,7 @@ scope: global-codex-local-extension
 extension_id: EARL-GLOBAL-CODEX-EXT-V1
 target_root: C:\Users\adria\.codex
 universal_governance: ..\AGENTS.md
-last_reviewed: 2026-08-19
+last_reviewed: 2026-08-25
 ---
 
 # Global Codex Project Policy Extension
@@ -21,19 +21,24 @@ Read the byte-identical universal `AGENTS.md` first. This file adds only local C
 - Do not reconfigure models, providers, connectors, plugins, or credentials unless exact accepted scope requires it.
 - Do not assume local tools, MCP servers, browser automation, or account access are available until verified.
 
-## Default Native V2 delegation boundary
+## Manual-only Codex execution boundary
 
-For repositories without a stricter accepted project model policy:
+For every repository unless a later owner-approved amendment is stricter:
 
-- The primary agent owns coordination, integration, review, and final evidence.
-- Delegate only bounded, independent workstreams when delegation materially improves speed, specialization, or context isolation.
-- Give each workstream an exact objective, scope, exclusions, deliverable, verification, and stop condition.
-- Assign non-overlapping responsibility and file ownership.
-- Never allow concurrent writers to the same file, branch area, registry, lockfile, migration, release record, or external resource.
-- Native Multi-Agent V2 owns scheduling, lifecycle, concurrency, and runtime model metadata. Do not duplicate those mechanisms in prompts.
-- Inspect delegated evidence and changes before integration.
-- Keep sensitive, destructive, migration, deployment, external, and unresolved authorization decisions with the primary agent and Earl.
-- A project extension may replace these defaults with stricter named model classes, writer locks, or delegation rules.
+- Native Multi-Agent V2 is disabled.
+- Codex agents, children, scouts, reviewers, writers, retries, automatic fallbacks, and
+  background continuations default to zero.
+- ChatGPT Web, Astral Bridge, an automation, a scheduled task, or a prior prompt may not
+  start, resume, or message a Codex task.
+- “Absolutely necessary” means stop and ask Earl for a new per-run approval.
+- A manual permit must name one exact purpose, model, reasoning level, and role. It is
+  single-use, time-bounded, allows one primary process, and allows zero children.
+- The scheduled `Earl Codex Usage Guard` preserves app-server infrastructure and blocks
+  other `codex.exe` processes without the matching permit.
+- Direct work Earl deliberately starts inside Codex Desktop is manual interaction for
+  that specific task. Infrastructure remaining online does not authorize a model turn.
+- Model/provider routing metadata may be inspected deterministically but never treated
+  as execution authority.
 
 ## CodeGraph
 
@@ -95,7 +100,7 @@ After changing this extension:
 - confirm the universal root replica still matches the canonical master;
 - confirm this file remains the only registered local Codex extension;
 - run the canonical AGENTS verification script;
-- verify no model/provider/credential configuration changed;
+- verify A6 agents/concurrency/router settings remain locked and no credential value was read or changed;
 - report the exact local files changed and backup path.
 
 A request to change universal rules in `C:\Users\adria\.codex\AGENTS.md` must be redirected to the Context Vault canonical master.

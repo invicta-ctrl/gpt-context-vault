@@ -3,7 +3,7 @@ schema_version: 1
 status: active
 scope: account-wide
 policy_id: TOKEN-OPT-001
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-25
 ---
 
 # Codex Token Optimization and Context-Efficiency Rules
@@ -24,6 +24,41 @@ This policy is the single account-wide token/context-efficiency authority. Proje
 repositories may add stricter local rules. They may not weaken accepted specifications,
 security boundaries, privacy, data invariants, backup, rollback, release, migration, or
 Git safeguards.
+
+## A6 manual-only Codex execution boundary
+
+A6 separates infrastructure availability from permission to consume Codex allowance.
+It supersedes every A4/A5 or prompt-level instruction that could otherwise permit
+ChatGPT Web, Astral Bridge, an automation, a scheduled task, a watchdog, or a delegated
+agent to start or continue Codex work.
+
+```text
+BILLABLE CODEX EXECUTION: LOCKED
+AUTOMATED CODEX RUNS: 0
+BACKGROUND CODEX CONTINUATIONS: 0
+CODEX CHILDREN OR SUBAGENTS: 0
+AUTOMATIC FALLBACK: DISABLED
+MAXIMUM AFTER ONE MANUAL PERMIT: ONE EXACT PRIMARY PROCESS
+APP-SERVER INFRASTRUCTURE: ALLOWED
+ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
+```
+
+A new permit is required for every run. Earl creates it manually in an interactive
+Windows console, and it names one purpose, model, reasoning level, and role. It is
+single-use and time-bounded. It does not start Codex. Earl must then manually start the
+one approved task. A second process, child, retry, fallback, background continuation,
+or later task requires another explicit approval.
+
+The local scheduled `Earl Codex Usage Guard` allows only `codex app-server`
+infrastructure while locked and terminates other `codex.exe` process trees without a
+live matching permit. The deterministic route compiler validates routing metadata but
+is never a dispatcher. Missing, expired, consumed, broad, wildcard, non-manual, or
+mismatched approval data is a hard stop.
+
+Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
+tools, Codex Router, connector health checks, and local context tools may remain running
+when they do not originate inside a billable Codex turn. Infrastructure availability is
+not execution authority.
 
 ## Normal route
 
@@ -169,35 +204,34 @@ Prefer the smallest direct implementation that satisfies the accepted requiremen
 “Cleaner,” “more scalable,” “best practice,” or “might be useful later” is not a current
 accepted requirement.
 
-## Current routing profile and capacity
+## Current billable-execution boundary and dormant role catalog
 
-Stable policy governs safety and contracts; the live role assignment is the machine-readable
-[`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json).
-The compiler validates the catalog and supported efforts before dispatch. Its current roles
-are `gpt-5.6-sol` at High as orchestrator, `gpt-5.6-terra` at Max as the sole writer,
-`gpt-5.6-luna` at Max as the durable read-only worker, and
-`openrouter/stealth/ox-alpha` at High only as an eligible ephemeral read-only worker.
+The active machine-readable execution boundary is
+[`manual-codex-execution-gate.json`](../automation/codex-model-routing/manual-codex-execution-gate.json).
+The local guard and permit are the runtime enforcement layer. The role catalog in
+[`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json)
+is retained only to identify an exact model and reasoning level after Earl has created
+a new manual permit. It cannot authorize dispatch.
 
 ```text
-ONE TERRA WRITER PLUS TWO READ-ONLY WORKERS BY DEFAULT
-NORMAL ADAPTIVE CAPACITY: ONE WRITER PLUS TWO TO FOUR READ-ONLY WORKERS
-INDEPENDENT BURST: AT MOST SIX TOTAL ACTIVE WORKERS
-OVERLAPPING WRITERS: ONE
-RECURSIVE WORKER SPAWNING: DISABLED
-ORDINARY DUPLICATE WORK: PROHIBITED
+DEFAULT BILLABLE PROCESSES: 0
+MANUALLY PERMITTED PRIMARY PROCESSES: AT MOST 1
+CHILDREN OR SUBAGENTS: 0
+BACKGROUND CONTINUATION: DISABLED
+AUTOMATIC FALLBACK: DISABLED
+RECURSIVE SPAWNING: DISABLED
+DUPLICATE ORDINARY WORK: PROHIBITED
 ```
 
-Workers are read-only, non-delegating, and use the shared Luna/Ox contract. Terra uses the
-bounded writer contract. The default is one Terra writer plus two read-only workers. The parent validates explicit ownership, no shared-state conflict,
-context envelope, and a stop condition before any dispatch. Independent review remains
-risk-triggered, not a routine parallel lane.
+A4's historical role identities remain Sol/High as orchestrator, Terra/Max as writer,
+Luna/Max as durable read-only role, and eligible Ox/High as ephemeral read-only role.
+A4's former worker counts and Ox-to-Luna fallback are inactive. When an Ox route becomes
+unavailable or fails, record that state, stop, and require a new manual permit for any
+Luna run. Never substitute or silently fall back under the original approval.
 
-Ox is used only when its provider is available, prompt and completion prices are exactly
-zero, health is acceptable, and the data classification is suitable. Cache that verdict at
-the profile's bounded run/session cadence. On one Ox failure, mark it ineligible for that
-run and fail over once to Luna with the same contract; never retry-loop. The system remains
-fully usable with Ox disabled. `deepseek-v4-pro` and `deepseek/deepseek-v4-pro` are disabled
-and may not appear in active or fallback routing.
+The compiler may return `STOP` for a green no-execution check while the usage lock is
+closed. Every `ROUTE` result requires a fresh exact permit and records that the compiler
+is non-dispatching.
 
 ## Context envelope
 

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "policy_id": "TOKEN-OPT-001-A6",
+  "default_state": "LOCKED",
+  "manual_only": true,
+  "permit_path": "C:\\Users\\adria\\.codex\\usage-guard\\permit.json",
+  "allowed_origins": [
+    "manual_user"
+  ],
+  "prohibited_origins": [
+    "ChatGPT_Web",
+    "Astral_Bridge",
+    "automation",
+    "scheduled_task",
+    "background_agent"
+  ],
+  "require_new_per_run": true,
+  "require_interactive_challenge": true,
+  "require_exact_purpose": true,
+  "max_processes": 1,
+  "max_children": 0,
+  "allow_subagents": false,
+  "background_continuation": false,
+  "automatic_fallback": false,
+  "wildcard_model_or_reasoning": false,
+  "route_compiler_is_dispatcher": false,
+  "infrastructure_allowlist": [
+    "codex app-server",
+    "Astral deterministic tools",
+    "ChatGPT tunnel",
+    "Codex Router",
+    "connector health checks"
+  ],
+  "guard_task": "Earl Codex Usage Guard",
+  "status_command": "C:\\Users\\adria\\.codex\\usage-guard\\Get-CodexUsageStatus.ps1",
+  "enable_command": "C:\\Users\\adria\\.codex\\usage-guard\\Enable-CodexUsage.ps1",
+  "disable_command": "C:\\Users\\adria\\.codex\\usage-guard\\Disable-CodexUsage.ps1"
+}

@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
-  "profile_id": "TOKEN-OPT-001-A4-current",
+  "schema_version": 2,
+  "profile_id": "TOKEN-OPT-001-A6-current",
   "policy_id": "TOKEN-OPT-001",
-  "accepted_amendment": "TOKEN-OPT-001-A4",
-  "last_reviewed": "2026-08-24",
+  "accepted_amendment": "TOKEN-OPT-001-A6",
+  "last_reviewed": "2026-08-25",
   "catalog": {
     "required_models": [
       {
@@ -43,7 +43,7 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "max",
       "read_only": false,
-      "child_eligible": true,
+      "child_eligible": false,
       "contract": "contracts/terra-writer-contract.json"
     },
     "read_only_worker": {
@@ -59,12 +59,13 @@
     }
   },
   "fallbacks": {
-    "ox": [
-      "gpt-5.6-luna"
-    ],
+    "ox": [],
     "forbidden": [
       "deepseek-v4-pro",
       "deepseek/deepseek-v4-pro"
+    ],
+    "historical_ox": [
+      "gpt-5.6-luna"
     ]
   },
   "ox_eligibility": {
@@ -79,7 +80,7 @@
       "internal",
       "non_sensitive"
     ],
-    "failure_behavior": "mark_ineligible_for_run_then_fail_over_once_to_luna_without_retry"
+    "failure_behavior": "mark_ineligible_then_stop_and_require_new_manual_permit"
   },
   "concurrency": {
     "max_overlapping_writers": 1,
@@ -89,7 +90,8 @@
     "independent_burst_total_workers_max": 6,
     "recursive_worker_spawning": false,
     "ordinary_duplicate_work": "prohibited",
-    "stop_when_green": true
+    "stop_when_green": true,
+    "status": "HISTORICAL_A4_REFERENCE_ONLY"
   },
   "context_envelope": {
     "dispatch_seed_tokens_max": 12000,
@@ -127,5 +129,18 @@
     "window_days": 7,
     "quality_claim_rule": "compare_only_observed_quality_evidence",
     "quota_metric": "native_weighted_quota"
+  },
+  "role_catalog_status": "DORMANT_REFERENCE_ONLY",
+  "execution_boundary": {
+    "policy_id": "TOKEN-OPT-001-A6",
+    "gate_path": "manual-codex-execution-gate.json",
+    "default_state": "LOCKED",
+    "manual_only": true,
+    "max_processes": 1,
+    "max_children": 0,
+    "allow_subagents": false,
+    "background_continuation": false,
+    "automatic_fallback": false,
+    "route_compiler_is_dispatcher": false
   }
 }

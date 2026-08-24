@@ -199,17 +199,19 @@ if (-not [string]::IsNullOrWhiteSpace($WorktreeRoot)) {
         $newGroup = [pscustomobject]@{
             id = $groupId
             root = $WorktreeRoot
+            anchor_root = $ProjectRoot
             repository = if ([string]::IsNullOrWhiteSpace($Repository)) { $null } else { $Repository }
             extension_source_id = $ExtensionSourceId
             backup_root = (Join-Path $BackupRoot 'worktrees')
             required = $false
-            discovery = 'immediate-child-git-roots-only'
+            discovery = 'authoritative-anchor-git-worktree-list'
             unknown_non_git_children = 'ignored_and_preserved'
         }
         $registry.managed_worktree_groups = @($registry.managed_worktree_groups) + @($newGroup)
     }
     else {
         Assert-Bootstrap ([IO.Path]::GetFullPath([string]$group.root).ToLowerInvariant() -eq $WorktreeRoot.ToLowerInvariant()) 'existing worktree group has a different root'
+        Assert-Bootstrap ([IO.Path]::GetFullPath([string]$group.anchor_root).ToLowerInvariant() -eq $ProjectRoot.ToLowerInvariant()) 'existing worktree group has a different anchor root'
         $worktreeAction = 'MATCH'
     }
 }

@@ -1,0 +1,166 @@
+{
+    "schema_version":  1,
+    "change_id":  "TOKEN-OPT-001-A6",
+    "generated_at":  "2026-08-24T17:13:58.6938361Z",
+    "backup_root":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z",
+    "baseline":  {
+                     "head":  "e1d4bdbd8a43937a6ef0d87fd66a117249d5c69c",
+                     "branch":  "governance/agents-consolidation-002",
+                     "upstream":  "origin/governance/agents-consolidation-002",
+                     "divergence":  "0 0"
+                 },
+    "contained_process":  {
+                              "pid":  26800,
+                              "command_class":  "codex_exec",
+                              "model":  "gpt-5.6-terra",
+                              "reasoning":  "max",
+                              "started_local":  "2026-08-25T00:35:57+08:00",
+                              "terminated":  true,
+                              "app_servers_preserved":  2
+                          },
+    "files":  [
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\.codex\\CURRENT.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_.codex_CURRENT.md",
+                      "bytes":  2481,
+                      "sha256":  "6653e80332ce0f2c900d028309462c9a0a849ad1c5a992fd7a2913a07faf6441",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\governance\\agents\\specs\\TOKEN-OPT-001-A5.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_governance_agents_specs_TOKEN-OPT-001-A5.md",
+                      "bytes":  6125,
+                      "sha256":  "26506857adafe95f523aa927a4562034d20a5b10a615053f30ff4012f3f96843",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\README.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_README.md",
+                      "bytes":  4731,
+                      "sha256":  "b3e4605d2ec4771ebb0fa5945d6d7ef1089f3e7decbfbcd0c02bd9434d22ffe1",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\RegisteredTargetDiscovery.psm1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_RegisteredTargetDiscovery.psm1",
+                      "bytes":  15021,
+                      "sha256":  "6f14c51a0772602e05df18884a3db939581d64b49aaf9b9a40e233ac1cc7e532",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\bootstrap-project.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_bootstrap-project.ps1",
+                      "bytes":  13311,
+                      "sha256":  "5959eed23c6a59f8f3db046ea76071768f6ed67ed45b6b953f8e2b52ef810e76",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\inventory-agents.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_inventory-agents.ps1",
+                      "bytes":  7243,
+                      "sha256":  "28bb491e9a58873b265c3355f4ee8f062f93ffb34c5b7d6ff8fe513314a04fad",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\sync-agents.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_sync-agents.ps1",
+                      "bytes":  19375,
+                      "sha256":  "e82e61b79937e28ba5b85783f78518128b4ca3cf68b3cdd06c6f85c4d8532a70",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\verify-agents.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_verify-agents.ps1",
+                      "bytes":  10760,
+                      "sha256":  "6e39f4f095610b8a4b447f8eb2905a979a7c871a8f812be750cef273b975775c",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\agents-governance\\test-a5-governance.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_agents-governance_test-a5-governance.ps1",
+                      "bytes":  7094,
+                      "sha256":  "0adadf5bfa15c6e831bf256575f18b8db5c6364747e9c1b80a7123dea2871ceb",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\governance\\agents\\AGENTS_REGISTRY.json",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_governance_agents_AGENTS_REGISTRY.json",
+                      "bytes":  20808,
+                      "sha256":  "f291a47e3ab82705be359788ed0a962549bebfa2bbf3a8a9e1772bd5608dae07",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_AGENTS.md",
+                      "bytes":  21645,
+                      "sha256":  "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\protocols\\CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_protocols_CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
+                      "bytes":  19155,
+                      "sha256":  "7291ddf9e62d5edceec190d2c16cf3d61e2a181b50e9ab49f3ee7003638e6b57",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\codex-model-routing\\token-optimization.policy.json",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_codex-model-routing_token-optimization.policy.json",
+                      "bytes":  15273,
+                      "sha256":  "c88d04040c028cd4b13c1634b5833546f89c02459aba5a86eed5a87066a2200f",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\codex-model-routing\\current-routing-profile.json",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_codex-model-routing_current-routing-profile.json",
+                      "bytes":  3199,
+                      "sha256":  "9623de73db0f8469b5329214c35ee435bacf23b1c18e433ee43b9fd4792221a3",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\automation\\codex-model-routing\\route-compiler.ps1",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_automation_codex-model-routing_route-compiler.ps1",
+                      "bytes":  22684,
+                      "sha256":  "d2da77998d4db15fc01a04a29662263b010f16d49bbe8747d1acb7e29c6db9fc",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\governance\\agents\\extensions\\global-codex.PROJECT_POLICY.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Documents_Codex_GitHub_gpt-context-vault_governance_agents_extensions_global-codex.PROJECT_POLICY.md",
+                      "bytes":  4834,
+                      "sha256":  "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\adria\\.codex\\config.toml",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Users_adria_.codex_config.toml",
+                      "bytes":  12126,
+                      "sha256":  "3c3435e0683113c78a918977760d22618dbca97b6140bbc68d81301e15e3722a",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\adria\\.codex\\codex-router\\multi-agent-settings.json",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Users_adria_.codex_codex-router_multi-agent-settings.json",
+                      "bytes":  540,
+                      "sha256":  "970ca6e71abddb05f74b5732f0301d5400c970e18b08a329e18028cf364ceff8",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\adria\\.codex\\AGENTS.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Users_adria_.codex_AGENTS.md",
+                      "bytes":  22288,
+                      "sha256":  "01080bac13e559380ced3ba4efa4e82def3cb94d08a128480ff33c08dcab3d06",
+                      "equality":  true
+                  },
+                  {
+                      "source":  "C:\\Users\\adria\\.codex\\.agents\\PROJECT_POLICY.md",
+                      "backup":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-20260824T171357Z\\Users_adria_.codex_.agents_PROJECT_POLICY.md",
+                      "bytes":  4834,
+                      "sha256":  "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+                      "equality":  true
+                  }
+              ],
+    "preserved_a5_sha256":  "26506857adafe95f523aa927a4562034d20a5b10a615053f30ff4012f3f96843",
+    "a6_sha256":  "7036975cc0ef3ec3580f060c49759e8d07871f927a06f9e91674fd5d9c95de47",
+    "current_sha256":  "86322322534e58253afdcc483505fc548fea172945dcc84c1490c08005d5b02c"
+}

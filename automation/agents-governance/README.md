@@ -7,12 +7,18 @@ These scripts implement `AGENTS-CONSOLIDATION-001` and the active
 
 - `sync-agents.ps1` is dry-run unless `-Apply` is supplied.
 - Only registered eligible paths are considered.
-- Registered worktree groups discover immediate child Git roots deterministically;
-  non-Git children are ignored and preserved, and failed Git identity is `BLOCKED`.
+- Registered worktree groups use their explicit authoritative anchor root's
+  `git worktree list --porcelain` output, then include only registered immediate
+  children of the group root. Stale `.git` marker directories are ignored and
+  preserved; missing roots or anchors are `BLOCKED`.
 - Candidate worktrees require `-IncludeCandidateTargets`.
 - Blocked, historical, worktree-derived, stale, backup/test, and third-party paths are never synchronized.
 - Unexpected replica or extension pre-change hashes stop the operation.
-- An active `.codex\CURRENT.md` writer blocks synchronization and is reported as `BLOCKED` by default verification; use `-FailOnBlocked` only for a strict all-target gate.
+- An explicit `.codex\CURRENT.md` `ACTIVE_WRITER` blocks synchronization. A
+  terminal CLOSED/COMPLETE legacy pointer without that field is no-writer; an
+  active or malformed pointer without it remains `BLOCKED`. Unrelated Git dirty
+  work also blocks synchronization; only managed policy files and `.ai-bridge/`
+  generated residue are permitted.
 - Eligible non-Git replica and extension files receive timestamped, hash-verified backups when they already exist.
 - Every `backup_required` target, including registered project/worktree roots, receives
   a timestamped, hash-verified backup before noncanonical bytes are replaced.
@@ -39,8 +45,9 @@ under `governance\agents\inventory\`.
 ## Future worktree inheritance
 
 Add an owned worktree parent only through `managed_worktree_groups` in the canonical
-registry. The group identifies its exact parent, project extension source, rollback
-root, and required state. New immediate child Git roots then appear automatically in
+registry. The group identifies its exact parent, authoritative repository anchor,
+project extension source, rollback root, and required state. Only worktrees reported
+by that anchor's Git worktree list and directly under the group parent appear in
 dry-run and verification as `MATCH`, `DRIFT`, `MISSING`, or `BLOCKED`; apply remains
 explicit and idempotent. Do not register a broad mixed vendor/package root.
 

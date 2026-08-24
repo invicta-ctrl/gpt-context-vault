@@ -1,24 +1,32 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "policy_id": "TOKEN-OPT-001",
   "accepted_amendments": [
     "TOKEN-OPT-001-A1",
     "TOKEN-OPT-001-A2",
     "TOKEN-OPT-001-A3",
-    "TOKEN-OPT-001-A4"
+    "TOKEN-OPT-001-A4",
+    "TOKEN-OPT-001-A5",
+    "TOKEN-OPT-001-A6"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
     "ordinary_reasoning_effort": "high",
-    "max_concurrent_threads_per_session": 6,
-    "default_read_only_workers": 2,
-    "max_adaptive_read_only_workers": 4,
-    "max_total_active_workers": 6,
+    "max_concurrent_threads_per_session": 1,
+    "default_read_only_workers": 0,
+    "max_adaptive_read_only_workers": 0,
+    "max_total_active_workers": 1,
     "max_overlapping_writers": 1,
     "recursive_worker_spawning": false,
     "routine_independent_review": false,
-    "routine_full_suite_after_small_module": false
+    "routine_full_suite_after_small_module": false,
+    "agents_enabled": false,
+    "multi_agent_v2_enabled": false,
+    "max_children": 0,
+    "allow_subagents": false,
+    "background_continuation": false,
+    "automatic_fallback": false
   },
   "current_routing_v2": {
     "profile_path": "automation/codex-model-routing/current-routing-profile.json",
@@ -41,14 +49,16 @@
         "reasoning_effort": "high",
         "eligibility": "provider_available_and_zero_prompt_and_zero_completion_and_acceptable_health_and_suitable_data"
       },
-      "ox_fallback": "mark_ineligible_for_run_then_fail_over_once_to_luna_without_retry"
+      "ox_fallback": "DISABLED_REQUIRE_NEW_MANUAL_PERMIT"
     },
     "disabled_models": [
       "deepseek-v4-pro",
       "deepseek/deepseek-v4-pro"
     ],
     "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
-    "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json"
+    "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json",
+    "status": "DORMANT_REFERENCE_ONLY",
+    "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json"
   },
   "context_envelope_v2": {
     "dispatch_seed_tokens_max": 12000,
@@ -238,7 +248,8 @@
       "token_quantity_saved",
       "compaction_preserved_every_semantic_detail",
       "mcp_token_consumption"
-    ]
+    ],
+    "billable_codex_execution_override": "DISABLED_BY_TOKEN_OPT_001_A6"
   },
   "behavior_contract": {
     "small_bug": {
@@ -525,6 +536,72 @@
     },
     "a4_profile_replacement": {
       "action": "REPLACE_PROFILE_WITHOUT_GLOBAL_POLICY_REWRITE"
+    },
+    "a6_missing_manual_permit": {
+      "action": "REJECT",
+      "reason": "CODEX_USAGE_LOCKED"
+    },
+    "a6_nonmanual_origin": {
+      "action": "REJECT",
+      "reason": "MANUAL_USER_ORIGIN_REQUIRED"
+    },
+    "a6_second_process": {
+      "action": "REJECT",
+      "reason": "SECOND_PROCESS_DISABLED"
+    },
+    "a6_child_or_subagent": {
+      "action": "REJECT",
+      "max_children": 0,
+      "allow_subagents": false
+    },
+    "a6_background_continuation": {
+      "action": "REJECT",
+      "reason": "BACKGROUND_CONTINUATION_DISABLED"
+    },
+    "a6_automatic_fallback": {
+      "action": "REJECT",
+      "reason": "AUTOMATIC_FALLBACK_DISABLED"
+    },
+    "a6_exact_permit": {
+      "action": "VALIDATE_ONLY",
+      "exact_fields": [
+        "purpose",
+        "model",
+        "reasoning",
+        "role"
+      ],
+      "dispatcher": false
+    },
+    "a6_green_locked_check": {
+      "action": "STOP",
+      "model_execution": false
     }
+  },
+  "billable_execution_boundary": {
+    "policy_id": "TOKEN-OPT-001-A6",
+    "gate_path": "automation/codex-model-routing/manual-codex-execution-gate.json",
+    "guard_source": "automation/codex-usage-guard",
+    "guard_task": "Earl Codex Usage Guard",
+    "default_state": "LOCKED",
+    "manual_only": true,
+    "allowed_origins": [
+      "manual_user"
+    ],
+    "prohibited_origins": [
+      "ChatGPT_Web",
+      "Astral_Bridge",
+      "automation",
+      "scheduled_task",
+      "background_agent"
+    ],
+    "require_new_per_run": true,
+    "exact_purpose_model_reasoning_role": true,
+    "max_processes": 1,
+    "max_children": 0,
+    "allow_subagents": false,
+    "background_continuation": false,
+    "automatic_fallback": false,
+    "route_compiler_is_dispatcher": false,
+    "absolutely_necessary_behavior": "STOP_AND_ASK_EARL"
   }
 }

@@ -1,0 +1,15 @@
+{
+    "status":  "PASS",
+    "task_state":  "Running",
+    "watcher_process_ids":  [
+                                13252
+                            ],
+    "app_server_process_ids":  [
+                                   8272,
+                                   28992
+                               ],
+    "non_app_server_codex_count":  0,
+    "install_root":  "C:\\Users\\adria\\.codex\\usage-guard",
+    "backup_root":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-GUARD-20260824T172717Z",
+    "manifest":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-GUARD-20260824T172717Z\\install-manifest.json"
+}

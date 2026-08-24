@@ -7,7 +7,7 @@ canonical_repository: invicta-ctrl/gpt-context-vault
 canonical_relative_path: AGENTS.md
 managed_replica_policy: byte-identical-generated
 project_extension_path: .agents/PROJECT_POLICY.md
-last_reviewed: 2026-08-24
+last_reviewed: 2026-08-25
 ---
 
 # Universal Agent Governance
@@ -108,10 +108,44 @@ Do not repeat expensive reads, tests, builds, reviews, migrations, deployments, 
 
 The canonical token and context-efficiency policy is [protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md). It governs ordinary reasoning, delegation, evidence reuse, review, verification escalation, abnormal-route reasons, and stop-when-green behavior. Project rules may be stricter but may not weaken safety.
 
-Current model-role, context-envelope, and fallback enforcement is the dedicated
-[`automation/codex-model-routing/current-routing-profile.json`](automation/codex-model-routing/current-routing-profile.json)
-plus its deterministic compiler; do not substitute disabled models or bypass its writer,
-read-only-worker, receipt, or stop-when-green contracts.
+Current role metadata remains in
+[`automation/codex-model-routing/current-routing-profile.json`](automation/codex-model-routing/current-routing-profile.json),
+but it is dormant selection reference only. Billable Codex execution is governed by
+[`automation/codex-model-routing/manual-codex-execution-gate.json`](automation/codex-model-routing/manual-codex-execution-gate.json)
+and the local usage guard; routing metadata never authorizes model execution.
+
+## Billable Codex execution boundary
+
+`TOKEN-OPT-001-A6` is the active account-wide execution boundary.
+
+```text
+BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
+CHATGPT WEB SELF-AUTHORIZATION: PROHIBITED
+ASTRAL BRIDGE SELF-AUTHORIZATION: PROHIBITED
+AUTOMATED OR SCHEDULED CODEX RUNS: 0
+BACKGROUND CODEX CONTINUATIONS: 0
+CODEX CHILDREN OR SUBAGENTS: 0
+AUTOMATIC MODEL FALLBACK: DISABLED
+ONE NEW MANUAL PERMIT: AT MOST ONE EXACT PROCESS
+APP-SERVER INFRASTRUCTURE: ALLOWED
+```
+
+- ChatGPT Web, Astral Bridge, automations, scheduled tasks, watchdogs, prompts, prior
+  continuations, and accepted routing profiles may not start, resume, retry, delegate,
+  or fall back to a Codex model.
+- “Absolutely necessary” means stop and ask Earl for a new per-run approval. It is
+  never self-authorization.
+- A valid approval must be created manually through the interactive local permit
+  command and must name one exact purpose, model, reasoning level, and role. The
+  permit is single-use, time-bounded, authorizes one primary process, and allows zero
+  children, retries, background continuations, or fallback processes.
+- Direct deliberate interaction Earl starts inside Codex Desktop is Earl manually
+  starting that specific task. Always-on `codex app-server` listeners, the local
+  tunnel, router, connector health checks, and deterministic Astral tools may remain
+  running because infrastructure availability is not permission to run a model.
+- The deterministic route compiler is a selector and validator only. It never
+  dispatches Codex. A missing, expired, consumed, mismatched, non-manual, or broad
+  permit is a hard stop.
 
 ## Project incremental-context rule
 
@@ -218,7 +252,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Apply the current TOKEN-OPT routing profile: one Terra writer plus two read-only workers by default, two to four read-only workers adaptively, at most six total active workers, one overlapping writer, no recursive worker spawning, and no duplicate ordinary work. A1's at-most-one read-only scout remains a specialized current/next-slice rule.
+- Apply the A6 execution boundary: zero Codex children or subagents, zero automated or background Codex runs, zero automatic fallback, and at most one exact manually permitted primary process. A1/A4 worker and scout capacities remain historical selection references and do not authorize execution.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.
@@ -381,6 +415,7 @@ Stop the affected operation when:
 - a secret or unnecessary private value is detected;
 - a migration, deployment, destructive operation, or external write lacks exact authority;
 - rollback cannot be demonstrated;
+- billable Codex work lacks a fresh exact manual permit or originates from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, continuation, or delegation;
 - verification fails;
 - the accepted work unit is complete.
 

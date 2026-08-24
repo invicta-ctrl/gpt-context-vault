@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "change_id": "TOKEN-OPT-001-A6",
+  "changed_at": "2026-08-24T17:32:03.751587+00:00",
+  "status": "PASS",
+  "catalog": "C:\\Users\\adria\\.codex\\codex-router\\merged-models.json",
+  "backup": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-CATALOG-20260824T173203Z\\merged-models.json",
+  "before_sha256": "67752b3fbc5b59c8fe2c1115a4bfde48f3a4f0e733c02d18990bf85b88fae58d",
+  "backup_sha256": "67752b3fbc5b59c8fe2c1115a4bfde48f3a4f0e733c02d18990bf85b88fae58d",
+  "after_sha256": "33a24c125f29a3668224342b4abf4f20a15cf362d7c4e24e40af6c73ce6041cb",
+  "model_count": 14,
+  "prior_v2_slugs": [
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-5.6-luna"
+  ],
+  "remaining_v2_slugs": [],
+  "enabled_child_models": [],
+  "codex_invoked": false,
+  "model_probe_performed": false
+}

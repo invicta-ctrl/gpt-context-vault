@@ -2,6 +2,8 @@
 param(
     [string]$ProfilePath = (Join-Path $PSScriptRoot 'current-routing-profile.json'),
     [string]$CatalogPath = "$env:USERPROFILE\.codex\codex-router\merged-models.json",
+    [string]$ExecutionGatePath = (Join-Path $PSScriptRoot 'manual-codex-execution-gate.json'),
+    [string]$ManualPermitPath = "$env:USERPROFILE\.codex\usage-guard\permit.json",
     [Parameter(Mandatory)][string]$RequestPath,
     [string]$StatePath,
     [string]$TelemetryPath,
@@ -46,6 +48,121 @@ function Read-JsonRequired {
     }
     catch {
         throw "ROUTE_VALIDATION: $Label is not valid JSON: $Path"
+    }
+}
+
+function Get-NormalizedPath {
+    param([string]$Path)
+    try { return [IO.Path]::GetFullPath($Path).TrimEnd([IO.Path]::DirectorySeparatorChar) }
+    catch { throw "ROUTE_VALIDATION: MANUAL_PERMIT_PATH_INVALID" }
+}
+
+function Get-ManualExecutionGate {
+    param([string]$Path)
+    $gate = Read-JsonRequired -Path $Path -Label 'manual Codex execution gate'
+    Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -eq 1) 'MANUAL_EXECUTION_GATE_INVALID'
+    Assert-Route ([string](Get-OptionalProperty $gate 'policy_id' '') -eq 'TOKEN-OPT-001-A6') 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
+    Assert-Route ([string](Get-OptionalProperty $gate 'default_state' '') -eq 'LOCKED') 'MANUAL_EXECUTION_GATE_NOT_LOCKED'
+    Assert-Route ([bool](Get-OptionalProperty $gate 'manual_only' $false)) 'MANUAL_EXECUTION_GATE_NOT_MANUAL_ONLY'
+    Assert-Route ([int](Get-OptionalProperty $gate 'max_processes' 0) -eq 1) 'MANUAL_EXECUTION_GATE_PROCESS_LIMIT_INVALID'
+    Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
+    Assert-Route (-not [bool](Get-OptionalProperty $gate 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $gate 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $gate 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $gate 'route_compiler_is_dispatcher' $true)) 'ROUTE_COMPILER_MUST_NOT_DISPATCH'
+    return $gate
+}
+
+function Read-ManualPermit {
+    param([string]$Path)
+    Assert-Route (Test-Path -LiteralPath $Path -PathType Leaf) 'CODEX_USAGE_LOCKED'
+    try { return (Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json) }
+    catch { throw "ROUTE_VALIDATION: MANUAL_PERMIT_INVALID" }
+}
+
+function Get-NonInfrastructureCodexProcesses {
+    try {
+        return @(Get-CimInstance Win32_Process -Filter "Name='codex.exe'" -ErrorAction Stop | Where-Object {
+            [string]$_.CommandLine -notmatch '(?i)(^|\s)app-server(?:\s|$)'
+        })
+    }
+    catch { throw "ROUTE_VALIDATION: CODEX_PROCESS_STATE_UNAVAILABLE" }
+}
+
+function Assert-ManualExecutionPreconditions {
+    param(
+        $Gate,
+        $Request,
+        [string]$Role,
+        [int]$ActiveWriters,
+        [int]$ActiveReadOnly,
+        [int]$ActiveTotal,
+        [string]$PermitPath
+    )
+
+    $configuredPermitPath = [string](Get-OptionalProperty $Gate 'permit_path' '')
+    Assert-Route (-not [string]::IsNullOrWhiteSpace($configuredPermitPath)) 'MANUAL_PERMIT_PATH_INVALID'
+    Assert-Route ((Get-NormalizedPath $configuredPermitPath) -ieq (Get-NormalizedPath $PermitPath)) 'MANUAL_PERMIT_PATH_MISMATCH'
+
+    Assert-Route ([string](Get-OptionalProperty $Request 'execution_origin' '') -eq 'manual_user') 'MANUAL_USER_ORIGIN_REQUIRED'
+    Assert-Route ([bool](Get-OptionalProperty $Request 'manual_interactive' $false)) 'MANUAL_INTERACTIVE_APPROVAL_REQUIRED'
+    foreach ($priorAuthorityFlag in @('prior_owner_approval','prior_accepted_specification','autonomous_completion','absolutely_necessary')) {
+        Assert-Route (-not [bool](Get-OptionalProperty $Request $priorAuthorityFlag $false)) 'MANUAL_CODEX_EXECUTION_REQUIRED'
+    }
+    Assert-Route ($Request.PSObject.Properties.Name -contains 'subagent_requested') 'SUBAGENTS_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $Request 'subagent_requested' $true)) 'SUBAGENTS_DISABLED'
+    Assert-Route ($Request.PSObject.Properties.Name -contains 'background_continuation') 'BACKGROUND_CONTINUATION_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $Request 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
+    Assert-Route ($Request.PSObject.Properties.Name -contains 'automatic_fallback') 'AUTOMATIC_FALLBACK_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $Request 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
+
+    Assert-Route ($ActiveWriters -eq 0 -and $ActiveReadOnly -eq 0 -and $ActiveTotal -eq 0) 'SECOND_PROCESS_DISABLED'
+    Assert-Route (@(Get-NonInfrastructureCodexProcesses).Count -eq 0) 'SECOND_PROCESS_DISABLED'
+
+    $permit = Read-ManualPermit -Path $PermitPath
+    Assert-Route ([string](Get-OptionalProperty $permit 'state' '') -eq 'ACTIVE') 'CODEX_USAGE_LOCKED'
+    Assert-Route ([string](Get-OptionalProperty $permit 'origin' '') -eq 'manual_user') 'MANUAL_USER_ORIGIN_REQUIRED'
+    Assert-Route ([bool](Get-OptionalProperty $permit 'manual_interactive' $false)) 'MANUAL_INTERACTIVE_APPROVAL_REQUIRED'
+    Assert-Route ([int](Get-OptionalProperty $permit 'max_processes' 0) -eq 1) 'MANUAL_PERMIT_PROCESS_LIMIT_INVALID'
+    Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 0) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
+    Assert-Route (-not [bool](Get-OptionalProperty $permit 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $permit 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $permit 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
+    Assert-Route (-not [bool](Get-OptionalProperty $permit 'consumed' $true)) 'MANUAL_PERMIT_ALREADY_CONSUMED'
+
+    $approvalId = [string](Get-OptionalProperty $Request 'approval_id' '')
+    Assert-Route (-not [string]::IsNullOrWhiteSpace($approvalId)) 'MANUAL_PERMIT_APPROVAL_MISMATCH'
+    Assert-Route ($approvalId -eq [string](Get-OptionalProperty $permit 'approval_id' '')) 'MANUAL_PERMIT_APPROVAL_MISMATCH'
+
+    $requestedPurpose = [string](Get-OptionalProperty $Request 'purpose' '')
+    $permittedPurpose = [string](Get-OptionalProperty $permit 'purpose' '')
+    Assert-Route (-not [string]::IsNullOrWhiteSpace($requestedPurpose)) 'MANUAL_PERMIT_PURPOSE_MISMATCH'
+    Assert-Route ($requestedPurpose -eq $permittedPurpose) 'MANUAL_PERMIT_PURPOSE_MISMATCH'
+
+    $allowedRoles = @((Get-OptionalProperty $permit 'allowed_roles' @()) | ForEach-Object { [string]$_ })
+    Assert-Route ($allowedRoles -contains $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
+    Assert-Route ([string](Get-OptionalProperty $permit 'allowed_role' '') -eq $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
+
+    $allowedModel = [string](Get-OptionalProperty $permit 'allowed_model' '')
+    $allowedReasoning = [string](Get-OptionalProperty $permit 'allowed_reasoning' '')
+    Assert-Route ($allowedModel -notin @('', 'default', '*')) 'MANUAL_PERMIT_MODEL_MISMATCH'
+    Assert-Route ($allowedReasoning -notin @('', 'default', '*')) 'MANUAL_PERMIT_REASONING_MISMATCH'
+
+    $expiresText = [string](Get-OptionalProperty $permit 'expires_at' '')
+    try { $expiresAt = [DateTimeOffset]::Parse($expiresText, [Globalization.CultureInfo]::InvariantCulture) }
+    catch { throw "ROUTE_VALIDATION: MANUAL_PERMIT_INVALID" }
+    Assert-Route ($expiresAt -gt [DateTimeOffset]::UtcNow) 'MANUAL_PERMIT_EXPIRED'
+    return $permit
+}
+
+function Assert-ManualSelectedRoute {
+    param($Permit, $Request, [string]$SelectedModel, [string]$SelectedEffort, [string]$FallbackReason)
+    Assert-Route ([string]::IsNullOrWhiteSpace($FallbackReason)) 'AUTOMATIC_FALLBACK_DISABLED'
+    Assert-Route ([string](Get-OptionalProperty $Permit 'allowed_model' '') -eq $SelectedModel) 'MANUAL_PERMIT_MODEL_MISMATCH'
+    Assert-Route ([string](Get-OptionalProperty $Permit 'allowed_reasoning' '') -eq $SelectedEffort) 'MANUAL_PERMIT_REASONING_MISMATCH'
+    $requestedModel = [string](Get-OptionalProperty $Request 'requested_model' '')
+    if (-not [string]::IsNullOrWhiteSpace($requestedModel)) {
+        Assert-Route ($requestedModel -eq $SelectedModel) 'MANUAL_PERMIT_MODEL_MISMATCH'
     }
 }
 
@@ -286,13 +403,15 @@ function Write-RouteTelemetry {
 
 $profile = Read-JsonRequired -Path $ProfilePath -Label 'routing profile'
 $catalog = Read-JsonRequired -Path $CatalogPath -Label 'model catalog'
+$executionGate = Get-ManualExecutionGate -Path $ExecutionGatePath
 $request = Read-JsonRequired -Path $RequestPath -Label 'route request'
-Assert-Route ([int]$profile.schema_version -eq 1) 'unsupported routing profile schema'
+Assert-Route ([int]$profile.schema_version -in @(1, 2)) 'unsupported routing profile schema'
 Assert-CatalogContract -Profile $profile -Catalog $catalog
 
 $role = [string](Get-OptionalProperty $request 'role' '')
 Assert-Route ($role -in @('orchestrator', 'writer', 'read_only_worker')) 'role must be orchestrator, writer, or read_only_worker'
 $requestedModel = [string](Get-OptionalProperty $request 'requested_model' '')
+$acceptanceGreen = [bool](Get-OptionalProperty $request 'acceptance_green' $false)
 Assert-Route ($requestedModel -notin @($profile.catalog.disabled_models | ForEach-Object { [string]$_ })) "requested model is disabled: $requestedModel"
 
 $seedTokens = Get-Integer -Value (Get-OptionalProperty $request 'dispatch_seed_tokens' 0) -Label 'dispatch_seed_tokens'
@@ -315,6 +434,10 @@ Assert-Route (-not [bool](Get-OptionalProperty $request 'spawned_by_worker' $fal
 $activeWriters = Get-Integer -Value (Get-OptionalProperty $request 'active_writers' 0) -Label 'active_writers'
 $activeReadOnly = Get-Integer -Value (Get-OptionalProperty $request 'active_read_only_workers' 0) -Label 'active_read_only_workers'
 $activeTotal = Get-Integer -Value (Get-OptionalProperty $request 'active_total_workers' 0) -Label 'active_total_workers'
+$manualPermit = $null
+if (-not $acceptanceGreen) {
+    $manualPermit = Assert-ManualExecutionPreconditions -Gate $executionGate -Request $request -Role $role -ActiveWriters $activeWriters -ActiveReadOnly $activeReadOnly -ActiveTotal $activeTotal -PermitPath $ManualPermitPath
+}
 $prospective = 1
 if ($role -eq 'writer') {
     Assert-Route (($activeWriters + $prospective) -le [int]$profile.concurrency.max_overlapping_writers) 'one overlapping Terra writer maximum exceeded'
@@ -338,7 +461,7 @@ $taskId = [string](Get-OptionalProperty $request 'task_id' '')
 $sliceFingerprint = [string](Get-OptionalProperty $request 'accepted_slice_fingerprint' '')
 if ($sliceFingerprint -notmatch '^[a-f0-9]{64}$') { $sliceFingerprint = Get-StringSha256 $taskId }
 
-if ([bool](Get-OptionalProperty $request 'acceptance_green' $false)) {
+if ($acceptanceGreen) {
     if (-not [string]::IsNullOrWhiteSpace($StatePath)) { Write-JsonAtomic -Path $StatePath -Value $state }
     $stopResult = [ordered]@{
         schema_version = 1
@@ -346,6 +469,7 @@ if ([bool](Get-OptionalProperty $request 'acceptance_green' $false)) {
         reason = 'STOP_WHEN_GREEN'
         verification_reuse = $verificationReuse
         selected_model = $null
+        execution_boundary = [ordered]@{ policy_id = 'TOKEN-OPT-001-A6'; state = 'LOCKED_NO_EXECUTION'; manual_only = $true; dispatcher = $false }
     }
     $null = Write-RouteTelemetry -Path $TelemetryPath -Record ([ordered]@{
         schema_version = 1; observed_at = (Get-Date).ToUniversalTime().ToString('o'); accepted_slice_fingerprint = $sliceFingerprint
@@ -400,6 +524,10 @@ else {
     }
 }
 
+if (-not [string]::IsNullOrWhiteSpace($fallbackReason) -and -not [string]::IsNullOrWhiteSpace($StatePath)) {
+    Write-JsonAtomic -Path $StatePath -Value $state
+}
+Assert-ManualSelectedRoute -Permit $manualPermit -Request $request -SelectedModel $selectedModel -SelectedEffort $selectedEffort -FallbackReason $fallbackReason
 Assert-Route ($selectedModel -notin @($profile.catalog.disabled_models | ForEach-Object { [string]$_ })) "selected disabled model: $selectedModel"
 $materialFindings = Get-MaterialFindings -Path $FindingsPath
 if (-not [string]::IsNullOrWhiteSpace($StatePath)) { Write-JsonAtomic -Path $StatePath -Value $state }
@@ -424,6 +552,8 @@ $telemetry = [ordered]@{
     material_finding_count = @($materialFindings).Count
     native_weighted_quota = $quota
     quality_evidence = $quality
+    execution_boundary = 'MANUAL_PERMIT_VALIDATED'
+    manual_origin = $true
 }
 $telemetryWritten = Write-RouteTelemetry -Path $TelemetryPath -Record $telemetry
 $contract = if ($role -eq 'writer') { [string]$profile.roles.writer.contract } elseif ($role -eq 'read_only_worker') { [string]$profile.roles.read_only_worker.contract } else { $null }
@@ -451,6 +581,17 @@ $result = [ordered]@{
     }
     verification_reuse = $verificationReuse
     material_findings = @($materialFindings)
+    execution_boundary = [ordered]@{
+        policy_id = 'TOKEN-OPT-001-A6'
+        state = 'MANUAL_PERMIT_VALIDATED'
+        approval_id = [string]$manualPermit.approval_id
+        manual_only = $true
+        max_processes = 1
+        max_children = 0
+        background_continuation = $false
+        automatic_fallback = $false
+        dispatcher = $false
+    }
     telemetry_written = $telemetryWritten
 }
 $result | ConvertTo-Json -Depth 20

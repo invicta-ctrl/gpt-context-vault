@@ -53,16 +53,6 @@ function Test-PathWithinRoot {
     return $fullPath.StartsWith($fullRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)
 }
 
-function Get-TargetWriterState {
-    param([Parameter(Mandatory)][string]$TargetRoot)
-    $pointer = Join-Path $TargetRoot '.codex\CURRENT.md'
-    if (-not (Test-Path -LiteralPath $pointer -PathType Leaf)) { return 'NO_POINTER' }
-    $text = [IO.File]::ReadAllText($pointer)
-    $match = [regex]::Match($text, '(?m)^ACTIVE_WRITER:\s*(?<writer>[^\r\n]+)')
-    if (-not $match.Success) { return 'POINTER_WITHOUT_WRITER_FIELD' }
-    return $match.Groups['writer'].Value.Trim()
-}
-
 function Resolve-ExtensionSource {
     param(
         [Parameter(Mandatory)]$Registry,
@@ -231,7 +221,7 @@ foreach ($replica in $allReplicas) {
         continue
     }
     $writerState = Get-TargetWriterState -TargetRoot $targetRoot
-    if ($writerState -notin @('NO_POINTER', 'NONE')) {
+    if ($writerState -notin @('NO_POINTER', 'NONE', 'NONE_TERMINAL_LEGACY_POINTER')) {
         $results.Add([pscustomobject]@{
             Id = $replica.id
             Mode = $mode
@@ -245,6 +235,25 @@ foreach ($replica in $allReplicas) {
             ExtensionBackupPath = $null
             BackupExtensionSha256 = $null
             Detail = "active writer state=$writerState"
+        })
+        continue
+    }
+
+    $dirtyState = Get-TargetGitDirtyState -TargetRoot $targetRoot
+    if ($dirtyState.State -notin @('CLEAN', 'MANAGED_OR_GENERATED_ONLY', 'NON_GIT_TARGET')) {
+        $results.Add([pscustomobject]@{
+            Id = $replica.id
+            Mode = $mode
+            ReplicaAction = 'BLOCKED'
+            ExtensionAction = 'BLOCKED'
+            ActivationAction = 'BLOCKED'
+            ReplicaPath = $targetPath
+            ExtensionPath = $extensionPath
+            BackupPath = $null
+            BackupReplicaSha256 = $null
+            ExtensionBackupPath = $null
+            BackupExtensionSha256 = $null
+            Detail = "dirty state=$($dirtyState.State): $($dirtyState.Detail)"
         })
         continue
     }
@@ -264,8 +273,20 @@ foreach ($replica in $allReplicas) {
     $extensionExists = Test-Path -LiteralPath $extensionPath -PathType Leaf
     $extensionCurrentHash = if ($extensionExists) { Get-Sha256 $extensionPath } else { $null }
 
+    $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
+    $generatedDrift = Get-SupportedGeneratedReplicaDriftState -Replica $replica -ReplicaPath $targetPath -CanonicalBytes $canonicalBytes
+    $generatedDriftAccepted = $generatedDrift.State -eq 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT'
+    if ($generatedDriftAccepted) {
+        $generatedDriftDefinition = Get-OptionalProperty -Object $replica -Name 'supported_generated_drift' -Default $null
+        $requiresBackup = $null -ne $generatedDriftDefinition -and [bool](Get-OptionalProperty -Object $generatedDriftDefinition -Name 'requires_hash_verified_backup' -Default $false)
+        if (-not $requiresBackup -or -not $backupRequired) {
+            $failures.Add("$($replica.id): recognized generated drift is not backup-protected by registry")
+            continue
+        }
+    }
+
     $acceptAnyPrechange = [bool](Get-OptionalProperty -Object $replica -Name 'accept_any_prechange_with_backup' -Default $false)
-    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash -and -not $acceptAnyPrechange) {
+    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash -and -not $acceptAnyPrechange -and -not $generatedDriftAccepted) {
         $prechangeProperty = if ($mode -eq 'candidate') { 'candidate_prechange_sha256' } else { 'prechange_sha256' }
         $expected = @([string](Get-OptionalProperty -Object $replica -Name $prechangeProperty -Default ''))
         $expected += @((Get-OptionalProperty -Object $replica -Name 'allowed_prechange_sha256' -Default @()) | ForEach-Object { [string]$_ })
@@ -315,7 +336,6 @@ foreach ($replica in $allReplicas) {
     $replicaAction = Get-PlannedAction -Exists $replicaExists -CurrentHash $replicaCurrentHash -DesiredHash $canonicalHash -Applying ([bool]$Apply)
     $extensionAction = Get-PlannedAction -Exists $extensionExists -CurrentHash $extensionCurrentHash -DesiredHash $extensionSourceHash -Applying ([bool]$Apply)
     $activationAction = if ($null -ne $activationPlan) { [string]$activationPlan.Action } else { 'N/A' }
-    $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
     $backupPath = $null
     $backupReplicaHash = $null
     $extensionBackup = $null
@@ -342,7 +362,7 @@ foreach ($replica in $allReplicas) {
             BackupReplicaSha256 = $backupReplicaHash
             ExtensionBackupPath = $extensionBackup
             BackupExtensionSha256 = $backupExtensionHash
-            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction writer=$writerState"
+            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State) generated_drift=$($generatedDrift.State)"
         })
         continue
     }
@@ -410,7 +430,7 @@ foreach ($replica in $allReplicas) {
         BackupReplicaSha256 = $backupReplicaHash
         ExtensionBackupPath = $extensionBackup
         BackupExtensionSha256 = $backupExtensionHash
-        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction writer=$writerState"
+        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State) generated_drift=$($generatedDrift.State)"
     })
 }
 
