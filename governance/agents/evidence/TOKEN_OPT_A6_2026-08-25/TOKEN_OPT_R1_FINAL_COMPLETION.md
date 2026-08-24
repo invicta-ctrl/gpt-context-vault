@@ -142,3 +142,10 @@ Remaining limitation: `/api/v1/checks/connection` is the cloud-instance checker 
 ## Rollback
 
 Use the exact timestamped backup listed for the affected subsystem, then rerun its deterministic verifier before re-enabling any scheduled task or managed service. Do not restore the revoked Cognee credential. Do not restore a routing configuration that enables subagents, automatic fallback, or automated Codex execution.
+
+## Git delivery
+
+- Astral Bridge boundary commit: `42c2b783f50288367b3975d832e2f771b970cd94`.
+- Context Vault implementation commit: `3a807cebc6794d5e01dde3e204a661494a12a754`.
+- Context Vault closure commit: resolve with `git log --format=%H -1 -- .codex/CURRENT.md`.
+- Closure requires each repository's local HEAD, upstream HEAD, and direct remote branch SHA to match with `0 / 0` divergence.
