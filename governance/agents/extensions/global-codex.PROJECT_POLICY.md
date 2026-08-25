@@ -47,7 +47,7 @@ For every repository unless a stricter accepted project rule applies:
 - Model/provider routing metadata may be inspected deterministically but never treated
   as execution authority.
 - After a canonical governance change, pre-existing write-capable sessions are
-  `STALE_GOVERNANCE` for new mutations until a fresh session proves A7 was loaded.
+  `STALE_GOVERNANCE` for new mutations until a fresh session proves A8 was loaded.
 
 ## CodeGraph
 
