@@ -8,14 +8,15 @@ largest model is always better.
 
 ## Manual execution boundary
 
-Routing is selection metadata, not permission to spend Codex allowance. Under A6, the
+Routing is selection metadata, not permission to spend Codex allowance. Under A7, the
 default is locked. ChatGPT Web, Astral Bridge, automation, scheduling, prior prompts,
-and accepted autonomous continuations may not start or resume Codex. “Absolutely
-necessary” means stop and obtain Earl's new per-run approval.
+and accepted autonomous continuations may not start or resume Codex. Only an explicit
+owner-started Sol session may route billable work.
 
-One permit names one exact purpose, model, reasoning level, and role. It authorizes at
-most one primary process and zero children, retries, fallbacks, or background
-continuations. The route compiler never dispatches a process.
+One permit names one exact purpose, model, reasoning level, and role. It authorizes one
+primary Sol process, zero children by default, at most 16 direct children, depth one,
+and no recursive spawning, automatic fallback, or background continuation. The route
+compiler never dispatches a process.
 
 ## Dimensions
 
@@ -64,30 +65,34 @@ UI label as a CLI value or silently substitute another model.
 
 ```text
 DEFAULT PROCESSES: 0
-MANUALLY PERMITTED PRIMARY PROCESSES: 1
-CHILDREN OR SUBAGENTS: 0
+MANUALLY PERMITTED OWNER-STARTED SOL PROCESSES: 1
+DEFAULT CHILDREN OR SUBAGENTS: 0
+MAXIMUM DIRECT SOL SUBAGENTS: 16
+MAXIMUM DELEGATION DEPTH: 1
+MAXIMUM ACTIVE WRITERS ACCOUNT-WIDE: 2
+MAXIMUM WRITERS PER REPOSITORY/WORKTREE: 1
 BACKGROUND CONTINUATION: 0
 AUTOMATIC FALLBACK: 0
 ```
 
-A4's Terra/Luna/Ox role catalog remains dormant reference metadata. A manually
-approved process may use one exact role and model, but it is still the sole primary
-process. Recursive spawning, delegated workers, parallel writers, retry processes,
-duplicate work, and fallback processes are prohibited. An Ox failure records
-ineligibility and stops; Luna requires a separate manual permit.
+Sol High is the parent planner, router, integrator, and final reviewer. Ox Alpha High
+is the preferred backend writer when eligible and may be read-only without a writer-lock
+conflict. Terra Max is the explicit Sol-routed fallback/integration writer and the sole
+HAU-USC frontend writer. Luna Max is read-only. DeepSeek is disabled. A second writer
+requires proven isolation and no target may have more than one writer.
 
 ## Historical current/next-slice scouting
 
-A1 scout-ahead semantics remain preserved as historical policy evidence. A6 disables
-billable Codex scouts and children account-wide. Deterministic non-model tools may
-prepare bounded evidence when otherwise authorized, but they do not create a Codex
-child and may not auto-start the next slice.
+A1 scout-ahead semantics remain preserved as historical policy evidence. A7 permits
+only explicit, bounded direct Sol children in an owner-started session. Deterministic
+non-model tools may prepare bounded evidence when otherwise authorized, but neither
+tools nor children may auto-start the next slice.
 
 ## Escalation
 
-Escalation to a different model, reasoning level, role, retry, or fallback requires a
-new exact manual permit. Evidence may justify asking Earl, but it never authorizes
-the route automatically. Do not escalate merely because work took time.
+Escalation to a different model, reasoning level, role, retry, or fallback requires an
+explicit Sol decision and a matching exact permit. Evidence may justify the decision,
+but it never authorizes an automatic route. Do not escalate merely because work took time.
 
 ## Verification and safe stops
 

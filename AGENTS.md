@@ -14,6 +14,10 @@ last_reviewed: 2026-08-25
 
 This is Earl's general operating policy for AI agents and agent-assisted tools.
 
+```text
+GOVERNANCE_REVISION: TOKEN-OPT-001-A7
+```
+
 The only editable general-policy authority is:
 
 ```text
@@ -116,36 +120,48 @@ and the local usage guard; routing metadata never authorizes model execution.
 
 ## Billable Codex execution boundary
 
-`TOKEN-OPT-001-A6` is the active account-wide execution boundary.
+`TOKEN-OPT-001-A7` is the active account-wide execution boundary. It supersedes A6
+only for bounded delegation inside an active owner-started Sol session.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
 CHATGPT WEB SELF-AUTHORIZATION: PROHIBITED
 ASTRAL BRIDGE SELF-AUTHORIZATION: PROHIBITED
-AUTOMATED OR SCHEDULED CODEX RUNS: 0
-BACKGROUND CODEX CONTINUATIONS: 0
-CODEX CHILDREN OR SUBAGENTS: 0
+UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
+OWNER-STARTED SOL SESSION: SOL ADVISOR GOVERNS
+DEFAULT CHILDREN: 0
+MAX SOL SUBAGENTS: 16
+DELEGATION DEPTH: 1
+RECURSIVE CHILD SPAWNING: FORBIDDEN
 AUTOMATIC MODEL FALLBACK: DISABLED
-ONE NEW MANUAL PERMIT: AT MOST ONE EXACT PROCESS
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
 APP-SERVER INFRASTRUCTURE: ALLOWED
 ```
 
-- ChatGPT Web, Astral Bridge, automations, scheduled tasks, watchdogs, prompts, prior
-  continuations, and accepted routing profiles may not start, resume, retry, delegate,
+- ChatGPT Web, Astral Bridge, automations, scheduled tasks, watchdogs, health checks,
+  prompts, and prior continuations may not independently start, resume, retry, delegate,
   or fall back to a Codex model.
-- “Absolutely necessary” means stop and ask Earl for a new per-run approval. It is
+- “Absolutely necessary” means stop and ask Earl for an exact authorization. It is
   never self-authorization.
-- A valid approval must be created manually through the interactive local permit
-  command and must name one exact purpose, model, reasoning level, and role. The
-  permit is single-use, time-bounded, authorizes one primary process, and allows zero
-  children, retries, background continuations, or fallback processes.
 - Direct deliberate interaction Earl starts inside Codex Desktop is Earl manually
-  starting that specific task. Always-on `codex app-server` listeners, the local
-  tunnel, router, connector health checks, and deterministic Astral tools may remain
-  running because infrastructure availability is not permission to run a model.
+  starting that specific Sol task. Sol starts with zero children and may delegate up
+  to sixteen bounded, useful direct children at depth one. Children may not spawn.
+- Two writers may run only across proven-isolated repositories or worktrees with
+  separate locks and no shared pointer, migration, release file, generated artifact,
+  provider resource, database state, or incomplete dependency. Otherwise use one writer.
+- Fallback is an explicit Sol routing decision. Automatic provider fallback, silent
+  model substitution, background continuation, and uncontrolled retry remain disabled.
+- Active routing is Sol High; Ox Alpha is preferred for backend implementation and may
+  be read-only when not writing; Terra Max is the explicit fallback or
+  integration-sensitive writer; Luna Max is read-only; DeepSeek is disabled from all
+  active and fallback routes.
 - The deterministic route compiler is a selector and validator only. It never
-  dispatches Codex. A missing, expired, consumed, mismatched, non-manual, or broad
-  permit is a hard stop.
+  dispatches Codex. A missing, expired, consumed, mismatched, non-manual, recursive,
+  or broad approval remains a hard stop for permit-gated execution.
+- After a canonical governance change, pre-existing write-capable sessions are
+  `STALE_GOVERNANCE` for new mutations. A fresh session must prove the current
+  revision and repository authority were loaded before writing.
 
 ## Project incremental-context rule
 
@@ -252,7 +268,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Apply the A6 execution boundary: zero Codex children or subagents, zero automated or background Codex runs, zero automatic fallback, and at most one exact manually permitted primary process. A1/A4 worker and scout capacities remain historical selection references and do not authorize execution.
+- Apply the A7 execution boundary: zero unattended or background Codex runs without Earl's exact authorization; zero children by default; up to sixteen direct Sol children at depth one inside an active owner-started Sol session; no recursive spawning; no automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.
@@ -415,7 +431,7 @@ Stop the affected operation when:
 - a secret or unnecessary private value is detected;
 - a migration, deployment, destructive operation, or external write lacks exact authority;
 - rollback cannot be demonstrated;
-- billable Codex work lacks a fresh exact manual permit or originates from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, continuation, or delegation;
+- billable Codex work is unattended or background without Earl's exact authorization, originates independently from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, or continuation, or exceeds the active owner-started Sol session's A7 depth, child, writer, or lock limits;
 - verification fails;
 - the accepted work unit is complete.
 

@@ -1,0 +1,109 @@
+{
+    "schema_version":  1,
+    "generated_at":  "2026-08-25T07:26:33.3449697Z",
+    "apply":  false,
+    "timestamp":  "20260825T072631Z",
+    "canonical_path":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+    "canonical_sha256":  "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+    "counts":  [
+                   {
+                       "action":  "BLOCKED",
+                       "count":  3
+                   },
+                   {
+                       "action":  "WOULD_UPDATE",
+                       "count":  3
+                   }
+               ],
+    "results":  [
+                    {
+                        "Id":  "astral-bridge",
+                        "Mode":  "live",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\Astral-Bridge\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\Astral-Bridge\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:backend-r3-a1-a2-b1",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "WOULD_UPDATE",
+                        "ExtensionAction":  "WOULD_UPDATE",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\backend-r3-a1-a2-b1\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\backend-r3-a1-a2-b1\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\backend-r3-a1-a2-b1\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\backend-r3-a1-a2-b1\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d extension=c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961 activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:frontend-design-integration",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "WOULD_UPDATE",
+                        "ExtensionAction":  "WOULD_UPDATE",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\frontend-design-integration\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\frontend-design-integration\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\frontend-design-integration\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\frontend-design-integration\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d extension=c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961 activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:v084-live-operations-performance",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "WOULD_UPDATE",
+                        "ExtensionAction":  "WOULD_UPDATE",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v084-live-operations-performance\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v084-live-operations-performance\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\v084-live-operations-performance\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T072631Z\\v084-live-operations-performance\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d extension=c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961 activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "astral-bridge-worktree:astral-bridge-agents-authorized-efc7a12",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-authorized-efc7a12\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-authorized-efc7a12\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    },
+                    {
+                        "Id":  "astral-bridge-worktree:astral-bridge-agents-consolidation-001",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    }
+                ],
+    "failures":  [
+                     "global-codex: replica changed since preflight; expected 301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28,4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6,85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2, found b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459",
+                     "hau-usc-logistics: replica changed since preflight; expected 379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438,83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f,85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2, found 64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92",
+                     "odysseus: replica changed since preflight; expected 03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272,66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769,85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2, found 64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92"
+                 ]
+}

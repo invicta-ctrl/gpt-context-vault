@@ -157,15 +157,8 @@ foreach ($replica in $allReplicas) {
             $replicaDetail = $hash
         }
         else {
-            $generatedDrift = Get-SupportedGeneratedReplicaDriftState -Replica $replica -ReplicaPath $path -CanonicalBytes ([IO.File]::ReadAllBytes($canonicalPath))
-            if ($generatedDrift.State -eq 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT') {
-                $replicaState = 'GENERATED_DRIFT_LEAN_CTX_SUFFIX'
-                $replicaDetail = $generatedDrift.Detail
-            }
-            else {
-                $replicaState = 'DRIFT'
-                $replicaDetail = "expected=$canonicalHash actual=$hash generated_drift=$($generatedDrift.State)"
-            }
+            $replicaState = 'DRIFT'
+            $replicaDetail = "expected=$canonicalHash actual=$hash"
         }
     }
 

@@ -81,7 +81,7 @@ function Get-ManualPermit {
     catch {
         return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_INVALID_JSON'; Permit = $null }
     }
-    foreach ($field in @('approval_id','state','issued_by','issued_at','expires_at','purpose','manual_interactive','allowed_model','allowed_reasoning','allowed_role','allowed_roles','allow_subagents','max_processes','consumed')) {
+    foreach ($field in @('approval_id','state','issued_by','issued_at','expires_at','purpose','manual_interactive','allowed_model','allowed_reasoning','allowed_role','allowed_roles','allow_subagents','max_processes','default_children','max_children','max_delegation_depth','recursive_spawning','consumed')) {
         if ($permit.PSObject.Properties.Name -notcontains $field) {
             return [pscustomobject]@{ Valid = $false; Reason = "MANUAL_PERMIT_MISSING_$($field.ToUpperInvariant())"; Permit = $permit }
         }
@@ -95,8 +95,8 @@ function Get-ManualPermit {
     if ([int]$permit.max_processes -ne 1) {
         return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_PROCESS_LIMIT_INVALID'; Permit = $permit }
     }
-    if ([bool]$permit.allow_subagents) {
-        return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_SUBAGENTS_FORBIDDEN'; Permit = $permit }
+    if (-not [bool]$permit.allow_subagents -or [int]$permit.default_children -ne 0 -or [int]$permit.max_children -ne 16 -or [int]$permit.max_delegation_depth -ne 1 -or [bool]$permit.recursive_spawning) {
+        return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_SUBAGENT_BOUNDARY_INVALID'; Permit = $permit }
     }
     $allowedModel = if ($permit.PSObject.Properties.Name -contains 'allowed_model') { [string]$permit.allowed_model } else { '' }
     $allowedReasoning = if ($permit.PSObject.Properties.Name -contains 'allowed_reasoning') { [string]$permit.allowed_reasoning } else { '' }
@@ -207,7 +207,7 @@ if ($SelfTest) {
         New-Item -ItemType Directory -Force -Path $selfTestRoot | Out-Null
         $now = [DateTimeOffset]::UtcNow
         $permit = [ordered]@{
-            schema_version = 1
+            schema_version = 2
             approval_id = [Guid]::NewGuid().ToString('D')
             state = 'ACTIVE'
             issued_by = 'Earl'
@@ -220,9 +220,12 @@ if ($SelfTest) {
             allowed_reasoning = 'high'
             allowed_role = 'writer'
             allowed_roles = @('writer')
-            allow_subagents = $false
+            allow_subagents = $true
             max_processes = 1
-            max_children = 0
+            default_children = 0
+            max_children = 16
+            max_delegation_depth = 1
+            recursive_spawning = $false
             background_continuation = $false
             automatic_fallback = $false
             consumed = $false
@@ -269,7 +272,7 @@ if ($SelfTest) {
             second_process_denied = -not [bool]$secondDecision.Valid -and [string]$secondDecision.Reason -eq 'MANUAL_PERMIT_ALREADY_CONSUMED'
             expired_permit_denied = -not [bool]$expiredState.Valid -and [string]$expiredState.Reason -eq 'MANUAL_PERMIT_EXPIRED'
             revoked_permit_denied = -not [bool]$revokedState.Valid -and [string]$revokedState.Reason -eq 'MANUAL_PERMIT_REVOKED'
-            subagents_disabled = -not [bool]$consumedPermit.allow_subagents -and [int]$consumedPermit.max_children -eq 0
+            subagent_boundary_recorded = [bool]$consumedPermit.allow_subagents -and [int]$consumedPermit.default_children -eq 0 -and [int]$consumedPermit.max_children -eq 16 -and [int]$consumedPermit.max_delegation_depth -eq 1 -and -not [bool]$consumedPermit.recursive_spawning
             exact_role_recorded = [string]$consumedPermit.allowed_role -eq 'writer' -and @($consumedPermit.allowed_roles).Count -eq 1
         }
         $failed = @($checks.GetEnumerator() | Where-Object { -not $_.Value })

@@ -60,13 +60,26 @@ function Get-NormalizedPath {
 function Get-ManualExecutionGate {
     param([string]$Path)
     $gate = Read-JsonRequired -Path $Path -Label 'manual Codex execution gate'
-    Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -eq 1) 'MANUAL_EXECUTION_GATE_INVALID'
-    Assert-Route ([string](Get-OptionalProperty $gate 'policy_id' '') -eq 'TOKEN-OPT-001-A6') 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
+    $policyId = [string](Get-OptionalProperty $gate 'policy_id' '')
+    Assert-Route ($policyId -in @('TOKEN-OPT-001-A6', 'TOKEN-OPT-001-A7')) 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
+    Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -in @(1, 2)) 'MANUAL_EXECUTION_GATE_INVALID'
     Assert-Route ([string](Get-OptionalProperty $gate 'default_state' '') -eq 'LOCKED') 'MANUAL_EXECUTION_GATE_NOT_LOCKED'
     Assert-Route ([bool](Get-OptionalProperty $gate 'manual_only' $false)) 'MANUAL_EXECUTION_GATE_NOT_MANUAL_ONLY'
     Assert-Route ([int](Get-OptionalProperty $gate 'max_processes' 0) -eq 1) 'MANUAL_EXECUTION_GATE_PROCESS_LIMIT_INVALID'
-    Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
-    Assert-Route (-not [bool](Get-OptionalProperty $gate 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    if ($policyId -eq 'TOKEN-OPT-001-A6') {
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $gate 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    }
+    else {
+        Assert-Route ([bool](Get-OptionalProperty $gate 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
+        Assert-Route ([int](Get-OptionalProperty $gate 'default_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_DEFAULT_CHILDREN_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 16) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
+        Assert-Route ([bool](Get-OptionalProperty $gate 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $gate 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_active_writers_account_wide' 0) -eq 2) 'ACCOUNT_WRITER_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_writers_per_repository_or_worktree' 0) -eq 1) 'TARGET_WRITER_LIMIT_INVALID'
+    }
     Assert-Route (-not [bool](Get-OptionalProperty $gate 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $gate 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $gate 'route_compiler_is_dispatcher' $true)) 'ROUTE_COMPILER_MUST_NOT_DISPATCH'
@@ -100,32 +113,59 @@ function Assert-ManualExecutionPreconditions {
         [string]$PermitPath
     )
 
+    $policyId = [string](Get-OptionalProperty $Gate 'policy_id' '')
     $configuredPermitPath = [string](Get-OptionalProperty $Gate 'permit_path' '')
     Assert-Route (-not [string]::IsNullOrWhiteSpace($configuredPermitPath)) 'MANUAL_PERMIT_PATH_INVALID'
     Assert-Route ((Get-NormalizedPath $configuredPermitPath) -ieq (Get-NormalizedPath $PermitPath)) 'MANUAL_PERMIT_PATH_MISMATCH'
-
     Assert-Route ([string](Get-OptionalProperty $Request 'execution_origin' '') -eq 'manual_user') 'MANUAL_USER_ORIGIN_REQUIRED'
     Assert-Route ([bool](Get-OptionalProperty $Request 'manual_interactive' $false)) 'MANUAL_INTERACTIVE_APPROVAL_REQUIRED'
     foreach ($priorAuthorityFlag in @('prior_owner_approval','prior_accepted_specification','autonomous_completion','absolutely_necessary')) {
         Assert-Route (-not [bool](Get-OptionalProperty $Request $priorAuthorityFlag $false)) 'MANUAL_CODEX_EXECUTION_REQUIRED'
     }
-    Assert-Route ($Request.PSObject.Properties.Name -contains 'subagent_requested') 'SUBAGENTS_DISABLED'
-    Assert-Route (-not [bool](Get-OptionalProperty $Request 'subagent_requested' $true)) 'SUBAGENTS_DISABLED'
     Assert-Route ($Request.PSObject.Properties.Name -contains 'background_continuation') 'BACKGROUND_CONTINUATION_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $Request 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
     Assert-Route ($Request.PSObject.Properties.Name -contains 'automatic_fallback') 'AUTOMATIC_FALLBACK_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $Request 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
 
-    Assert-Route ($ActiveWriters -eq 0 -and $ActiveReadOnly -eq 0 -and $ActiveTotal -eq 0) 'SECOND_PROCESS_DISABLED'
-    Assert-Route (@(Get-NonInfrastructureCodexProcesses).Count -eq 0) 'SECOND_PROCESS_DISABLED'
+    if ($policyId -eq 'TOKEN-OPT-001-A6') {
+        Assert-Route ($Request.PSObject.Properties.Name -contains 'subagent_requested') 'SUBAGENTS_DISABLED'
+        Assert-Route (-not [bool](Get-OptionalProperty $Request 'subagent_requested' $true)) 'SUBAGENTS_DISABLED'
+        Assert-Route ($ActiveWriters -eq 0 -and $ActiveReadOnly -eq 0 -and $ActiveTotal -eq 0) 'SECOND_PROCESS_DISABLED'
+        Assert-Route (@(Get-NonInfrastructureCodexProcesses).Count -eq 0) 'SECOND_PROCESS_DISABLED'
+    }
+    else {
+        Assert-Route ([bool](Get-OptionalProperty $Request 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
+        $requestedChildren = Get-Integer -Value (Get-OptionalProperty $Request 'requested_children' 0) -Label 'requested_children'
+        Assert-Route ($requestedChildren -le 16) 'SOL_CHILD_LIMIT_EXCEEDED'
+        Assert-Route ($ActiveTotal -le 16) 'SOL_CHILD_LIMIT_EXCEEDED'
+        $subagentRequested = [bool](Get-OptionalProperty $Request 'subagent_requested' ($requestedChildren -gt 0))
+        Assert-Route (($requestedChildren -gt 0) -eq $subagentRequested) 'SUBAGENT_REQUEST_COUNT_MISMATCH'
+        $depth = Get-Integer -Value (Get-OptionalProperty $Request 'delegation_depth' 0) -Label 'delegation_depth'
+        Assert-Route ($depth -le 1) 'DELEGATION_DEPTH_EXCEEDED'
+        Assert-Route (-not [bool](Get-OptionalProperty $Request 'spawned_by_worker' $false)) 'RECURSIVE_SPAWNING_DISABLED'
+        if ($Role -eq 'writer') {
+            $targetWriters = Get-Integer -Value (Get-OptionalProperty $Request 'active_writers_target' 0) -Label 'active_writers_target'
+            Assert-Route ($ActiveWriters -lt 2) 'ACCOUNT_WRITER_LIMIT_EXCEEDED'
+            Assert-Route ($targetWriters -lt 1) 'TARGET_WRITER_LIMIT_EXCEEDED'
+        }
+    }
 
     $permit = Read-ManualPermit -Path $PermitPath
     Assert-Route ([string](Get-OptionalProperty $permit 'state' '') -eq 'ACTIVE') 'CODEX_USAGE_LOCKED'
     Assert-Route ([string](Get-OptionalProperty $permit 'origin' '') -eq 'manual_user') 'MANUAL_USER_ORIGIN_REQUIRED'
     Assert-Route ([bool](Get-OptionalProperty $permit 'manual_interactive' $false)) 'MANUAL_INTERACTIVE_APPROVAL_REQUIRED'
     Assert-Route ([int](Get-OptionalProperty $permit 'max_processes' 0) -eq 1) 'MANUAL_PERMIT_PROCESS_LIMIT_INVALID'
-    Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 0) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
-    Assert-Route (-not [bool](Get-OptionalProperty $permit 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    if ($policyId -eq 'TOKEN-OPT-001-A6') {
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 0) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $permit 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
+    }
+    else {
+        Assert-Route ([int](Get-OptionalProperty $permit 'default_children' -1) -eq 0) 'MANUAL_PERMIT_DEFAULT_CHILDREN_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 16) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
+        Assert-Route ([bool](Get-OptionalProperty $permit 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $permit 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
+    }
     Assert-Route (-not [bool](Get-OptionalProperty $permit 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $permit 'automatic_fallback' $true)) 'AUTOMATIC_FALLBACK_DISABLED'
     Assert-Route (-not [bool](Get-OptionalProperty $permit 'consumed' $true)) 'MANUAL_PERMIT_ALREADY_CONSUMED'
@@ -133,21 +173,16 @@ function Assert-ManualExecutionPreconditions {
     $approvalId = [string](Get-OptionalProperty $Request 'approval_id' '')
     Assert-Route (-not [string]::IsNullOrWhiteSpace($approvalId)) 'MANUAL_PERMIT_APPROVAL_MISMATCH'
     Assert-Route ($approvalId -eq [string](Get-OptionalProperty $permit 'approval_id' '')) 'MANUAL_PERMIT_APPROVAL_MISMATCH'
-
     $requestedPurpose = [string](Get-OptionalProperty $Request 'purpose' '')
-    $permittedPurpose = [string](Get-OptionalProperty $permit 'purpose' '')
     Assert-Route (-not [string]::IsNullOrWhiteSpace($requestedPurpose)) 'MANUAL_PERMIT_PURPOSE_MISMATCH'
-    Assert-Route ($requestedPurpose -eq $permittedPurpose) 'MANUAL_PERMIT_PURPOSE_MISMATCH'
-
+    Assert-Route ($requestedPurpose -eq [string](Get-OptionalProperty $permit 'purpose' '')) 'MANUAL_PERMIT_PURPOSE_MISMATCH'
     $allowedRoles = @((Get-OptionalProperty $permit 'allowed_roles' @()) | ForEach-Object { [string]$_ })
     Assert-Route ($allowedRoles -contains $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
     Assert-Route ([string](Get-OptionalProperty $permit 'allowed_role' '') -eq $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
-
     $allowedModel = [string](Get-OptionalProperty $permit 'allowed_model' '')
     $allowedReasoning = [string](Get-OptionalProperty $permit 'allowed_reasoning' '')
     Assert-Route ($allowedModel -notin @('', 'default', '*')) 'MANUAL_PERMIT_MODEL_MISMATCH'
     Assert-Route ($allowedReasoning -notin @('', 'default', '*')) 'MANUAL_PERMIT_REASONING_MISMATCH'
-
     $expiresText = [string](Get-OptionalProperty $permit 'expires_at' '')
     try { $expiresAt = [DateTimeOffset]::Parse($expiresText, [Globalization.CultureInfo]::InvariantCulture) }
     catch { throw "ROUTE_VALIDATION: MANUAL_PERMIT_INVALID" }
@@ -244,12 +279,24 @@ function Assert-CatalogContract {
     }
 
     $disabled = @($Profile.catalog.disabled_models | ForEach-Object { [string]$_ })
-    $activeModels = @(
-        [string]$Profile.roles.orchestrator.model,
-        [string]$Profile.roles.writer.model,
-        [string]$Profile.roles.read_only_worker.durable.model,
-        [string]$Profile.roles.read_only_worker.ephemeral.model
-    ) + @($Profile.fallbacks.ox | ForEach-Object { [string]$_ })
+    if ([int]$Profile.schema_version -ge 3) {
+        $activeModels = @(
+            [string]$Profile.active_roles.orchestrator.model,
+            [string]$Profile.active_roles.writers.backend_primary.model,
+            [string]$Profile.active_roles.writers.integration_fallback.model,
+            [string]$Profile.active_roles.writers.hau_frontend.model,
+            [string]$Profile.active_roles.read_only_workers.luna.model,
+            [string]$Profile.active_roles.read_only_workers.ox.model
+        ) + @($Profile.fallbacks.active | ForEach-Object { [string]$_ })
+    }
+    else {
+        $activeModels = @(
+            [string]$Profile.roles.orchestrator.model,
+            [string]$Profile.roles.writer.model,
+            [string]$Profile.roles.read_only_worker.durable.model,
+            [string]$Profile.roles.read_only_worker.ephemeral.model
+        ) + @($Profile.fallbacks.ox | ForEach-Object { [string]$_ })
+    }
     foreach ($id in $activeModels) {
         Assert-Route ($id -notin $disabled) "disabled model appears in active or fallback routing: $id"
     }
@@ -404,8 +451,9 @@ function Write-RouteTelemetry {
 $profile = Read-JsonRequired -Path $ProfilePath -Label 'routing profile'
 $catalog = Read-JsonRequired -Path $CatalogPath -Label 'model catalog'
 $executionGate = Get-ManualExecutionGate -Path $ExecutionGatePath
+$executionPolicyId = [string](Get-OptionalProperty $executionGate 'policy_id' '')
 $request = Read-JsonRequired -Path $RequestPath -Label 'route request'
-Assert-Route ([int]$profile.schema_version -in @(1, 2)) 'unsupported routing profile schema'
+Assert-Route ([int]$profile.schema_version -in @(1, 2, 3)) 'unsupported routing profile schema'
 Assert-CatalogContract -Profile $profile -Catalog $catalog
 
 $role = [string](Get-OptionalProperty $request 'role' '')
@@ -429,7 +477,12 @@ if ($contextTokens -gt [int]$profile.context_envelope.split_or_exception_thresho
 }
 
 $recursionDepth = Get-Integer -Value (Get-OptionalProperty $request 'recursion_depth' 0) -Label 'recursion_depth'
-Assert-Route ($recursionDepth -eq 0) 'recursive worker spawning is disabled'
+if ($executionPolicyId -eq 'TOKEN-OPT-001-A6') {
+    Assert-Route ($recursionDepth -eq 0) 'recursive worker spawning is disabled'
+}
+else {
+    Assert-Route ($recursionDepth -le 1) 'DELEGATION_DEPTH_EXCEEDED'
+}
 Assert-Route (-not [bool](Get-OptionalProperty $request 'spawned_by_worker' $false)) 'worker-originated recursive dispatch is disabled'
 $activeWriters = Get-Integer -Value (Get-OptionalProperty $request 'active_writers' 0) -Label 'active_writers'
 $activeReadOnly = Get-Integer -Value (Get-OptionalProperty $request 'active_read_only_workers' 0) -Label 'active_read_only_workers'
@@ -440,7 +493,12 @@ if (-not $acceptanceGreen) {
 }
 $prospective = 1
 if ($role -eq 'writer') {
-    Assert-Route (($activeWriters + $prospective) -le [int]$profile.concurrency.max_overlapping_writers) 'one overlapping Terra writer maximum exceeded'
+    if ($executionPolicyId -eq 'TOKEN-OPT-001-A6') {
+        Assert-Route (($activeWriters + $prospective) -le [int]$profile.concurrency.max_overlapping_writers) 'one overlapping Terra writer maximum exceeded'
+    }
+    else {
+        Assert-Route (($activeWriters + $prospective) -le [int]$profile.concurrency.max_active_writers_account_wide) 'ACCOUNT_WRITER_LIMIT_EXCEEDED'
+    }
 }
 Assert-Route (($activeTotal + $prospective) -le [int]$profile.concurrency.independent_burst_total_workers_max) 'total worker capacity exceeded'
 if ($role -eq 'read_only_worker' -and -not [bool](Get-OptionalProperty $request 'independent_burst' $false)) {
@@ -469,7 +527,7 @@ if ($acceptanceGreen) {
         reason = 'STOP_WHEN_GREEN'
         verification_reuse = $verificationReuse
         selected_model = $null
-        execution_boundary = [ordered]@{ policy_id = 'TOKEN-OPT-001-A6'; state = 'LOCKED_NO_EXECUTION'; manual_only = $true; dispatcher = $false }
+        execution_boundary = [ordered]@{ policy_id = $executionPolicyId; state = 'LOCKED_NO_EXECUTION'; manual_only = $true; dispatcher = $false }
     }
     $null = Write-RouteTelemetry -Path $TelemetryPath -Record ([ordered]@{
         schema_version = 1; observed_at = (Get-Date).ToUniversalTime().ToString('o'); accepted_slice_fingerprint = $sliceFingerprint
@@ -482,45 +540,96 @@ if ($acceptanceGreen) {
 
 $selectedModel = $null
 $selectedEffort = $null
+$contract = $null
 $fallbackReason = $null
 $oxEligibility = [pscustomobject]@{ Eligible = $false; Reason = 'NOT_REQUESTED'; Cached = $false }
-if ($role -eq 'orchestrator') {
-    $selectedModel = [string]$profile.roles.orchestrator.model
-    $selectedEffort = [string]$profile.roles.orchestrator.reasoning_effort
-}
-elseif ($role -eq 'writer') {
-    Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.roles.writer.model) 'writer route is Terra only'
-    $selectedModel = [string]$profile.roles.writer.model
-    $selectedEffort = [string]$profile.roles.writer.reasoning_effort
-}
-else {
-    $preferOx = [bool](Get-OptionalProperty $request 'prefer_ephemeral' $false) -or $requestedModel -eq [string]$profile.roles.read_only_worker.ephemeral.model
-    Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -in @([string]$profile.roles.read_only_worker.durable.model, [string]$profile.roles.read_only_worker.ephemeral.model)) 'read-only worker model is not allowed by the shared contract'
-    if ($preferOx) {
-        $oxEligibility = Get-OxEligibility -Profile $profile -Request $request -State $state
-        $oxFailedNow = $RecordOxFailure -or [bool](Get-OptionalProperty $request 'ox_failure' $false)
-        if ($oxEligibility.Eligible -and -not $oxFailedNow) {
-            $selectedModel = [string]$profile.roles.read_only_worker.ephemeral.model
-            $selectedEffort = [string]$profile.roles.read_only_worker.ephemeral.reasoning_effort
-        }
-        else {
-            if ($oxFailedNow) {
-                Set-ObjectProperty -Object $state.ox -Name 'eligible' -Value $false
-                Set-ObjectProperty -Object $state.ox -Name 'failed' -Value $true
-                Set-ObjectProperty -Object $state.ox -Name 'failure_count' -Value 1
-                Set-ObjectProperty -Object $state.ox -Name 'reason' -Value 'OX_FAILURE_RECORDED'
-                $fallbackReason = 'OX_FAILURE_RECORDED_ONCE'
+if ($executionPolicyId -eq 'TOKEN-OPT-001-A6') {
+    if ($role -eq 'orchestrator') {
+        $selectedModel = [string]$profile.roles.orchestrator.model
+        $selectedEffort = [string]$profile.roles.orchestrator.reasoning_effort
+    }
+    elseif ($role -eq 'writer') {
+        Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.roles.writer.model) 'writer route is Terra only'
+        $selectedModel = [string]$profile.roles.writer.model
+        $selectedEffort = [string]$profile.roles.writer.reasoning_effort
+        $contract = [string]$profile.roles.writer.contract
+    }
+    else {
+        $preferOx = [bool](Get-OptionalProperty $request 'prefer_ephemeral' $false) -or $requestedModel -eq [string]$profile.roles.read_only_worker.ephemeral.model
+        Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -in @([string]$profile.roles.read_only_worker.durable.model, [string]$profile.roles.read_only_worker.ephemeral.model)) 'read-only worker model is not allowed by the shared contract'
+        if ($preferOx) {
+            $oxEligibility = Get-OxEligibility -Profile $profile -Request $request -State $state
+            $oxFailedNow = $RecordOxFailure -or [bool](Get-OptionalProperty $request 'ox_failure' $false)
+            if ($oxEligibility.Eligible -and -not $oxFailedNow) {
+                $selectedModel = [string]$profile.roles.read_only_worker.ephemeral.model
+                $selectedEffort = [string]$profile.roles.read_only_worker.ephemeral.reasoning_effort
             }
             else {
-                $fallbackReason = [string]$oxEligibility.Reason
+                if ($oxFailedNow) {
+                    Set-ObjectProperty -Object $state.ox -Name 'eligible' -Value $false
+                    Set-ObjectProperty -Object $state.ox -Name 'failed' -Value $true
+                    Set-ObjectProperty -Object $state.ox -Name 'failure_count' -Value 1
+                    Set-ObjectProperty -Object $state.ox -Name 'reason' -Value 'OX_FAILURE_RECORDED'
+                    $fallbackReason = 'OX_FAILURE_RECORDED_ONCE'
+                }
+                else { $fallbackReason = [string]$oxEligibility.Reason }
+                $selectedModel = [string]$profile.roles.read_only_worker.durable.model
+                $selectedEffort = [string]$profile.roles.read_only_worker.durable.reasoning_effort
             }
+        }
+        else {
             $selectedModel = [string]$profile.roles.read_only_worker.durable.model
             $selectedEffort = [string]$profile.roles.read_only_worker.durable.reasoning_effort
         }
+        $contract = [string]$profile.roles.read_only_worker.contract
+    }
+}
+else {
+    if ($role -eq 'orchestrator') {
+        Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.active_roles.orchestrator.model) 'orchestrator route is Sol only'
+        $selectedModel = [string]$profile.active_roles.orchestrator.model
+        $selectedEffort = [string]$profile.active_roles.orchestrator.reasoning_effort
+    }
+    elseif ($role -eq 'writer') {
+        $routeScope = [string](Get-OptionalProperty $request 'route_scope' 'backend')
+        if ($routeScope -eq 'hau_frontend') {
+            $writerRoute = $profile.active_roles.writers.hau_frontend
+            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$writerRoute.model) 'HAU_FRONTEND_TERRA_WRITER_REQUIRED'
+        }
+        elseif ($routeScope -eq 'integration_fallback') {
+            Assert-Route ([bool](Get-OptionalProperty $request 'explicit_sol_reroute' $false)) 'EXPLICIT_SOL_REROUTE_REQUIRED'
+            $writerRoute = $profile.active_roles.writers.integration_fallback
+            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$writerRoute.model) 'TERRA_FALLBACK_REQUIRES_EXPLICIT_SOL_REROUTE'
+        }
+        else {
+            Assert-Route ($routeScope -eq 'backend') 'WRITER_ROUTE_SCOPE_INVALID'
+            $writerRoute = $profile.active_roles.writers.backend_primary
+            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$writerRoute.model) 'BACKEND_OX_WRITER_REQUIRED'
+            $oxEligibility = Get-OxEligibility -Profile $profile -Request $request -State $state
+            Assert-Route ([bool]$oxEligibility.Eligible) 'OX_INELIGIBLE_EXPLICIT_SOL_REROUTE_REQUIRED'
+        }
+        $selectedModel = [string]$writerRoute.model
+        $selectedEffort = [string]$writerRoute.reasoning_effort
+        $contract = [string]$writerRoute.contract
     }
     else {
-        $selectedModel = [string]$profile.roles.read_only_worker.durable.model
-        $selectedEffort = [string]$profile.roles.read_only_worker.durable.reasoning_effort
+        $lunaRoute = $profile.active_roles.read_only_workers.luna
+        $oxRoute = $profile.active_roles.read_only_workers.ox
+        Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -in @([string]$lunaRoute.model, [string]$oxRoute.model)) 'READ_ONLY_MODEL_NOT_ALLOWED'
+        $useOx = $requestedModel -eq [string]$oxRoute.model -or [bool](Get-OptionalProperty $request 'prefer_ephemeral' $false)
+        if ($useOx) {
+            Assert-Route ($ActiveWriters -eq 0) 'OX_READ_ONLY_REQUIRES_NO_WRITER_LOCK'
+            $oxEligibility = Get-OxEligibility -Profile $profile -Request $request -State $state
+            Assert-Route ([bool]$oxEligibility.Eligible) 'OX_INELIGIBLE_EXPLICIT_SOL_REROUTE_REQUIRED'
+            $selectedModel = [string]$oxRoute.model
+            $selectedEffort = [string]$oxRoute.reasoning_effort
+            $contract = [string]$oxRoute.contract
+        }
+        else {
+            $selectedModel = [string]$lunaRoute.model
+            $selectedEffort = [string]$lunaRoute.reasoning_effort
+            $contract = [string]$lunaRoute.contract
+        }
     }
 }
 
@@ -556,7 +665,6 @@ $telemetry = [ordered]@{
     manual_origin = $true
 }
 $telemetryWritten = Write-RouteTelemetry -Path $TelemetryPath -Record $telemetry
-$contract = if ($role -eq 'writer') { [string]$profile.roles.writer.contract } elseif ($role -eq 'read_only_worker') { [string]$profile.roles.read_only_worker.contract } else { $null }
 $result = [ordered]@{
     schema_version = 1
     action = 'ROUTE'
@@ -582,12 +690,14 @@ $result = [ordered]@{
     verification_reuse = $verificationReuse
     material_findings = @($materialFindings)
     execution_boundary = [ordered]@{
-        policy_id = 'TOKEN-OPT-001-A6'
+        policy_id = $executionPolicyId
         state = 'MANUAL_PERMIT_VALIDATED'
         approval_id = [string]$manualPermit.approval_id
         manual_only = $true
         max_processes = 1
-        max_children = 0
+        default_children = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { 0 } else { $null }
+        max_children = [int](Get-OptionalProperty $executionGate 'max_children' 0)
+        max_delegation_depth = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { 1 } else { 0 }
         background_continuation = $false
         automatic_fallback = $false
         dispatcher = $false

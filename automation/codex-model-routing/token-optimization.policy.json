@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "policy_id": "TOKEN-OPT-001",
   "accepted_amendments": [
     "TOKEN-OPT-001-A1",
@@ -7,24 +7,28 @@
     "TOKEN-OPT-001-A3",
     "TOKEN-OPT-001-A4",
     "TOKEN-OPT-001-A5",
-    "TOKEN-OPT-001-A6"
+    "TOKEN-OPT-001-A6",
+    "TOKEN-OPT-001-A7"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
     "ordinary_reasoning_effort": "high",
-    "max_concurrent_threads_per_session": 1,
+    "max_concurrent_threads_per_session": 16,
     "default_read_only_workers": 0,
-    "max_adaptive_read_only_workers": 0,
-    "max_total_active_workers": 1,
-    "max_overlapping_writers": 1,
+    "max_adaptive_read_only_workers": 16,
+    "max_total_active_workers": 16,
+    "max_overlapping_writers": 2,
+    "max_writers_per_repository_or_worktree": 1,
+    "max_delegation_depth": 1,
     "recursive_worker_spawning": false,
     "routine_independent_review": false,
     "routine_full_suite_after_small_module": false,
-    "agents_enabled": false,
-    "multi_agent_v2_enabled": false,
-    "max_children": 0,
-    "allow_subagents": false,
+    "agents_enabled": true,
+    "multi_agent_v2_enabled": true,
+    "default_children": 0,
+    "max_children": 16,
+    "allow_subagents": true,
     "background_continuation": false,
     "automatic_fallback": false
   },
@@ -32,32 +36,39 @@
     "profile_path": "automation/codex-model-routing/current-routing-profile.json",
     "orchestrator": {
       "model": "gpt-5.6-sol",
-      "reasoning_effort": "high"
+      "reasoning_effort": "high",
+      "owner_started_only": true
     },
-    "writer": {
-      "model": "gpt-5.6-terra",
-      "reasoning_effort": "max",
-      "overlapping_writers": 1
-    },
-    "read_only_worker": {
-      "durable": {
-        "model": "gpt-5.6-luna",
-        "reasoning_effort": "max"
-      },
-      "ephemeral": {
+    "writers": {
+      "backend_primary": {
         "model": "openrouter/stealth/ox-alpha",
         "reasoning_effort": "high",
         "eligibility": "provider_available_and_zero_prompt_and_zero_completion_and_acceptable_health_and_suitable_data"
       },
-      "ox_fallback": "DISABLED_REQUIRE_NEW_MANUAL_PERMIT"
+      "integration_fallback": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "explicit_sol_decision_required": true
+      },
+      "hau_frontend": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max"
+      }
+    },
+    "read_only_workers": {
+      "luna": {"model": "gpt-5.6-luna", "reasoning_effort": "max"},
+      "ox": {"model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high", "requires_no_writer_lock": true}
     },
     "disabled_models": [
       "deepseek-v4-pro",
-      "deepseek/deepseek-v4-pro"
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
     ],
     "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
     "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json",
-    "status": "DORMANT_REFERENCE_ONLY",
+    "ox_writer_contract": "automation/codex-model-routing/contracts/ox-writer-contract.json",
+    "status": "ACTIVE_A7_SELECTION_ONLY",
     "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json"
   },
   "context_envelope_v2": {
@@ -120,9 +131,10 @@
   "current_next_slice_pipeline": {
     "pipeline_name": "CURRENT_NEXT_SLICE_PIPELINE",
     "zero_children_default": true,
-    "max_active_children": 1,
+    "max_active_children": 16,
     "max_depth": 1,
-    "one_writer": true,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "scout_read_only": true,
     "scout_may_delegate": false,
     "next_slice_must_be_authorized": true,
@@ -249,7 +261,7 @@
       "compaction_preserved_every_semantic_detail",
       "mcp_token_consumption"
     ],
-    "billable_codex_execution_override": "DISABLED_BY_TOKEN_OPT_001_A6"
+    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_TOKEN_OPT_001_A7"
   },
   "behavior_contract": {
     "small_bug": {
@@ -575,15 +587,35 @@
     "a6_green_locked_check": {
       "action": "STOP",
       "model_execution": false
+    },
+    "a7_owner_started_sol_session": {
+      "action": "ALLOW_MANUAL_SELECTION_ONLY",
+      "default_children": 0,
+      "max_children": 16,
+      "max_delegation_depth": 1,
+      "recursive_spawning": false
+    },
+    "a7_writer_limits": {
+      "action": "ENFORCE_WRITER_LOCKS",
+      "max_active_writers_account_wide": 2,
+      "max_writers_per_repository_or_worktree": 1
+    },
+    "a7_role_routing": {
+      "sol": "orchestrator",
+      "ox": "backend_primary_writer_or_read_only",
+      "terra": "explicit_fallback_integration_or_hau_frontend_writer",
+      "luna": "read_only",
+      "deepseek": "DISABLED"
     }
   },
   "billable_execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A6",
+    "policy_id": "TOKEN-OPT-001-A7",
     "gate_path": "automation/codex-model-routing/manual-codex-execution-gate.json",
     "guard_source": "automation/codex-usage-guard",
     "guard_task": "Earl Codex Usage Guard",
     "default_state": "LOCKED",
     "manual_only": true,
+    "owner_started_sol_session": true,
     "allowed_origins": [
       "manual_user"
     ],
@@ -597,8 +629,13 @@
     "require_new_per_run": true,
     "exact_purpose_model_reasoning_role": true,
     "max_processes": 1,
-    "max_children": 0,
-    "allow_subagents": false,
+    "default_children": 0,
+    "max_children": 16,
+    "allow_subagents": true,
+    "max_delegation_depth": 1,
+    "recursive_spawning": false,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "background_continuation": false,
     "automatic_fallback": false,
     "route_compiler_is_dispatcher": false,

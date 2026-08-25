@@ -45,7 +45,7 @@ if ([string]::IsNullOrWhiteSpace($purpose)) { throw 'Purpose is required.' }
 $challenge = Get-Random -Minimum 100000 -Maximum 999999
 Write-Host ''
 Write-Host 'This creates one time-bounded permit. It does not start Codex.'
-Write-Host 'It authorizes one primary process, zero children, zero background continuation, and no automatic fallback.'
+Write-Host 'It authorizes one owner-started Sol session with zero children by default, up to 16 direct children, zero background continuation, and no automatic fallback.'
 Write-Host "Type this challenge exactly to approve: $challenge"
 $typed = (Read-Host 'Challenge').Trim()
 if ($typed -ne [string]$challenge) { throw 'Approval challenge did not match.' }
@@ -53,7 +53,7 @@ if ($typed -ne [string]$challenge) { throw 'Approval challenge did not match.' }
 $now = [DateTimeOffset]::UtcNow
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $permit = [ordered]@{
-    schema_version = 1
+    schema_version = 2
     approval_id = [Guid]::NewGuid().ToString('D')
     state = 'ACTIVE'
     issued_by = 'Earl'
@@ -67,9 +67,12 @@ $permit = [ordered]@{
     allowed_reasoning = $Reasoning
     allowed_role = $Role
     allowed_roles = @($Role)
-    allow_subagents = $false
+    allow_subagents = $true
     max_processes = 1
-    max_children = 0
+    default_children = 0
+    max_children = 16
+    max_delegation_depth = 1
+    recursive_spawning = $false
     background_continuation = $false
     automatic_fallback = $false
     consumed = $false
@@ -102,7 +105,9 @@ catch { }
     allowed_reasoning = $permit.allowed_reasoning
     allowed_role = $Role
     max_processes = 1
-    max_children = 0
+    default_children = 0
+    max_children = 16
+    max_delegation_depth = 1
     codex_started = $false
     next_action = 'Earl must manually start the one approved Codex task. Run Disable-CodexUsage.ps1 when finished.'
 } | ConvertTo-Json -Depth 6

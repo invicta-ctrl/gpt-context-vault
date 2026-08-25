@@ -39,16 +39,17 @@ not weaken safety.
   defines the accepted Current/Next Slice Pipeline and read-only scout-ahead amendment.
 - [`../../governance/agents/specs/TOKEN-OPT-001-A4.md`](../../governance/agents/specs/TOKEN-OPT-001-A4.md)
   preserves the historical role catalog, context envelope, receipts, and benchmark baseline.
-- [`../../governance/agents/specs/TOKEN-OPT-001-A6.md`](../../governance/agents/specs/TOKEN-OPT-001-A6.md)
-  is the active manual-only billable-execution boundary.
+- [`../../governance/agents/specs/TOKEN-OPT-001-A7.md`](../../governance/agents/specs/TOKEN-OPT-001-A7.md)
+  is the active owner-started Sol routing and manual billable-execution boundary.
 - [`manual-codex-execution-gate.json`](manual-codex-execution-gate.json) and
   [`../codex-usage-guard/`](../codex-usage-guard/) implement the deterministic route gate
   and local process guard.
-- [`current-routing-profile.json`](current-routing-profile.json) is dormant role-selection
-  metadata. [`route-compiler.ps1`](route-compiler.ps1) validates context, receipts, the
-  exact A6 manual permit, and route identity; it never starts Codex. Routing metadata never authorizes execution.
-- `contracts/` contains the shared read-only Luna/Ox contract and bounded Terra writer
-  contract; `verification-receipts.ps1` and `report-seven-day-benchmark.ps1` provide
+- [`current-routing-profile.json`](current-routing-profile.json) is the active A7
+  selection profile. [`route-compiler.ps1`](route-compiler.ps1) validates context,
+  receipts, the exact manual permit, role topology, writer locks, and route identity; it
+  never starts Codex. Routing metadata never authorizes execution.
+- `contracts/` contains the shared read-only contract and bounded Ox/Terra writer
+  contracts; `verification-receipts.ps1` and `report-seven-day-benchmark.ps1` provide
   redacted evidence reuse and observed-only seven-day reporting.
 - [`INSTRUCTION_REFINEMENT_STANDARD.md`](INSTRUCTION_REFINEMENT_STANDARD.md)
   defines the preflight gate and safe-stop behavior.
@@ -73,11 +74,11 @@ When token, context, delegation, evidence reuse, review, or verification
 efficiency is in scope, retrieve the canonical policy above and expand context
 only for a recorded reason it permits.
 
-A6 supersedes A4/A1 execution capacity. The effective default is zero Codex model
-processes, zero children, zero automatic fallback, and zero background continuation.
-A4 role and fixture data remain available only for deterministic selection tests after a
-fresh exact manual permit. A prior prompt, continuation, or accepted autonomous brief
-is not reusable spending authority.
+A7 supersedes A6 only for an explicit owner-started Sol session. The effective default
+remains locked with zero children; Sol may route up to 16 direct children at depth one.
+No recursive spawning, unattended/background continuation, or automatic fallback is
+allowed. Historical A4/A6 fixture data remains deterministic evidence, not reusable
+spending authority.
 
 ## Capability compatibility
 
@@ -87,7 +88,7 @@ execution and requires a new exact manual permit. ChatGPT Web, Astral Bridge, an
 automation must stop and ask Earl rather than performing that probe themselves.
 Unsupported identifiers are rejected; silent substitution is prohibited.
 
-## Deterministic A6 checks
+## Deterministic A7 checks
 
 Use a project-local, redacted run-state and telemetry path; do not store live prompts,
 credentials, or raw external state in this vault.
@@ -110,7 +111,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File automation\codex-model-routi
   -TelemetryPath <project-telemetry.jsonl> -OutputPath <observed-report.json> -Days 7
 ```
 
-Ox selection still requires observed eligibility plus an exact Ox permit. When Ox is
-unavailable or fails, record the run state and stop. Luna requires a new manual permit;
-automatic fallback is disabled.
+Ox backend or read-only selection requires current zero-cost, health, privacy, and
+writer-lock eligibility plus an exact permit. Ox ineligibility stops for an explicit Sol
+decision. Terra Max is the explicit fallback/integration writer and the sole HAU-USC
+frontend writer; Luna Max remains read-only. Automatic fallback is disabled.
 

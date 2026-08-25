@@ -1,6 +1,6 @@
 # Codex Usage Guard
 
-`TOKEN-OPT-001-A6` separates always-on Codex infrastructure from Codex model execution.
+`TOKEN-OPT-001-A7` separates always-on Codex infrastructure from owner-started Codex model execution.
 
 ## Default state
 
@@ -9,9 +9,11 @@ Codex app-server infrastructure: allowed
 Codex model execution: locked
 Automated Codex runs: 0
 Background continuations: 0
-Codex children/subagents: 0
+Codex children/subagents by default: 0
+Maximum direct Sol subagents: 16
+Maximum delegation depth: 1
 Automatic fallback: disabled
-Maximum processes after one manual permit: 1
+Maximum primary processes after one manual permit: 1
 ```
 
 The scheduled task `Earl Codex Usage Guard` keeps this boundary active. It permits only
@@ -44,8 +46,9 @@ Run this yourself in Windows Terminal or an interactive PowerShell console:
 The command requires an exact model, reasoning level, role, purpose, and random challenge. It refuses redirected input and
 common automation parents. It creates a single-use permit but **does not start Codex**.
 After the permit is active, manually start the one approved Codex task. The first
-eligible process consumes the permit; a second process, child, retry, fallback, or later
-continuation is blocked.
+eligible primary process consumes the permit; a second primary process, recursive child,
+automatic retry/fallback, or later continuation is blocked. The owner-started Sol session may
+route up to 16 direct non-recursive children under A7 writer-lock rules.
 
 When the task is finished, or whenever the permit should be withdrawn, run:
 
@@ -58,7 +61,7 @@ preserving infrastructure.
 
 Direct, deliberate work started by Earl inside Codex Desktop is a manual interaction.
 The app-server remains running so the desktop application and connectors stay healthy.
-Automated CLI execution, delegated workers, and background continuation remain locked.
+Automated CLI execution, recursive delegation, and background continuation remain locked.
 
 ## Verify the guard
 

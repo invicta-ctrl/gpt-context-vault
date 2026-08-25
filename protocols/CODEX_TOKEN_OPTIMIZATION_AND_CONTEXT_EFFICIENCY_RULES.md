@@ -25,39 +25,43 @@ repositories may add stricter local rules. They may not weaken accepted specific
 security boundaries, privacy, data invariants, backup, rollback, release, migration, or
 Git safeguards.
 
-## A6 manual-only Codex execution boundary
+## A7 owner-started Sol execution boundary
 
-A6 separates infrastructure availability from permission to consume Codex allowance.
-It supersedes every A4/A5 or prompt-level instruction that could otherwise permit
-ChatGPT Web, Astral Bridge, an automation, a scheduled task, a watchdog, or a delegated
-agent to start or continue Codex work.
+A7 preserves A6's locked default and its prohibition on ChatGPT Web, Astral Bridge,
+automation, scheduling, watchdog, retry, fallback, and background self-authorization.
+It supersedes A6 only where A6 prohibited bounded delegation inside an active
+owner-started Sol session.
 
 ```text
-BILLABLE CODEX EXECUTION: LOCKED
-AUTOMATED CODEX RUNS: 0
-BACKGROUND CODEX CONTINUATIONS: 0
-CODEX CHILDREN OR SUBAGENTS: 0
+BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
+UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
+OWNER-STARTED SOL SESSION: SOL ADVISOR GOVERNS
+DEFAULT CHILDREN: 0
+MAX SOL SUBAGENTS: 16
+DELEGATION DEPTH: 1
+RECURSIVE CHILD SPAWNING: FORBIDDEN
 AUTOMATIC FALLBACK: DISABLED
-MAXIMUM AFTER ONE MANUAL PERMIT: ONE EXACT PRIMARY PROCESS
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
 APP-SERVER INFRASTRUCTURE: ALLOWED
 ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
 ```
 
-A new permit is required for every run. Earl creates it manually in an interactive
-Windows console, and it names one purpose, model, reasoning level, and role. It is
-single-use and time-bounded. It does not start Codex. Earl must then manually start the
-one approved task. A second process, child, retry, fallback, background continuation,
-or later task requires another explicit approval.
+A permit-gated CLI run still requires a fresh exact interactive approval. An active
+owner-started Sol session may use up to sixteen direct children under the same bounded
+task, starts with zero children, and cannot recurse. A second writer is permitted only
+in a different proven-isolated repository or worktree with a separate lock and no
+shared mutable state or incomplete dependency.
 
-The local scheduled `Earl Codex Usage Guard` allows only `codex app-server`
-infrastructure while locked and terminates other `codex.exe` process trees without a
-live matching permit. The deterministic route compiler validates routing metadata but
-is never a dispatcher. Missing, expired, consumed, broad, wildcard, non-manual, or
-mismatched approval data is a hard stop.
+The local scheduled `Earl Codex Usage Guard` continues to preserve only
+`codex app-server` infrastructure while locked and to terminate unpermitted primary
+`codex.exe` processes. Native children inside an authorized Sol session are governed
+by the A7 depth, child, role, writer, and fallback contract. The deterministic route
+compiler validates routing metadata but is never a dispatcher.
 
 Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
 tools, Codex Router, connector health checks, and local context tools may remain running
-when they do not originate inside a billable Codex turn. Infrastructure availability is
+when they do not originate independent billable work. Infrastructure availability is
 not execution authority.
 
 ## Normal route
@@ -204,34 +208,37 @@ Prefer the smallest direct implementation that satisfies the accepted requiremen
 “Cleaner,” “more scalable,” “best practice,” or “might be useful later” is not a current
 accepted requirement.
 
-## Current billable-execution boundary and dormant role catalog
+## Current billable-execution boundary and active role catalog
 
 The active machine-readable execution boundary is
 [`manual-codex-execution-gate.json`](../automation/codex-model-routing/manual-codex-execution-gate.json).
-The local guard and permit are the runtime enforcement layer. The role catalog in
-[`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json)
-is retained only to identify an exact model and reasoning level after Earl has created
-a new manual permit. It cannot authorize dispatch.
+The local guard and permit protect permit-gated primary CLI execution. The role catalog
+in [`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json)
+selects and validates models but cannot authorize or dispatch work.
 
 ```text
-DEFAULT BILLABLE PROCESSES: 0
-MANUALLY PERMITTED PRIMARY PROCESSES: AT MOST 1
-CHILDREN OR SUBAGENTS: 0
+DEFAULT CHILDREN: 0
+MAX DIRECT SOL CHILDREN: 16
+DELEGATION DEPTH: 1
 BACKGROUND CONTINUATION: DISABLED
 AUTOMATIC FALLBACK: DISABLED
 RECURSIVE SPAWNING: DISABLED
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
 DUPLICATE ORDINARY WORK: PROHIBITED
 ```
 
-A4's historical role identities remain Sol/High as orchestrator, Terra/Max as writer,
-Luna/Max as durable read-only role, and eligible Ox/High as ephemeral read-only role.
-A4's former worker counts and Ox-to-Luna fallback are inactive. When an Ox route becomes
-unavailable or fails, record that state, stop, and require a new manual permit for any
-Luna run. Never substitute or silently fall back under the original approval.
+Active roles are Sol/High as top-level orchestrator and final reviewer; Ox/High as the
+preferred backend writer or a read-only role when it does not hold a writer lock;
+Terra/Max as the explicit Sol-routed fallback or integration-sensitive writer; and
+Luna/Max as read-only. HAU frontend work overrides the writer role to exactly one
+Terra/Max writer and keeps Ox and Luna read-only. DeepSeek aliases are disabled from
+active and fallback routes while credentials and historical proof remain inactive.
 
-The compiler may return `STOP` for a green no-execution check while the usage lock is
-closed. Every `ROUTE` result requires a fresh exact permit and records that the compiler
-is non-dispatching.
+When Ox is unavailable or fails, record that state and stop. A Terra route is a new
+explicit Sol decision, never automatic fallback. The compiler may return `STOP` for a
+green no-execution check while the usage lock is closed; every `ROUTE` result remains
+non-dispatching.
 
 ## Context envelope
 
@@ -554,17 +561,18 @@ ROLLBACK / REVERSION
 
 ## Deterministic anti-drift defaults
 
-The global parent remains `gpt-5.6-sol` at `high`. Native Codex permits up to six threads
-per session so the governed A4 capacity can operate; the routing profile—not this Markdown
-policy—selects live child models and efforts. Sol is disabled as a child. Terra, Luna, and
-Ox are eligible only through their respective contracts, with `max`, `max`, and `high`
-child efforts. DeepSeek V4 Pro aliases remain disabled.
+The global parent remains `gpt-5.6-sol` at `high`. Native Codex thread capacity is
+sixteen, default child count is zero, delegation depth is one, and recursive spawning is
+disabled. The routing profile—not this Markdown policy—selects live child models and
+efforts. Sol is disabled as a child. Ox/High, Terra/Max, and Luna/Max are eligible only
+through their contracts and project overrides. DeepSeek aliases remain disabled from
+active and fallback routes.
 
-The machine-readable current profile, contracts, compiler, redacted telemetry, verification
-receipt tool, seven-day observed-only benchmark command, unchanged ten-fixture base suite,
-versioned 26-fixture A1 suite, A4 fixture suite, and focused validator live under
-`automation/codex-model-routing/`. The A1 one-scout pipeline below remains a specialized
-current/next-slice rule; it does not cap A4's total current-slice read-only capacity.
+The machine-readable current profile, contracts, compiler, redacted telemetry,
+verification-receipt tool, observed-only benchmark command, unchanged historical
+fixtures, and focused A7 validator live under `automation/codex-model-routing/`.
+The A1 one-scout pipeline remains a specialized current/next-slice rule; it does not
+increase the default child count or authorize the next slice.
 
 ## Stop condition
 

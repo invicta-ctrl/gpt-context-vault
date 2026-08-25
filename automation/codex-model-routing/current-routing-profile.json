@@ -1,8 +1,9 @@
 {
-  "schema_version": 2,
-  "profile_id": "TOKEN-OPT-001-A6-current",
+  "schema_version": 3,
+  "profile_id": "TOKEN-OPT-001-A7-current",
   "policy_id": "TOKEN-OPT-001",
-  "accepted_amendment": "TOKEN-OPT-001-A6",
+  "accepted_amendment": "TOKEN-OPT-001-A7",
+  "governance_revision": "TOKEN-OPT-001-A7",
   "last_reviewed": "2026-08-25",
   "catalog": {
     "required_models": [
@@ -12,24 +13,26 @@
         "role": "orchestrator"
       },
       {
+        "id": "openrouter/stealth/ox-alpha",
+        "effort": "high",
+        "role": "backend_primary_writer_or_read_only_worker"
+      },
+      {
         "id": "gpt-5.6-terra",
         "effort": "max",
-        "role": "writer"
+        "role": "fallback_integration_or_frontend_writer"
       },
       {
         "id": "gpt-5.6-luna",
         "effort": "max",
-        "role": "durable_read_only_worker"
-      },
-      {
-        "id": "openrouter/stealth/ox-alpha",
-        "effort": "high",
-        "role": "ephemeral_read_only_worker"
+        "role": "read_only_worker"
       }
     ],
     "disabled_models": [
       "deepseek-v4-pro",
-      "deepseek/deepseek-v4-pro"
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
     ]
   },
   "roles": {
@@ -43,8 +46,9 @@
       "model": "gpt-5.6-terra",
       "reasoning_effort": "max",
       "read_only": false,
-      "child_eligible": false,
-      "contract": "contracts/terra-writer-contract.json"
+      "child_eligible": true,
+      "contract": "contracts/terra-writer-contract.json",
+      "status": "HISTORICAL_A4_A6_COMPATIBILITY"
     },
     "read_only_worker": {
       "durable": {
@@ -55,14 +59,65 @@
         "model": "openrouter/stealth/ox-alpha",
         "reasoning_effort": "high"
       },
-      "contract": "contracts/read-only-worker-contract.json"
+      "contract": "contracts/read-only-worker-contract.json",
+      "status": "HISTORICAL_A4_A6_COMPATIBILITY"
+    }
+  },
+  "active_roles": {
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "repository_writes": false,
+      "child_eligible": false
+    },
+    "writers": {
+      "backend_primary": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "contract": "contracts/ox-writer-contract.json"
+      },
+      "integration_fallback": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "contract": "contracts/terra-writer-contract.json",
+        "requires_explicit_sol_decision": true
+      },
+      "hau_frontend": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "contract": "contracts/terra-writer-contract.json",
+        "max_target_writers": 1
+      }
+    },
+    "read_only_workers": {
+      "luna": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max",
+        "contract": "contracts/read-only-worker-contract.json"
+      },
+      "ox": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "contract": "contracts/read-only-worker-contract.json",
+        "requires_no_writer_lock": true
+      }
     }
   },
   "fallbacks": {
-    "ox": [],
+    "active": [],
+    "automatic": false,
+    "explicit_sol_only": [
+      {
+        "from": "openrouter/stealth/ox-alpha",
+        "to": "gpt-5.6-terra",
+        "role": "writer"
+      }
+    ],
     "forbidden": [
       "deepseek-v4-pro",
-      "deepseek/deepseek-v4-pro"
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
     ],
     "historical_ox": [
       "gpt-5.6-luna"
@@ -80,18 +135,24 @@
       "internal",
       "non_sensitive"
     ],
-    "failure_behavior": "mark_ineligible_then_stop_and_require_new_manual_permit"
+    "failure_behavior": "mark_ineligible_then_stop_for_explicit_sol_reroute"
   },
   "concurrency": {
+    "default_children": 0,
+    "max_sol_subagents": 16,
+    "max_delegation_depth": 1,
+    "max_active_children": 16,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "max_overlapping_writers": 1,
-    "default_read_only_workers": 2,
-    "adaptive_read_only_workers_min": 2,
-    "adaptive_read_only_workers_max": 4,
-    "independent_burst_total_workers_max": 6,
+    "default_read_only_workers": 0,
+    "adaptive_read_only_workers_min": 0,
+    "adaptive_read_only_workers_max": 16,
+    "independent_burst_total_workers_max": 16,
     "recursive_worker_spawning": false,
     "ordinary_duplicate_work": "prohibited",
     "stop_when_green": true,
-    "status": "HISTORICAL_A4_REFERENCE_ONLY"
+    "isolation_required_for_second_writer": true
   },
   "context_envelope": {
     "dispatch_seed_tokens_max": 12000,
@@ -130,15 +191,21 @@
     "quality_claim_rule": "compare_only_observed_quality_evidence",
     "quota_metric": "native_weighted_quota"
   },
-  "role_catalog_status": "DORMANT_REFERENCE_ONLY",
+  "role_catalog_status": "ACTIVE_A7_SELECTION_ONLY",
   "execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A6",
+    "policy_id": "TOKEN-OPT-001-A7",
     "gate_path": "manual-codex-execution-gate.json",
     "default_state": "LOCKED",
     "manual_only": true,
+    "owner_started_sol_session": true,
     "max_processes": 1,
-    "max_children": 0,
-    "allow_subagents": false,
+    "default_children": 0,
+    "max_children": 16,
+    "allow_subagents": true,
+    "max_delegation_depth": 1,
+    "recursive_spawning": false,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "background_continuation": false,
     "automatic_fallback": false,
     "route_compiler_is_dispatcher": false

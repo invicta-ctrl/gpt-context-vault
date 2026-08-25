@@ -39,18 +39,19 @@ try {
     $globalReplica = @($registry.managed_replicas | Where-Object { [string]$_.id -eq 'global-codex' }) | Select-Object -First 1
     Assert-Test ($null -ne $globalReplica) 'global Codex replica is registered'
     $canonicalBytes = [IO.File]::ReadAllBytes($canonicalPath)
-    $suffix = [Convert]::FromBase64String([string]$globalReplica.supported_generated_drift.suffix_base64)
+    Assert-Test ($globalReplica.PSObject.Properties.Name -notcontains 'supported_generated_drift') 'registry has no generated LeanCTX suffix exception'
+    $suffix = [Text.UTF8Encoding]::new($false).GetBytes("`n<!-- lean-ctx -->`nsynthetic`n<!-- /lean-ctx -->`n")
 
     New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
     $exactDriftPath = Join-Path $tempRoot 'exact-generated-drift.md'
     [IO.File]::WriteAllBytes($exactDriftPath, [byte[]]($canonicalBytes + $suffix))
-    $exactDrift = Get-SupportedGeneratedReplicaDriftState -Replica $globalReplica -ReplicaPath $exactDriftPath -CanonicalBytes $canonicalBytes
-    Assert-Test ($exactDrift.State -eq 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT') 'exact LeanCTX suffix is accepted only as known generated drift'
+    $canonicalHash = (Get-FileHash -LiteralPath $canonicalPath -Algorithm SHA256).Hash
+    $exactDriftHash = (Get-FileHash -LiteralPath $exactDriftPath -Algorithm SHA256).Hash
+    Assert-Test ($exactDriftHash -ne $canonicalHash) 'LeanCTX suffix is ordinary byte drift'
 
     $arbitraryPath = Join-Path $tempRoot 'arbitrary-generated-drift.md'
     [IO.File]::WriteAllBytes($arbitraryPath, [byte[]]($canonicalBytes + $suffix + [Text.UTF8Encoding]::new($false).GetBytes('arbitrary')))
-    $arbitraryDrift = Get-SupportedGeneratedReplicaDriftState -Replica $globalReplica -ReplicaPath $arbitraryPath -CanonicalBytes $canonicalBytes
-    Assert-Test ($arbitraryDrift.State -eq 'NOT_RECOGNIZED') 'arbitrary appended suffix is rejected'
+    Assert-Test ((Get-FileHash -LiteralPath $arbitraryPath -Algorithm SHA256).Hash -ne $canonicalHash) 'arbitrary appended suffix is ordinary byte drift'
 
     $anchorRoot = Join-Path $tempRoot 'anchor'
     $worktreeParent = Join-Path $tempRoot 'worktrees'

@@ -80,9 +80,6 @@ $rows = foreach ($file in $files) {
         if ($hash -eq $canonicalHash) {
             $classification = 'MANAGED_REPLICA_MATCH'
         }
-        elseif ((Get-SupportedGeneratedReplicaDriftState -Replica $target -ReplicaPath $path -CanonicalBytes $canonicalBytes).State -eq 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT') {
-            $classification = 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT'
-        }
         elseif ($target.PSObject.Properties.Name -contains 'inventory_classification_when_drift') {
             $classification = [string]$target.inventory_classification_when_drift
         }

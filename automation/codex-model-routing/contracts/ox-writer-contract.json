@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "contract_id": "TOKEN-OPT-001-A7-ox-writer",
+  "role": "writer",
+  "model": "openrouter/stealth/ox-alpha",
+  "reasoning_effort": "high",
+  "sandbox": "workspace-write",
+  "max_active_writers_account_wide": 2,
+  "max_writers_per_repository_or_worktree": 1,
+  "may_spawn_workers": false,
+  "recursive_worker_spawning": false,
+  "requires_eligibility_proof": true,
+  "required_before_mutation": ["accepted_authority", "repository_handshake", "writer_lock_check", "unknown_work_preservation", "ox_zero_cost_health_privacy_eligibility"],
+  "required_completion": ["focused_verification", "complete_logical_diff_review", "durable_checkpoint_when_required", "stop_when_green"],
+  "prohibited": ["second_writer_in_same_target", "recursive_delegation", "duplicate_ordinary_work", "automatic_fallback", "automatic_next_slice_start", "unapproved_external_write"]
+}

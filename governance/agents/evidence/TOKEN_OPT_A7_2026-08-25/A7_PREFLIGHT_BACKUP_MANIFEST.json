@@ -1,0 +1,154 @@
+{
+    "schema_version":  1,
+    "amendment":  "TOKEN-OPT-001-A7",
+    "created_at":  "2026-08-25T06:08:11.4336559+00:00",
+    "vault_head":  "4ab0f74dcab6c303b2ea0e6bd994793a7aeef965",
+    "backup_root":  "C:/Users/adria/.codex/backups/TOKEN-OPT-001-A7-20260825T055338Z/vault",
+    "verified_count":  24,
+    "files":  [
+                  {
+                      "relative_path":  "AGENTS.md",
+                      "source_sha256":  "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92",
+                      "backup_sha256":  "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\AGENTS.md"
+                  },
+                  {
+                      "relative_path":  "CONTEXT_INDEX.md",
+                      "source_sha256":  "02968b5b020c505d9635c79cfc27a7c715b6ec34c35ad998370f25325f8f9911",
+                      "backup_sha256":  "02968b5b020c505d9635c79cfc27a7c715b6ec34c35ad998370f25325f8f9911",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\CONTEXT_INDEX.md"
+                  },
+                  {
+                      "relative_path":  ".codex/CURRENT.md",
+                      "source_sha256":  "919fd99b1bc79b1adf845409d1034b2598b042284634d32af1c0b7f52301884d",
+                      "backup_sha256":  "919fd99b1bc79b1adf845409d1034b2598b042284634d32af1c0b7f52301884d",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\.codex\\CURRENT.md"
+                  },
+                  {
+                      "relative_path":  "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
+                      "source_sha256":  "97527cb2cbacebe7ff748566aa9d9584d20503aaaee64fa755ff5caba80e2505",
+                      "backup_sha256":  "97527cb2cbacebe7ff748566aa9d9584d20503aaaee64fa755ff5caba80e2505",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\protocols\\CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md"
+                  },
+                  {
+                      "relative_path":  "governance/agents/AGENTS_REGISTRY.json",
+                      "source_sha256":  "5dc78d9efbeb43050a6b36304dccdc129a4b17428367809d4af81ad80f9ce093",
+                      "backup_sha256":  "5dc78d9efbeb43050a6b36304dccdc129a4b17428367809d4af81ad80f9ce093",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\governance\\agents\\AGENTS_REGISTRY.json"
+                  },
+                  {
+                      "relative_path":  "governance/agents/extensions/global-codex.PROJECT_POLICY.md",
+                      "source_sha256":  "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
+                      "backup_sha256":  "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\governance\\agents\\extensions\\global-codex.PROJECT_POLICY.md"
+                  },
+                  {
+                      "relative_path":  "governance/agents/extensions/hau-usc-logistics.PROJECT_POLICY.md",
+                      "source_sha256":  "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04",
+                      "backup_sha256":  "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\governance\\agents\\extensions\\hau-usc-logistics.PROJECT_POLICY.md"
+                  },
+                  {
+                      "relative_path":  "automation/agents-governance/RegisteredTargetDiscovery.psm1",
+                      "source_sha256":  "c4a15f88d3a508ae638a8af6f59056e719fee0b3b9cf4f06edbb861ceba01477",
+                      "backup_sha256":  "c4a15f88d3a508ae638a8af6f59056e719fee0b3b9cf4f06edbb861ceba01477",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\agents-governance\\RegisteredTargetDiscovery.psm1"
+                  },
+                  {
+                      "relative_path":  "automation/agents-governance/inventory-agents.ps1",
+                      "source_sha256":  "28bb491e9a58873b265c3355f4ee8f062f93ffb34c5b7d6ff8fe513314a04fad",
+                      "backup_sha256":  "28bb491e9a58873b265c3355f4ee8f062f93ffb34c5b7d6ff8fe513314a04fad",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\agents-governance\\inventory-agents.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/agents-governance/sync-agents.ps1",
+                      "source_sha256":  "e82e61b79937e28ba5b85783f78518128b4ca3cf68b3cdd06c6f85c4d8532a70",
+                      "backup_sha256":  "e82e61b79937e28ba5b85783f78518128b4ca3cf68b3cdd06c6f85c4d8532a70",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\agents-governance\\sync-agents.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/agents-governance/verify-agents.ps1",
+                      "source_sha256":  "6e39f4f095610b8a4b447f8eb2905a979a7c871a8f812be750cef273b975775c",
+                      "backup_sha256":  "6e39f4f095610b8a4b447f8eb2905a979a7c871a8f812be750cef273b975775c",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\agents-governance\\verify-agents.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/agents-governance/test-a5-governance.ps1",
+                      "source_sha256":  "0adadf5bfa15c6e831bf256575f18b8db5c6364747e9c1b80a7123dea2871ceb",
+                      "backup_sha256":  "0adadf5bfa15c6e831bf256575f18b8db5c6364747e9c1b80a7123dea2871ceb",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\agents-governance\\test-a5-governance.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/README.md",
+                      "source_sha256":  "898413c2213b58fcdb68fb9ca95c36193a8511932dee69d7f878beea235633db",
+                      "backup_sha256":  "898413c2213b58fcdb68fb9ca95c36193a8511932dee69d7f878beea235633db",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\README.md"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/ROUTING_STANDARD.md",
+                      "source_sha256":  "46e3a201f9d0f42999a3fa7276fbf5d3ea1893e7bf314b5d7dcbd3270e45bad2",
+                      "backup_sha256":  "46e3a201f9d0f42999a3fa7276fbf5d3ea1893e7bf314b5d7dcbd3270e45bad2",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\ROUTING_STANDARD.md"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/token-optimization.policy.json",
+                      "source_sha256":  "b9ac011dd091263ba8bf9ab93e94db3238856ee700e1e261a02fd4409b352a9b",
+                      "backup_sha256":  "b9ac011dd091263ba8bf9ab93e94db3238856ee700e1e261a02fd4409b352a9b",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\token-optimization.policy.json"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/current-routing-profile.json",
+                      "source_sha256":  "65687311095e9005d5bfcc45f7d06546b234629d80d4578b91027251cc8d6c07",
+                      "backup_sha256":  "65687311095e9005d5bfcc45f7d06546b234629d80d4578b91027251cc8d6c07",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\current-routing-profile.json"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/manual-codex-execution-gate.json",
+                      "source_sha256":  "af126e1dbbe68f336b9f646cf82c832ba46959f006797af6643de55ac79911f0",
+                      "backup_sha256":  "af126e1dbbe68f336b9f646cf82c832ba46959f006797af6643de55ac79911f0",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\manual-codex-execution-gate.json"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/route-compiler.ps1",
+                      "source_sha256":  "e8a8611dfca3f1d574e862e31a11ec91e581acf314e0738c98bd09f37ccb70e0",
+                      "backup_sha256":  "e8a8611dfca3f1d574e862e31a11ec91e581acf314e0738c98bd09f37ccb70e0",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\route-compiler.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/verify-token-optimization.ps1",
+                      "source_sha256":  "63ed2f24d27cdddace368efbb1cd1745b72cdcd3a661db63196b89576ed70062",
+                      "backup_sha256":  "63ed2f24d27cdddace368efbb1cd1745b72cdcd3a661db63196b89576ed70062",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\verify-token-optimization.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/test-a6-manual-execution-gate.ps1",
+                      "source_sha256":  "3dc6e64d17f9d35d513a45d395f5d55d74a681c06afeac0fa27dbc081ad01e32",
+                      "backup_sha256":  "3dc6e64d17f9d35d513a45d395f5d55d74a681c06afeac0fa27dbc081ad01e32",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\test-a6-manual-execution-gate.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/contracts/terra-writer-contract.json",
+                      "source_sha256":  "64fe1d78304db004f58c19c5ccd64c7a966adf1ad04d46c0e0eda98b05a174c4",
+                      "backup_sha256":  "64fe1d78304db004f58c19c5ccd64c7a966adf1ad04d46c0e0eda98b05a174c4",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\contracts\\terra-writer-contract.json"
+                  },
+                  {
+                      "relative_path":  "automation/codex-model-routing/contracts/read-only-worker-contract.json",
+                      "source_sha256":  "114e3c77bab3bb3e24c3335ce9c804ec2955f3b2662dba1b7dc77dbc4245427d",
+                      "backup_sha256":  "114e3c77bab3bb3e24c3335ce9c804ec2955f3b2662dba1b7dc77dbc4245427d",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-model-routing\\contracts\\read-only-worker-contract.json"
+                  },
+                  {
+                      "relative_path":  "automation/codex-usage-guard/Enable-CodexUsage.ps1",
+                      "source_sha256":  "05c8f8acae1f1ba69095099e345deedd35277f796146e61f8d0bd2f343331c4f",
+                      "backup_sha256":  "05c8f8acae1f1ba69095099e345deedd35277f796146e61f8d0bd2f343331c4f",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-usage-guard\\Enable-CodexUsage.ps1"
+                  },
+                  {
+                      "relative_path":  "automation/codex-usage-guard/README.md",
+                      "source_sha256":  "3668d577bafee28af7f7bf33d203238a68089d7b0e94ae8e84e0e78bb946976c",
+                      "backup_sha256":  "3668d577bafee28af7f7bf33d203238a68089d7b0e94ae8e84e0e78bb946976c",
+                      "backup_path":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A7-20260825T055338Z\\vault\\automation\\codex-usage-guard\\README.md"
+                  }
+              ]
+}

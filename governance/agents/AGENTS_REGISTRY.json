@@ -26,7 +26,7 @@
     "line_ending_pr": 7,
     "line_ending_merge_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
     "prechange_sha256": "ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d",
-    "active_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
+    "active_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
     "local_checkout_verified": true,
     "local_checkout_preserved_untracked": null
   },
@@ -75,20 +75,22 @@
       "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
       "allowed_prechange_sha256": [
-        "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28"
+        "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
+        "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459"
       ],
       "rollback": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",
       "notes": "Global Codex root, extension, and deterministic developer-instructions activation are active and verified. Recurring known managed-root drift was backup-protected and repaired during Astral adoption verification.",
-      "prechange_extension_exists": false,
+      "prechange_extension_exists": true,
+      "prechange_extension_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
       "extension_activation": {
         "kind": "codex_developer_instructions",
         "config_path": "C:\\Users\\adria\\.codex\\config.toml",
         "begin_marker": "# BEGIN MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "end_marker": "# END MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "prechange_config_sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c",
-        "deployed_value_sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+        "deployed_value_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
         "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\config.toml"
       },
       "original_prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
@@ -103,18 +105,8 @@
         "setup_auto_inject_rules": false,
         "config_validation": "PASS"
       },
-      "supported_generated_drift": {
-        "kind": "canonical_plus_exact_lean_ctx_suffix",
-        "classification": "KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT",
-        "observed_sha256": "01080bac13e559380ced3ba4efa4e82def3cb94d08a128480ff33c08dcab3d06",
-        "suffix_sha256": "1f86c8dd437b39bae9f8ab0b11fdac213d8eba422d59ee5ff2535d9c3be918f5",
-        "suffix_base64": "CjwhLS0gbGVhbi1jdHggLS0+CiMjIGxlYW4tY3R4CgpQcmVmZXIgbGVhbi1jdHggTUNQIHRvb2xzIG92ZXIgbmF0aXZlIGVxdWl2YWxlbnRzIGZvciB0b2tlbiBzYXZpbmdzLgoKRm9yIGNvbXByZXNzaW9uIHlvdSBjYW4gcmVseSBvbiByZWdhcmRsZXNzIG9mIHlvdXIgQ29kZXggc3VyZmFjZSAoQ0xJLCBEZXNrdG9wLCBvciBDbG91ZCkgb3IgQ29kZXggdmVyc2lvbiwgcm91dGUgc2hlbGwgY29tbWFuZHMgdGhyb3VnaCBgY3R4X3NoZWxsYCAob3IgYEM6L1VzZXJzL2FkcmlhLy5jYXJnby9iaW4vbGVhbi1jdHguZXhlIC1jICI8Y21kPiJgKSwgZmlsZSByZWFkcyB0aHJvdWdoIGBjdHhfcmVhZGAsIGFuZCBjb2RlIHNlYXJjaCB0aHJvdWdoIGBjdHhfc2VhcmNoYC4gSG9vay1kcml2ZW4gYXV0by1jb21wcmVzc2lvbiBtYXkgYWxzbyBiZSBhY3RpdmUsIGJ1dCB0aGUgTUNQL0NMSSB0b29scyBhcmUgdGhlIHBhdGggdGhhdCB3b3JrcyBldmVyeXdoZXJlIOKAlCBvdGhlcndpc2UgbGFyZ2Ugb3V0cHV0cyAoYnVpbGRzLCBgdHNjYCwgdGVzdHMsIGxvZ3MpIGNhbiByZWFjaCB0aGUgbW9kZWwgdW5jb21wcmVzc2VkLgoKRnVsbCBydWxlczogYEM6XFVzZXJzXGFkcmlhXC5jb2RleFxMRUFOLUNUWC5tZGAKPCEtLSAvbGVhbi1jdHggLS0+Cg==",
-        "requires_hash_verified_backup": true,
-        "preserved_backup_root": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A4-POST-PUBLICATION-20260824T161555Z",
-        "repair": "explicit managed sync apply restores canonical bytes after a hash-verified backup"
-      },
-      "active_root_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
-      "active_extension_sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_extension_sha256": "e6df33fffada56437f183c34a9177726df53d9390b6d94bf856f21f06abe4b47",
       "last_drift_repair": {
         "observed_at": "2026-08-19T15:59:19.830132Z",
         "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
@@ -138,15 +130,15 @@
       "sync_allowed": true,
       "gate_status": "ACTIVE_AGENTS_CONSOLIDATION_002",
       "prechange_sha256": "379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438",
-      "allowed_prechange_sha256": ["83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f"],
+      "allowed_prechange_sha256": ["83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f", "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92"],
       "prechange_extension_exists": true,
       "prechange_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04",
       "rollback": "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\<timestamp>\\active\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
-      "active_root_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
-      "active_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04"
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_extension_sha256": "c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961"
     },
     {
       "id": "astral-bridge",
@@ -218,11 +210,12 @@
       "gate_status": "ACTIVE_A5_EXTENSION_LOADER_VERIFIED",
       "prechange_sha256": "03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272",
       "allowed_prechange_sha256": [
-        "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769"
+        "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+        "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92"
       ],
       "prechange_extension_exists": true,
       "prechange_extension_sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e",
-      "active_root_sha256": "85f2575bdd22342f02baa6540725b5837a8fe72d6def368d1f33ea94a22720d2",
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
       "active_extension_sha256": "b94f5b5584c110e8bc7c7aebf1ef12bab5da1ba351d6fea36c7736fe0c88c32d",
       "rollback": "D:\\AI_Workspace\\backups\\TOKEN-OPT-001-A5\\<timestamp>\\AGENTS.md",
       "loader_validation": {

@@ -274,19 +274,8 @@ foreach ($replica in $allReplicas) {
     $extensionCurrentHash = if ($extensionExists) { Get-Sha256 $extensionPath } else { $null }
 
     $backupRequired = [bool](Get-OptionalProperty -Object $replica -Name 'backup_required' -Default (-not [bool]$replica.repository))
-    $generatedDrift = Get-SupportedGeneratedReplicaDriftState -Replica $replica -ReplicaPath $targetPath -CanonicalBytes $canonicalBytes
-    $generatedDriftAccepted = $generatedDrift.State -eq 'KNOWN_GENERATED_LEAN_CTX_SUFFIX_DRIFT'
-    if ($generatedDriftAccepted) {
-        $generatedDriftDefinition = Get-OptionalProperty -Object $replica -Name 'supported_generated_drift' -Default $null
-        $requiresBackup = $null -ne $generatedDriftDefinition -and [bool](Get-OptionalProperty -Object $generatedDriftDefinition -Name 'requires_hash_verified_backup' -Default $false)
-        if (-not $requiresBackup -or -not $backupRequired) {
-            $failures.Add("$($replica.id): recognized generated drift is not backup-protected by registry")
-            continue
-        }
-    }
-
     $acceptAnyPrechange = [bool](Get-OptionalProperty -Object $replica -Name 'accept_any_prechange_with_backup' -Default $false)
-    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash -and -not $acceptAnyPrechange -and -not $generatedDriftAccepted) {
+    if ($replicaExists -and $replicaCurrentHash -ne $canonicalHash -and -not $acceptAnyPrechange) {
         $prechangeProperty = if ($mode -eq 'candidate') { 'candidate_prechange_sha256' } else { 'prechange_sha256' }
         $expected = @([string](Get-OptionalProperty -Object $replica -Name $prechangeProperty -Default ''))
         $expected += @((Get-OptionalProperty -Object $replica -Name 'allowed_prechange_sha256' -Default @()) | ForEach-Object { [string]$_ })
@@ -362,7 +351,7 @@ foreach ($replica in $allReplicas) {
             BackupReplicaSha256 = $backupReplicaHash
             ExtensionBackupPath = $extensionBackup
             BackupExtensionSha256 = $backupExtensionHash
-            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State) generated_drift=$($generatedDrift.State)"
+            Detail = "replica=$canonicalHash extension=$extensionSourceHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State)"
         })
         continue
     }
@@ -430,7 +419,7 @@ foreach ($replica in $allReplicas) {
         BackupReplicaSha256 = $backupReplicaHash
         ExtensionBackupPath = $extensionBackup
         BackupExtensionSha256 = $backupExtensionHash
-        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State) generated_drift=$($generatedDrift.State)"
+        Detail = "replica=$afterReplicaHash extension=$afterExtensionHash activation=$activationAction writer=$writerState dirty=$($dirtyState.State)"
     })
 }
 
