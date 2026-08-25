@@ -26,7 +26,11 @@
     "line_ending_pr": 7,
     "line_ending_merge_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
     "prechange_sha256": "ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d",
-    "active_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+    "active_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
+    "a8_adoption_pr": 15,
+    "a8_adoption_merge_commit": "bcced22ccf1d68b2e3d329470a80a18895f009b6",
+    "a8_closure_pr": 16,
+    "a8_closure_merge_commit": "eb25f22446bd9f69c7cc89545bd7a65f34fb049c",
     "local_checkout_verified": true,
     "local_checkout_preserved_untracked": null
   },
@@ -76,21 +80,22 @@
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
       "allowed_prechange_sha256": [
         "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
-        "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459"
+        "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459",
+        "53c40a2d3948a096f2e652745fb0109e6033f23af68f5c7ffd6a06b5b3210efa"
       ],
       "rollback": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",
       "notes": "Global Codex root, extension, and deterministic developer-instructions activation are active and verified. Recurring known managed-root drift was backup-protected and repaired during Astral adoption verification.",
       "prechange_extension_exists": true,
-      "prechange_extension_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
+      "prechange_extension_sha256": "e6df33fffada56437f183c34a9177726df53d9390b6d94bf856f21f06abe4b47",
       "extension_activation": {
         "kind": "codex_developer_instructions",
         "config_path": "C:\\Users\\adria\\.codex\\config.toml",
         "begin_marker": "# BEGIN MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "end_marker": "# END MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "prechange_config_sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c",
-        "deployed_value_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
+        "deployed_value_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61dfda7b4ce6c5375a86692ad875ae",
         "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\config.toml"
       },
       "original_prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
@@ -105,8 +110,8 @@
         "setup_auto_inject_rules": false,
         "config_validation": "PASS"
       },
-      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
-      "active_extension_sha256": "e6df33fffada56437f183c34a9177726df53d9390b6d94bf856f21f06abe4b47",
+      "active_root_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
+      "active_extension_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61dfda7b4ce6c5375a86692ad875ae",
       "last_drift_repair": {
         "observed_at": "2026-08-19T15:59:19.830132Z",
         "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
@@ -137,8 +142,8 @@
       "backup_required": true,
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
-      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
-      "active_extension_sha256": "c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961"
+      "active_root_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
+      "active_extension_sha256": "666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e"
     },
     {
       "id": "astral-bridge",
@@ -215,7 +220,7 @@
       ],
       "prechange_extension_exists": true,
       "prechange_extension_sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e",
-      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_root_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
       "active_extension_sha256": "b94f5b5584c110e8bc7c7aebf1ef12bab5da1ba351d6fea36c7736fe0c88c32d",
       "rollback": "D:\\AI_Workspace\\backups\\TOKEN-OPT-001-A5\\<timestamp>\\AGENTS.md",
       "loader_validation": {
