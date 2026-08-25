@@ -441,7 +441,7 @@ Stop the affected operation when:
 - a secret or unnecessary private value is detected;
 - a migration, deployment, destructive operation, or external write lacks exact authority;
 - rollback cannot be demonstrated;
-- billable Codex work is unattended or background without Earl's exact authorization, originates independently from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, or continuation, or exceeds the active owner-started Sol session's A7 depth, child, writer, or lock limits;
+- billable Codex work is unattended or background without Earl's exact authorization, originates independently from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, or continuation, or exceeds the active owner-started Sol session's A8 depth, model-specific worker, writer, or lock limits;
 - verification fails;
 - the accepted work unit is complete.
 

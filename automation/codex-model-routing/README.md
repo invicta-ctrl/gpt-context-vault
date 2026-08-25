@@ -90,7 +90,7 @@ execution and requires a new exact manual permit. ChatGPT Web, Astral Bridge, an
 automation must stop and ask Earl rather than performing that probe themselves.
 Unsupported identifiers are rejected; silent substitution is prohibited.
 
-## Deterministic A7 checks
+## Deterministic A8 checks
 
 Use a project-local, redacted run-state and telemetry path; do not store live prompts,
 credentials, or raw external state in this vault.
