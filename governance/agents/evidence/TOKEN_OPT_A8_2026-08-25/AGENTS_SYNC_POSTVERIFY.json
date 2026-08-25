@@ -1,0 +1,149 @@
+{
+    "schema_version":  1,
+    "generated_at":  "2026-08-25T13:02:08.7414903Z",
+    "apply":  false,
+    "timestamp":  "20260825T130205Z",
+    "canonical_path":  "D:\\Documents\\Codex\\GitHub\\gpt-context-vault\\AGENTS.md",
+    "canonical_sha256":  "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
+    "counts":  [
+                   {
+                       "action":  "BLOCKED",
+                       "count":  3
+                   },
+                   {
+                       "action":  "MATCH",
+                       "count":  6
+                   }
+               ],
+    "results":  [
+                    {
+                        "Id":  "global-codex",
+                        "Mode":  "live",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "MATCH",
+                        "ReplicaPath":  "C:\\Users\\adria\\.codex\\AGENTS.md",
+                        "ExtensionPath":  "C:\\Users\\adria\\.codex\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-20260825T130205Z\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-20260825T130205Z\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=5a3dd6e710cca1251e8b706c5087fac0a61fdfda7b4ce6c5375a86692ad875ae activation=MATCH writer=NO_POINTER dirty=NON_GIT_TARGET"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics",
+                        "Mode":  "live",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\active\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\active\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "astral-bridge",
+                        "Mode":  "live",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\Astral-Bridge\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\Astral-Bridge\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    },
+                    {
+                        "Id":  "odysseus",
+                        "Mode":  "live",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\AI_Workspace\\AGENTS.md",
+                        "ExtensionPath":  "D:\\AI_Workspace\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\AI_Workspace\\backups\\TOKEN-OPT-001-A5\\20260825T130205Z\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\AI_Workspace\\backups\\TOKEN-OPT-001-A5\\20260825T130205Z\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=b94f5b5584c110e8bc7c7aebf1ef12bab5da1ba351d6fea36c7736fe0c88c32d activation=N/A writer=NO_POINTER dirty=NON_GIT_TARGET"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:backend-r3-a1-a2-b1",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\backend-r3-a1-a2-b1\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\backend-r3-a1-a2-b1\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\backend-r3-a1-a2-b1\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\backend-r3-a1-a2-b1\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:frontend-design-integration",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\frontend-design-integration\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\frontend-design-integration\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\frontend-design-integration\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\frontend-design-integration\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "hau-usc-logistics-worktree:v084-live-operations-performance",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "MATCH",
+                        "ExtensionAction":  "MATCH",
+                        "ActivationAction":  "N/A",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v084-live-operations-performance\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v084-live-operations-performance\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\v084-live-operations-performance\\AGENTS.md",
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\20260825T130205Z\\v084-live-operations-performance\\PROJECT_POLICY.md",
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "replica=ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87 extension=666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e activation=N/A writer=NONE dirty=MANAGED_OR_GENERATED_ONLY"
+                    },
+                    {
+                        "Id":  "astral-bridge-worktree:astral-bridge-agents-authorized-efc7a12",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-authorized-efc7a12\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-authorized-efc7a12\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    },
+                    {
+                        "Id":  "astral-bridge-worktree:astral-bridge-agents-consolidation-001",
+                        "Mode":  "worktree",
+                        "ReplicaAction":  "BLOCKED",
+                        "ExtensionAction":  "BLOCKED",
+                        "ActivationAction":  "BLOCKED",
+                        "ReplicaPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\AGENTS.md",
+                        "ExtensionPath":  "D:\\Documents\\Codex\\worktrees\\astral-bridge-agents-consolidation-001\\.agents\\PROJECT_POLICY.md",
+                        "BackupPath":  null,
+                        "BackupReplicaSha256":  null,
+                        "ExtensionBackupPath":  null,
+                        "BackupExtensionSha256":  null,
+                        "Detail":  "active writer state=POINTER_WITHOUT_WRITER_FIELD"
+                    }
+                ],
+    "failures":  [
+
+                 ]
+}
