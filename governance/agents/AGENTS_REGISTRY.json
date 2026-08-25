@@ -79,6 +79,7 @@
       "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
       "allowed_prechange_sha256": [
+        "9134072db442fc8e838b07434849701f4885a9c831d0b50a747103bc24f437b6",
         "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
         "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459",
         "53c40a2d3948a096f2e652745fb0109e6033f23af68f5c7ffd6a06b5b3210efa"
