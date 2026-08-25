@@ -1,35 +1,34 @@
-# TOKEN-OPT-001-A7 Cognee End-to-End Verification Receipt
+# TOKEN-OPT-001-A7 Cognee Status Receipt
 
 **Date:** 2026-08-25
 **Target:** local Cognee at `http://127.0.0.1:8011`
-**Result:** PARTIAL / BLOCKED AT LOCAL LLM AND GRAPH IMPROVE
+**Result:** PARTIALLY_GREEN_WITH_ISOLATED_LLM_DEGRADATION
 
-## Verified
+## Classification
 
-- Cognee CLI/server version: `1.5.2`, from the dedicated `C:\Users\adria\.cognee-plugin\venv`.
-- The detailed health route reached the local server. SQLite, LanceDB, Ladybug graph, local file storage, FastEmbed, and `sentence-transformers/all-MiniLM-L6-v2` were healthy.
-- Current live server configuration uses Ollama `qwen3:8b`; the model is installed and Ollama's tags/process APIs are reachable.
+- **COGNEE_CORE_API:** DEGRADED AT FINAL PROBE — the final `/health` request timed out while the local LLM-backed improve path was stalled; earlier authenticated API and detailed component probes responded.
+- **COGNEE_STORAGE:** GREEN — SQLite, LanceDB, Ladybug graph, local file storage, FastEmbed, and `sentence-transformers/all-MiniLM-L6-v2` were verified healthy.
+- **COGNEE_SESSION_MEMORY:** GREEN — a fresh synthetic session registered, stored a QA entry, returned an entry ID, and recalled the exact marker.
+- **COGNEE_CROSS_SESSION_RECALL:** GREEN FROM EXISTING VERIFIED EVIDENCE — the same-day managed local R1 receipt proves marker-positive recall after a controlled restart; that still-valid evidence is reused per owner steering.
+- **COGNEE_LLM_IMPROVE:** DEGRADED — current Ollama `qwen3:8b` inference timed out; the A7 synthetic SessionEnd improve attempt recorded `wrote=false`.
+- **COGNEE_OVERALL:** PARTIALLY_GREEN_WITH_ISOLATED_LLM_DEGRADATION.
+
+## Current A7 synthetic evidence
+
+- Cognee CLI/server version is `1.5.2` in the dedicated `C:\Users\adria\.cognee-plugin\venv`.
 - Codex Cognee plugin `1.4.3` is installed and its SessionStart, prompt, trace, Stop, PreCompact, and SessionEnd hooks are registered.
-- Fresh synthetic agent session `codex-a7-e2e-c5852d6ae367` registered successfully.
-- Synthetic marker `A7_COGNEE_20260825T084123Z_44B429CD` stored as a QA entry in dataset `token_opt_a7_e2e`; response was `session_stored` and an entry ID was returned.
-- Same-session authenticated recall found the exact marker.
-- The supported SessionEnd hook exited `0`, passed the API key through inherited environment only, and deferred heavy graph work to the existing shutdown worker.
-- The detached worker started against the intended session and dataset and unregistered the synthetic agent connection.
+- Synthetic session `codex-a7-e2e-c5852d6ae367` registered successfully.
+- Synthetic marker `A7_COGNEE_20260825T084123Z_44B429CD` stored as `session_stored`; same-session recall found it.
+- The supported SessionEnd hook exited `0`, kept the API key out of process arguments, and deferred heavy graph work to its shutdown worker.
+- The synthetic marker remains explicitly labelled disposable. No cleanup is attempted during governance closure.
 
-## Blocking evidence
+## Disposition
 
-- `/health/detailed` returned `degraded` only because the local LLM connection test timed out after 30 seconds.
-- Direct `qwen3:8b` generation did not complete within 300 seconds. A controlled restart of the exact local Ollama app/server process pair restored its API, but the same deployed-model generation probe remained nonresponsive.
-- The SessionEnd worker's first `/api/v1/improve` attempt timed out, recorded `wrote=false`, and entered its bounded retry path.
-- Fresh-session graph recall returned `NoDataError`; therefore graph/improve write and cross-session recall are not accepted.
-- The synthetic marker is retained and explicitly labelled disposable because safe cleanup would remove evidence before graph state is settled.
-
-## Safety and disposition
-
+- Cognee LLM improve is not an A7 governance closure gate.
 - No credential value was printed, placed in process arguments, written to this receipt, or committed.
-- No model/provider configuration was changed. Switching away from the currently configured `qwen3:8b` would be a provider/configuration choice outside a routine repair.
-- Governance, routing, AGENTS synchronization, hooks timeout, and usage-guard verification are independently green; this blocker is isolated to Cognee local LLM-backed improve.
+- No model/provider configuration was changed.
+- Follow-up: `COGNEE-LOCAL-LLM-01`.
 
 ## Next exact action
 
-Start a fresh owner-authorized `@sol-advisor` task to diagnose the existing `qwen3:8b` generation stall without changing models, then rerun only Cognee Phase 10.
+Start one fresh owner-started Sol Advisor session after this task closes to verify that A7 is loaded and native bounded delegation is available.
