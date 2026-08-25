@@ -111,6 +111,43 @@ foreach ($replica in $allReplicas) {
         continue
     }
 
+    $targetRoot = [IO.Path]::GetFullPath((Split-Path -Parent $path))
+    $writerState = Get-TargetWriterState -TargetRoot $targetRoot
+    if ($writerState -notin @('NO_POINTER', 'NONE', 'NONE_TERMINAL_LEGACY_POINTER')) {
+        $results.Add([pscustomobject]@{
+            Id = $replica.id
+            Mode = $mode
+            Replica = 'BLOCKED'
+            Extension = 'BLOCKED'
+            Activation = 'BLOCKED'
+            ReplicaPath = $path
+            ExtensionPath = $extensionPath
+            Detail = "active writer state=$writerState"
+        })
+        if ($FailOnBlocked -and [bool]$replica.required) {
+            $failureCount++
+        }
+        continue
+    }
+
+    $dirtyState = Get-TargetGitDirtyState -TargetRoot $targetRoot
+    if ($dirtyState.State -notin @('CLEAN', 'MANAGED_OR_GENERATED_ONLY', 'NON_GIT_TARGET')) {
+        $results.Add([pscustomobject]@{
+            Id = $replica.id
+            Mode = $mode
+            Replica = 'BLOCKED'
+            Extension = 'BLOCKED'
+            Activation = 'BLOCKED'
+            ReplicaPath = $path
+            ExtensionPath = $extensionPath
+            Detail = "dirty state=$($dirtyState.State): $($dirtyState.Detail)"
+        })
+        if ($FailOnBlocked -and [bool]$replica.required) {
+            $failureCount++
+        }
+        continue
+    }
+
     $replicaState = 'MISSING'
     $replicaDetail = ''
     if (Test-Path -LiteralPath $path -PathType Leaf) {
@@ -171,7 +208,7 @@ foreach ($replica in $allReplicas) {
         Activation = $activationState
         ReplicaPath = $path
         ExtensionPath = $extensionPath
-        Detail = "replica: $replicaDetail; extension: $extensionDetail; activation: $activationDetail"
+        Detail = "replica: $replicaDetail; extension: $extensionDetail; activation: $activationDetail; dirty=$($dirtyState.State)"
     })
 
     if ($replicaState -ne 'MATCH') {
@@ -191,7 +228,18 @@ if ($registry.PSObject.Properties.Name -contains 'preserved_worktree_appendices'
         $expectedHash = [string]$appendix.sha256
         $state = 'MISSING'
         $detail = "expected=$expectedHash"
-        if (Test-Path -LiteralPath $appendixPath -PathType Leaf) {
+        $worktreeRoot = Split-Path -Parent (Split-Path -Parent $appendixPath)
+        $worktreeGitMarker = Join-Path $worktreeRoot '.git'
+        if ([string](Get-OptionalProperty -Object $appendix -Name 'disposition' -Default '') -eq 'historical_unavailable_reference') {
+            $state = 'HISTORICAL_UNAVAILABLE'
+            $detail = "historical appendix unavailable; hash record and provenance preserved without replacement: $worktreeRoot"
+        }
+        elseif (-not (Test-Path -LiteralPath $worktreeRoot -PathType Container) -or
+            -not (Test-Path -LiteralPath $worktreeGitMarker)) {
+            $state = 'BLOCKED'
+            $detail = "registered appendix target is not an available worktree; hash record preserved and no replacement was created: $worktreeRoot"
+        }
+        elseif (Test-Path -LiteralPath $appendixPath -PathType Leaf) {
             $actualHash = Get-Sha256 $appendixPath
             if ($actualHash -eq $expectedHash) {
                 $state = 'MATCH'
@@ -207,7 +255,7 @@ if ($registry.PSObject.Properties.Name -contains 'preserved_worktree_appendices'
             Path = $appendixPath
             Detail = $detail
         })
-        if ($state -ne 'MATCH') {
+        if ($state -ne 'MATCH' -and $state -ne 'HISTORICAL_UNAVAILABLE' -and -not ($state -eq 'BLOCKED' -and -not $FailOnBlocked)) {
             $failureCount++
         }
     }

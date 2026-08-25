@@ -3,7 +3,7 @@ schema_version: 1
 status: active
 scope: account-wide
 policy_id: TOKEN-OPT-001
-last_reviewed: 2026-08-21
+last_reviewed: 2026-08-25
 ---
 
 # Codex Token Optimization and Context-Efficiency Rules
@@ -24,6 +24,52 @@ This policy is the single account-wide token/context-efficiency authority. Proje
 repositories may add stricter local rules. They may not weaken accepted specifications,
 security boundaries, privacy, data invariants, backup, rollback, release, migration, or
 Git safeguards.
+
+## A8 owner-started Sol execution boundary
+
+A8 preserves A7's locked default and its prohibition on ChatGPT Web, Astral Bridge,
+automation, scheduling, watchdog, retry, fallback, and background self-authorization.
+It supersedes only A7's incorrect Sol-subagent, mandatory-zero-start, and
+undifferentiated child-cap clauses.
+
+```text
+BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
+UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
+OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+SOL SUBAGENTS: PROHIBITED
+MANDATORY ZERO-WORKER START: NONE
+MAX LUNA MAX SUBAGENTS: 16
+MAX TERRA MAX SUBAGENTS: 2
+MAX OX ALPHA SUBAGENTS: 16
+MAX TOTAL DIRECT SUBAGENTS: 16
+DELEGATION DEPTH: 1
+RECURSIVE CHILD SPAWNING: FORBIDDEN
+AUTOMATIC FALLBACK: DISABLED
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
+APP-SERVER INFRASTRUCTURE: ALLOWED
+ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
+```
+
+A permit-gated CLI run still requires a fresh exact interactive approval. An active
+owner-started Sol session follows the normal @sol advisor delegation guidelines and may
+use no workers or multiple useful bounded direct workers under the same task. Sol cannot
+be a subagent; Luna Max and Ox Alpha each have a ceiling of sixteen, Terra Max has a
+ceiling of two, total direct workers are capped at sixteen, and delegation cannot recurse.
+A second writer is permitted only
+in a different proven-isolated repository or worktree with a separate lock and no
+shared mutable state or incomplete dependency.
+
+The local scheduled `Earl Codex Usage Guard` continues to preserve only
+`codex app-server` infrastructure while locked and to terminate unpermitted primary
+`codex.exe` processes. Native children inside an authorized Sol session are governed
+by the A8 depth, model-cap, role, writer, and fallback contract. The deterministic route
+compiler validates routing metadata but is never a dispatcher.
+
+Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
+tools, Codex Router, connector health checks, and local context tools may remain running
+when they do not originate independent billable work. Infrastructure availability is
+not execution authority.
 
 ## Normal route
 
@@ -89,6 +135,51 @@ CONTEXT_EXPANSION_REASON:
 Do not require this record for an obvious cheap read that is already inside accepted
 scope.
 
+## Complementary capability routing
+
+Use one primary capability per question. Do not send the same repository question to
+Serena, lean-ctx, and CodeGraph in parallel.
+
+- **Context7:** current, version-specific third-party library, framework, SDK, and API
+  documentation only. It does not inspect the local repository.
+- **lean-ctx:** broad repository discovery, compressed file reads, large search or command
+  output, and context continuity.
+- **Serena:** declarations, references, implementations, language-server diagnostics,
+  precise symbol edits, and safe renames after the relevant area is known.
+- **CodeGraph:** read-only callers/callees, cross-module flow, change impact, and affected
+  tests when a bounded dependency question remains after targeted lean-ctx or Serena work.
+
+```text
+known file or symbol -> Serena
+broad discovery or large output -> lean-ctx
+cross-module impact uncertainty -> CodeGraph
+external API or library uncertainty -> Context7
+```
+
+Stop after the first capability establishes the needed fact. Use a second capability only
+for a distinct unanswered dimension or verification. A2's Headroom retirement decision is
+superseded only by A3: use Headroom only through A3's separately accepted local
+configuration as a downstream LeanCTX proxy/compression layer, never as a duplicate
+repository-memory or code-graph authority.
+
+## Hallmark and Impeccable composition
+
+- Hallmark owns design direction: design DNA, anti-generic structure, page archetype,
+  visual world, macro-layout, and the initial direction contract for greenfield surfaces
+  or substantial redesigns.
+- Impeccable owns execution quality: UX critique, accessibility, responsive behavior,
+  hierarchy, typography, motion, edge cases, performance, hardening, and bounded final
+  polish.
+- Greenfield or substantial redesign work follows Hallmark once, implementation within
+  that accepted direction, one bounded Impeccable audit/refinement pass, and at most one
+  confirmation pass.
+- Narrow component fixes, accessibility, responsiveness, copy, motion, spacing, or
+  production hardening use Impeccable alone.
+- Impeccable preserves an accepted Hallmark direction unless Earl explicitly authorizes
+  a direction change. Hallmark re-enters only when the structural concept itself is
+  rejected or proven unsuitable.
+- Do not alternate the tools in an open-ended polish loop.
+
 ## Accepted scope is a hard boundary
 
 Before changing a file, identify the accepted criterion or required dependency that
@@ -124,41 +215,54 @@ Prefer the smallest direct implementation that satisfies the accepted requiremen
 “Cleaner,” “more scalable,” “best practice,” or “might be useful later” is not a current
 accepted requirement.
 
-## Model and reasoning defaults
+## Current billable-execution boundary and active role catalog
+
+The active machine-readable execution boundary is
+[`manual-codex-execution-gate.json`](../automation/codex-model-routing/manual-codex-execution-gate.json).
+The local guard and permit protect permit-gated primary CLI execution. The role catalog
+in [`current-routing-profile.json`](../automation/codex-model-routing/current-routing-profile.json)
+selects and validates models but cannot authorize or dispatch work.
 
 ```text
-ORDINARY MODEL: gpt-5.6-sol
-ORDINARY REASONING: high or lower
-ULTRA / MAX / XHIGH: risk-gated exceptions only
-```
-
-Task size alone does not justify higher-than-High reasoning. Escalation requires a
-bounded high-consequence decision involving material architecture ambiguity,
-security/authorization, migration versus no migration, a difficult reproduced P0/P1
-defect, irreversible data, Production/recovery, or material UX architecture that
-deterministic evidence cannot decide.
-
-## Delegation
-
-```text
-ZERO CHILDREN BY DEFAULT
-ONE ACTIVE CHILD MAX
+SOL SUBAGENTS: PROHIBITED
+MANDATORY ZERO-WORKER START: NONE
+LUNA MAX DIRECT-WORKER CEILING: 16
+TERRA MAX DIRECT-WORKER CEILING: 2
+OX ALPHA DIRECT-WORKER CEILING: 16
+TOTAL DIRECT-WORKER CEILING: 16
 DELEGATION DEPTH: 1
+BACKGROUND CONTINUATION: DISABLED
+AUTOMATIC FALLBACK: DISABLED
+RECURSIVE SPAWNING: DISABLED
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
+DUPLICATE ORDINARY WORK: PROHIBITED
 ```
 
-Use deterministic tools or the parent first. A child is justified only when:
+Active roles are Sol/High as top-level orchestrator and final reviewer; Ox/High as the
+preferred backend writer or a read-only role when it does not hold a writer lock;
+Terra/Max as the explicit Sol-routed fallback or integration-sensitive writer; and
+Luna/Max as read-only. HAU frontend work overrides the writer role to exactly one
+Terra/Max writer and keeps Ox and Luna read-only. DeepSeek aliases are disabled from
+active and fallback routes while credentials and historical proof remain inactive.
 
-- deterministic tools are insufficient;
-- the work is genuinely independent or requires the governed writer/reviewer role;
-- it has one bounded output;
-- owned and excluded paths are explicit;
-- total context or latency is expected to decrease;
-- one stop condition is explicit;
-- no concurrent writer or shared-state conflict exists.
+When Ox is unavailable or fails, record that state and stop. A Terra route is a new
+explicit Sol decision, never automatic fallback. The compiler may return `STOP` for a
+green no-execution check while the usage lock is closed; every `ROUTE` result remains
+non-dispatching.
 
-Do not run writer and reviewer children concurrently by default. Finish the writer,
-review the complete diff, and add one bounded independent review only when material
-risk or uncertainty remains.
+## Context envelope
+
+```text
+DISPATCH SEED <= 12K TOKENS
+WORKER WORKING CONTEXT <= 32K TOKENS
+NORMAL HARD CEILING <= 64K TOKENS
+ABOVE 64K -> OVERSIZE_CONTEXT_REASON
+ABOVE 100K -> SPLIT OR EXPLICIT CORRECTNESS/SAFETY EXCEPTION
+```
+
+The compiler rejects envelope, recursion, duplicate-work, writer-capacity, and unsupported
+model violations deterministically. A project extension may impose stricter limits.
 
 ## Evidence reuse
 
@@ -183,6 +287,12 @@ Did relevant configuration change?
 Did the artifact change?
 Did the relevant environment or external state change?
 ```
+
+For routing enforcement, persist a redacted verification receipt keyed by SHA-256
+fingerprints for source, configuration, test, dependency, and relevant external state. A
+receipt is reusable only when every fingerprint matches and its prior status is `PASS`.
+Do not write raw commands, prompts, source, credentials, or raw external state into a
+verification receipt.
 
 When every answer is no, reuse the prior pass. When any answer is yes, record:
 
@@ -462,22 +572,20 @@ ROLLBACK / REVERSION
 
 ## Deterministic anti-drift defaults
 
-Active account-wide defaults:
+The global parent remains `gpt-5.6-sol` at `high`. Native Codex direct-worker capacity
+is sixteen, with no mandatory zero-worker startup; delegation depth is one and recursive
+spawning is disabled. The routing profile—not this Markdown policy—selects live child
+models and efforts. Sol is disabled as a child. Luna/Max and Ox/High each have a ceiling
+of sixteen, while Terra/Max has a ceiling of two. These ceilings are not staffing targets.
+Ox/High, Terra/Max, and Luna/Max are eligible only
+through their contracts and project overrides. DeepSeek aliases remain disabled from
+active and fallback routes.
 
-```text
-model = gpt-5.6-sol
-model_reasoning_effort = high
-max concurrent threads per session <= 2
-default children = 0
-max active children = 1
-max delegation depth = 1
-routine independent review = false
-routine full suite after each small module = false
-```
-
-The machine-readable defaults, the unchanged ten-fixture base suite, the versioned
-26-fixture A1 suite, and the focused validator live under
-`automation/codex-model-routing/`.
+The machine-readable current profile, contracts, compiler, redacted telemetry,
+verification-receipt tool, observed-only benchmark command, unchanged historical
+fixtures, and focused A8 validator live under `automation/codex-model-routing/`.
+The A1 one-scout pipeline remains a specialized current/next-slice rule; it does not
+increase the model-specific worker ceilings or authorize the next slice.
 
 ## Stop condition
 

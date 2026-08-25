@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "spec_id": "AGENTS-CONSOLIDATION-002",
-  "updated_at": "2026-08-20T17:41:27.1701728Z",
+  "updated_at": "2026-08-25T00:00:00Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -26,7 +26,7 @@
     "line_ending_pr": 7,
     "line_ending_merge_commit": "c9e0be299c017dadcad75addfa8048f10f679f7f",
     "prechange_sha256": "ab378cb86ca0b6d6064b1e6e64a3da145f44ca1e3d7afdc7312ca6db09acf92d",
-    "active_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+    "active_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
     "local_checkout_verified": true,
     "local_checkout_preserved_untracked": null
   },
@@ -37,6 +37,11 @@
     "recursive": true
   },
   "extension_sources": [
+    {
+      "id": "minimal-project-extension-template",
+      "source_relative_path": "templates/PROJECT_POLICY_TEMPLATE.md",
+      "target_path": null
+    },
     {
       "id": "global-codex-extension-source",
       "source_relative_path": "governance/agents/extensions/global-codex.PROJECT_POLICY.md",
@@ -69,17 +74,23 @@
       "sync_allowed": true,
       "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
-      "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-002\\<timestamp>\\AGENTS.md",
+      "allowed_prechange_sha256": [
+        "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
+        "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459"
+      ],
+      "rollback": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",
       "notes": "Global Codex root, extension, and deterministic developer-instructions activation are active and verified. Recurring known managed-root drift was backup-protected and repaired during Astral adoption verification.",
-      "prechange_extension_exists": false,
+      "prechange_extension_exists": true,
+      "prechange_extension_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
       "extension_activation": {
         "kind": "codex_developer_instructions",
         "config_path": "C:\\Users\\adria\\.codex\\config.toml",
         "begin_marker": "# BEGIN MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "end_marker": "# END MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "prechange_config_sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c",
+        "deployed_value_sha256": "85c627c88f022128192e3b5d40bd4b9c542261400e57fffe77cfd6bca79a6b21",
         "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\config.toml"
       },
       "original_prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
@@ -94,8 +105,8 @@
         "setup_auto_inject_rules": false,
         "config_validation": "PASS"
       },
-      "active_root_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
-      "active_extension_sha256": "0273743dadc45df4a73112d05ed5dd3b1a379e68bdad1c26e31017bd7048272d",
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_extension_sha256": "e6df33fffada56437f183c34a9177726df53d9390b6d94bf856f21f06abe4b47",
       "last_drift_repair": {
         "observed_at": "2026-08-19T15:59:19.830132Z",
         "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",
@@ -118,13 +129,16 @@
       "conditional": false,
       "sync_allowed": true,
       "gate_status": "ACTIVE_AGENTS_CONSOLIDATION_002",
-      "prechange_sha256": "819364b3fe617b830ed28d6fd103d9b4e2745c5ba57a2c1777ad8bcbead93596",
+      "prechange_sha256": "379d779d138ce1665c611733688bad30232a68df0586887c19d14fa2b866c438",
+      "allowed_prechange_sha256": ["83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f", "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92"],
+      "prechange_extension_exists": true,
+      "prechange_extension_sha256": "9280d8cd89d7dc028cd81d68307a0743f4c954370845d7696c1a2afb4798dc04",
       "rollback": "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002\\<timestamp>\\active\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
-      "active_root_sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
-      "active_extension_sha256": "e94870e0ef7d1cce61f2db143edc116b3c3f70edf425cd2e327097c6ba8711b6"
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_extension_sha256": "c2991468983645f9ccf9cb6c238b83fb34a22fa0439bf0ae776c8b271cd0f961"
     },
     {
       "id": "astral-bridge",
@@ -192,32 +206,55 @@
       "repository": null,
       "required": false,
       "conditional": true,
-      "sync_allowed": false,
-      "gate_status": "BLOCKED_EXTENSION_LOADER",
+      "sync_allowed": true,
+      "gate_status": "ACTIVE_A5_EXTENSION_LOADER_VERIFIED",
       "prechange_sha256": "03fb8ad36f134e063ad3be960c1b4a2b8468cbb08a975b71b64e1825caf47272",
-      "rollback": "D:\\AI_Workspace\\backups\\agents-consolidation-001\\<timestamp>\\AGENTS.md",
-      "notes": "chat_processor.py loads only D:\\AI_Workspace\\AGENTS.md. Runtime-loader changes are outside this specification."
+      "allowed_prechange_sha256": [
+        "66554a916d7080e040332d30fb93b9441b296f805cf3a47b5c350caaaa7ce769",
+        "64f2bdf6f8de3d257ff31b6ed986fc5fe87a558c5d6c85bff863023654b80b92"
+      ],
+      "prechange_extension_exists": true,
+      "prechange_extension_sha256": "84f4aacdbdab284874c94280b36f7170f1c1cf522629e912e75a66ef946f190e",
+      "active_root_sha256": "5999f87b29c33f7514f7816a6c23bb6c70ebd41740d01b4fecfa3e82f186b78d",
+      "active_extension_sha256": "b94f5b5584c110e8bc7c7aebf1ef12bab5da1ba351d6fea36c7736fe0c88c32d",
+      "rollback": "D:\\AI_Workspace\\backups\\TOKEN-OPT-001-A5\\<timestamp>\\AGENTS.md",
+      "loader_validation": {
+        "source": "D:\\AI_Workspace\\odysseus\\src\\chat_processor.py",
+        "behavior": "fail-closed loading of the root AGENTS.md and separate .agents\\PROJECT_POLICY.md",
+        "synthetic_test": "A5 focused environment-path test required before activation"
+      },
+      "notes": "A5 replaces the stale loader gate only after the bounded live-loader source and synthetic test prove deterministic separate extension loading."
     }
   ],
   "managed_worktree_groups": [
     {
       "id": "hau-usc-logistics-worktree",
       "root": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees",
+      "anchor_root": "D:\\Documents\\Codex\\HAU-USC Logistics\\active\\hau-usc-logistics-management-system",
       "repository": "https://github.com/invicta-ctrl/hau-usc-logistics-management-system",
       "extension_source_id": "hau-usc-logistics-extension-source",
       "backup_root": "D:\\Documents\\Codex\\HAU-USC Logistics\\backups\\agents-consolidation-002",
       "required": true,
-      "discovery": "immediate-child-git-roots-only",
-      "unknown_non_git_children": "ignored_and_preserved"
+      "discovery": "authoritative-anchor-git-worktree-list",
+      "unknown_non_git_children": "ignored_and_preserved",
+      "retired_unregistered_worktree_artifacts": [
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s10-evidence-bb652506", "disposition": "retired_unregistered_worktree_artifact" },
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-internal-verification-aa083567", "disposition": "retired_unregistered_worktree_artifact" },
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v081-s12-recovery-4ded0bc2", "disposition": "retired_unregistered_worktree_artifact" },
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-controlled-a3477ae-20260813-2338", "disposition": "retired_unregistered_worktree_artifact" },
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-controlled-replacement-a3477ae-20260813-2348", "disposition": "retired_unregistered_worktree_artifact" },
+        { "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\v082-s06-serial-full-lf-a3477ae-20260814-0015", "disposition": "retired_unregistered_worktree_artifact" }
+      ]
     },
     {
       "id": "astral-bridge-worktree",
       "root": "D:\\Documents\\Codex\\worktrees",
+      "anchor_root": "D:\\Documents\\Codex\\Astral-Bridge",
       "repository": "https://github.com/invicta-ctrl/Astral-Bridge",
       "extension_source_id": "astral-bridge-extension-source",
       "backup_root": "D:\\Documents\\Codex\\backups\\agents-consolidation-002\\astral-bridge-worktrees",
       "required": true,
-      "discovery": "immediate-child-git-roots-only",
+      "discovery": "authoritative-anchor-git-worktree-list",
       "unknown_non_git_children": "ignored_and_preserved"
     }
   ],
@@ -226,7 +263,9 @@
       "path": "D:\\Documents\\Codex\\HAU-USC Logistics\\worktrees\\spec-v073-frontend-design-integration\\.agents\\WORKTREE_POLICY_APPENDIX.md",
       "sha256": "b524237fe7c140d1cc98c1b38af8cfdfd515507f5bab47aeb3f2db9f4c31741b",
       "source_prechange_agents_sha256": "ca53d79b4d6a3fd07912f087eac26e9b8a9fb52cc88914f7224ae2caef10b150",
-      "disposition": "preserved_unique_worktree_authority_subordinate_to_registered_extension"
+      "disposition": "historical_unavailable_reference",
+      "availability": "unavailable_retired_non_git_documentation_directory",
+      "provenance": "A4 preserved hash; no replacement inferred or created"
     }
   ],
   "stale_owned": [
@@ -239,6 +278,20 @@
       "path": "D:\\Download\\AGENTS.md",
       "sha256": "1744f504d6754308264d9aa7db75271e253af8a7ca39196ca8ea25e591662188",
       "disposition": "preserve_until_canonical_activation_and_reference_gates_pass"
+    }
+  ],
+  "immutable_verification_artifacts": [
+    {
+      "id": "verification-v084-live-operations-performance-b1359c2",
+      "path": "D:\\Documents\\Codex\\_verification\\v084-live-operations-performance-b1359c2\\AGENTS.md",
+      "sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "disposition": "immutable_verification_artifact_never_synchronize"
+    },
+    {
+      "id": "verification-v83-final-gate-f8e6337",
+      "path": "D:\\Documents\\Codex\\_verification\\v83-final-gate-f8e6337\\AGENTS.md",
+      "sha256": "83e75b3899b38b8aef61ea35961744e97e48b3271c12c9d3c4e582e753f6589f",
+      "disposition": "immutable_verification_artifact_never_synchronize"
     }
   ],
   "worktree_derived": {

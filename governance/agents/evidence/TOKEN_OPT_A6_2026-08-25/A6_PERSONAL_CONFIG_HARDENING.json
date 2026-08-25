@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "change_id": "TOKEN-OPT-001-A6",
+  "changed_at": "2026-08-24T17:29:15.552727+00:00",
+  "status": "PASS",
+  "backup_root": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-PERSONAL-20260824T172915Z",
+  "backups": [
+    {
+      "source": "C:\\Users\\adria\\.codex\\config.toml",
+      "backup": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-PERSONAL-20260824T172915Z\\config.toml",
+      "bytes": 12126,
+      "sha256": "3c3435e0683113c78a918977760d22618dbca97b6140bbc68d81301e15e3722a",
+      "equality": true
+    },
+    {
+      "source": "C:\\Users\\adria\\.codex\\codex-router\\multi-agent-settings.json",
+      "backup": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A6-PERSONAL-20260824T172915Z\\multi-agent-settings.json",
+      "bytes": 540,
+      "sha256": "970ca6e71abddb05f74b5732f0301d5400c970e18b08a329e18028cf364ceff8",
+      "equality": true
+    }
+  ],
+  "config": {
+    "path": "C:\\Users\\adria\\.codex\\config.toml",
+    "before_sha256": "3c3435e0683113c78a918977760d22618dbca97b6140bbc68d81301e15e3722a",
+    "after_sha256": "137d43dc9613fc8d8ee73591ba0379ed19bfa8fba7ef277a97b125a030a3a44a",
+    "agents_enabled": false,
+    "max_concurrent_threads_per_session": 1,
+    "multi_agent_v2_enabled": false,
+    "spawn_agent_model_overrides": false
+  },
+  "router": {
+    "path": "C:\\Users\\adria\\.codex\\codex-router\\multi-agent-settings.json",
+    "before_sha256": "970ca6e71abddb05f74b5732f0301d5400c970e18b08a329e18028cf364ceff8",
+    "after_sha256": "3b0961468f5b9ec37618caa6131afec0c004eda1c08870294099008744a56f63",
+    "prior_enabled_models": [
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp",
+      "gpt-5.6-luna",
+      "gpt-5.6-terra",
+      "openrouter/stealth/ox-alpha"
+    ],
+    "enabled_models": [],
+    "disabled_model_count": 14,
+    "max_processes": 1,
+    "max_children": 0,
+    "automatic_fallback": false
+  },
+  "credentials_read_or_printed": false,
+  "codex_invoked": false
+}

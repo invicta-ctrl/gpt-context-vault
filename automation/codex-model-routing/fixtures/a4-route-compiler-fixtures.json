@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "catalog": {
+    "models": [
+      { "slug": "gpt-5.6-sol", "supported_reasoning_levels": [{ "effort": "high" }] },
+      { "slug": "gpt-5.6-terra", "supported_reasoning_levels": [{ "effort": "max" }] },
+      { "slug": "gpt-5.6-luna", "supported_reasoning_levels": [{ "effort": "max" }] },
+      { "slug": "openrouter/stealth/ox-alpha", "supported_reasoning_levels": [{ "effort": "high" }] }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "sol-high-orchestrator",
+      "request": {
+        "role": "orchestrator",
+        "run_id": "a4-tests",
+        "task_id": "sol",
+        "dispatch_seed_tokens": 12000,
+        "worker_working_tokens": 32000,
+        "context_tokens": 64000,
+        "active_total_workers": 0
+      },
+      "expected": { "action": "ROUTE", "selected_model": "gpt-5.6-sol", "reasoning_effort": "high" }
+    },
+    {
+      "id": "terra-max-writer",
+      "request": {
+        "role": "writer",
+        "run_id": "a4-tests",
+        "task_id": "terra",
+        "active_writers": 0,
+        "active_total_workers": 0
+      },
+      "expected": { "action": "ROUTE", "selected_model": "gpt-5.6-terra", "reasoning_effort": "max" }
+    },
+    {
+      "id": "luna-max-durable-worker",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "luna",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "accepted_slice_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "native_weighted_quota": 12,
+        "quality_evidence": "ACCEPTED"
+      },
+      "expected": { "action": "ROUTE", "selected_model": "gpt-5.6-luna", "reasoning_effort": "max" }
+    },
+    {
+      "id": "ox-high-eligible",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "ox",
+        "prefer_ephemeral": true,
+        "data_classification": "internal",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "accepted_slice_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "native_weighted_quota": 10,
+        "quality_evidence": "ACCEPTED",
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "action": "ROUTE", "selected_model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high" }
+    },
+    {
+      "id": "ox-price-falls-back-once",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "price-fallback",
+        "task_id": "price",
+        "prefer_ephemeral": true,
+        "data_classification": "internal",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0.01,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "PRICE_NOT_EXACTLY_ZERO" }
+    },
+    {
+      "id": "ox-provider-unavailable-falls-back",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "provider-fallback",
+        "task_id": "provider",
+        "prefer_ephemeral": true,
+        "data_classification": "internal",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": false,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "PROVIDER_UNAVAILABLE" }
+    },
+    {
+      "id": "ox-unhealthy-falls-back",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "health-fallback",
+        "task_id": "health",
+        "prefer_ephemeral": true,
+        "data_classification": "internal",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "degraded"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "HEALTH_UNACCEPTABLE" }
+    },
+    {
+      "id": "ox-restricted-data-falls-back",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "data-fallback",
+        "task_id": "data",
+        "prefer_ephemeral": true,
+        "data_classification": "restricted",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "DATA_CLASSIFICATION_UNSUITABLE" }
+    },
+    {
+      "id": "ox-failure-marks-run-ineligible",
+      "state_key": "ox-failure",
+      "record_ox_failure": true,
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "failure-fallback",
+        "task_id": "failure-one",
+        "prefer_ephemeral": true,
+        "data_classification": "public",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "OX_FAILURE_RECORDED_ONCE" }
+    },
+    {
+      "id": "ox-failure-does-not-retry",
+      "state_key": "ox-failure",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "failure-fallback",
+        "task_id": "failure-two",
+        "prefer_ephemeral": true,
+        "data_classification": "public",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "provider_observation": {
+          "provider_available": true,
+          "prompt_price": 0,
+          "completion_price": 0,
+          "health": "healthy"
+        }
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "fallback_contains": "OX_PREVIOUS_FAILURE" }
+    },
+    {
+      "id": "oversize-with-reason-is-routable",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "oversize",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "context_tokens": 65000,
+        "oversize_context_reason": "accepted correctness-bound source comparison"
+      },
+      "expected": { "selected_model": "gpt-5.6-luna" }
+    },
+    {
+      "id": "over-100k-split-is-routable",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "split",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0,
+        "context_tokens": 100001,
+        "oversize_context_reason": "accepted safety reconciliation",
+        "split_plan": "two independent bounded packets"
+      },
+      "expected": { "selected_model": "gpt-5.6-luna" }
+    },
+    {
+      "id": "material-findings-are-deduplicated",
+      "findings": [
+        { "id": "F-1", "severity": "high", "message": "one material issue" },
+        { "id": "F-1", "severity": "high", "message": "duplicate material issue" },
+        { "id": "F-2", "severity": "low", "message": "nonmaterial issue" }
+      ],
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "findings",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected": { "selected_model": "gpt-5.6-luna", "material_finding_count": 1 }
+    },
+    {
+      "id": "green-stops",
+      "request": {
+        "role": "writer",
+        "run_id": "a4-tests",
+        "task_id": "green",
+        "active_writers": 0,
+        "active_total_workers": 0,
+        "acceptance_green": true
+      },
+      "expected": { "action": "STOP" }
+    },
+    {
+      "id": "seed-over-12k-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "seed-error",
+        "dispatch_seed_tokens": 12001,
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "dispatch seed exceeds 12K envelope"
+    },
+    {
+      "id": "worker-context-over-32k-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "working-error",
+        "worker_working_tokens": 32001,
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "worker working context exceeds 32K envelope"
+    },
+    {
+      "id": "over-64k-needs-reason",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "oversize-error",
+        "context_tokens": 64001,
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "OVERSIZE_CONTEXT_REASON"
+    },
+    {
+      "id": "over-100k-needs-split-or-exception",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "split-error",
+        "context_tokens": 100001,
+        "oversize_context_reason": "needed",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "context above 100K"
+    },
+    {
+      "id": "second-writer-rejected",
+      "request": {
+        "role": "writer",
+        "run_id": "a4-tests",
+        "task_id": "writer-error",
+        "active_writers": 1,
+        "active_total_workers": 1
+      },
+      "expected_error": "one overlapping Terra writer maximum"
+    },
+    {
+      "id": "adaptive-read-only-cap-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "adaptive-error",
+        "active_read_only_workers": 4,
+        "active_total_workers": 4
+      },
+      "expected_error": "adaptive read-only worker capacity exceeded"
+    },
+    {
+      "id": "total-worker-cap-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "total-error",
+        "independent_burst": true,
+        "active_read_only_workers": 5,
+        "active_total_workers": 6
+      },
+      "expected_error": "total worker capacity exceeded"
+    },
+    {
+      "id": "independent-burst-six-is-routable",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "burst",
+        "independent_burst": true,
+        "active_read_only_workers": 5,
+        "active_total_workers": 5
+      },
+      "expected": { "selected_model": "gpt-5.6-luna" }
+    },
+    {
+      "id": "recursive-worker-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "recursive-error",
+        "recursion_depth": 1,
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "recursive worker spawning"
+    },
+    {
+      "id": "ordinary-work-first-pass",
+      "state_key": "duplicate-work",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "duplicate-run",
+        "task_id": "duplicate-one",
+        "ordinary_work_key": "same-question",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected": { "selected_model": "gpt-5.6-luna" }
+    },
+    {
+      "id": "ordinary-work-duplicate-rejected",
+      "state_key": "duplicate-work",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "duplicate-run",
+        "task_id": "duplicate-two",
+        "ordinary_work_key": "same-question",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "duplicate ordinary work"
+    },
+    {
+      "id": "deepseek-pro-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "disabled-model",
+        "requested_model": "deepseek/deepseek-v4-pro",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "requested model is disabled"
+    },
+    {
+      "id": "deepseek-short-pro-rejected",
+      "request": {
+        "role": "read_only_worker",
+        "run_id": "a4-tests",
+        "task_id": "disabled-short-model",
+        "requested_model": "deepseek-v4-pro",
+        "active_read_only_workers": 0,
+        "active_total_workers": 0
+      },
+      "expected_error": "requested model is disabled"
+    }
+  ]
+}

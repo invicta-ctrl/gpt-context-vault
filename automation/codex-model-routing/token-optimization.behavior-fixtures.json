@@ -363,6 +363,152 @@
           }
         }
       ]
+    },
+    "TOKEN-OPT-001-A4": {
+      "suite_version": 1,
+      "fixture_count": 22,
+      "fixtures": [
+        {
+          "id": "a4_catalog_validation",
+          "title": "Current profile validates every required model catalog entry",
+          "contract_key": "a4_catalog_validation",
+          "expected": {
+            "action": "VALIDATE_CATALOG",
+            "required_models": [
+              "gpt-5.6-sol",
+              "gpt-5.6-terra",
+              "gpt-5.6-luna",
+              "openrouter/stealth/ox-alpha"
+            ]
+          }
+        },
+        {
+          "id": "a4_sol_high",
+          "title": "Sol High is the orchestrator route",
+          "contract_key": "a4_sol_high",
+          "expected": { "action": "ROUTE", "model": "gpt-5.6-sol", "reasoning_effort": "high" }
+        },
+        {
+          "id": "a4_terra_writer",
+          "title": "Terra Max is the single writer route",
+          "contract_key": "a4_terra_writer",
+          "expected": { "action": "ROUTE", "model": "gpt-5.6-terra", "reasoning_effort": "max", "writers": 1 }
+        },
+        {
+          "id": "a4_luna_worker",
+          "title": "Luna Max is the durable read-only worker",
+          "contract_key": "a4_luna_worker",
+          "expected": { "action": "ROUTE", "model": "gpt-5.6-luna", "reasoning_effort": "max", "read_only": true }
+        },
+        {
+          "id": "a4_ox_eligible",
+          "title": "Ox High is read-only only when eligible",
+          "contract_key": "a4_ox_eligible",
+          "expected": { "action": "ROUTE", "model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high", "read_only": true }
+        },
+        {
+          "id": "a4_ox_provider_unavailable",
+          "title": "Unavailable Ox provider falls back to Luna",
+          "contract_key": "a4_ox_provider_unavailable",
+          "expected": { "action": "FALLBACK_TO_LUNA", "reason": "PROVIDER_UNAVAILABLE" }
+        },
+        {
+          "id": "a4_ox_price_nonzero",
+          "title": "Nonzero Ox pricing falls back to Luna",
+          "contract_key": "a4_ox_price_nonzero",
+          "expected": { "action": "FALLBACK_TO_LUNA", "reason": "PRICE_NOT_EXACTLY_ZERO" }
+        },
+        {
+          "id": "a4_ox_health_unacceptable",
+          "title": "Unhealthy Ox falls back to Luna",
+          "contract_key": "a4_ox_health_unacceptable",
+          "expected": { "action": "FALLBACK_TO_LUNA", "reason": "HEALTH_UNACCEPTABLE" }
+        },
+        {
+          "id": "a4_ox_data_unsuitable",
+          "title": "Unsuitable data class falls back to Luna",
+          "contract_key": "a4_ox_data_unsuitable",
+          "expected": { "action": "FALLBACK_TO_LUNA", "reason": "DATA_CLASSIFICATION_UNSUITABLE" }
+        },
+        {
+          "id": "a4_ox_failure",
+          "title": "Ox failure marks the run ineligible and fails over once",
+          "contract_key": "a4_ox_failure",
+          "expected": { "action": "MARK_INELIGIBLE_AND_FALLBACK_ONCE", "retry": false }
+        },
+        {
+          "id": "a4_disabled_deepseek",
+          "title": "DeepSeek V4 Pro aliases are rejected",
+          "contract_key": "a4_disabled_deepseek",
+          "expected": { "action": "REJECT", "models": ["deepseek-v4-pro", "deepseek/deepseek-v4-pro"] }
+        },
+        {
+          "id": "a4_context_envelope",
+          "title": "A4 context envelope requires an oversize reason above 64K",
+          "contract_key": "a4_context_envelope",
+          "expected": { "dispatch_seed_max": 12000, "worker_working_max": 32000, "normal_hard_ceiling": 64000, "oversize_reason": "OVERSIZE_CONTEXT_REASON" }
+        },
+        {
+          "id": "a4_context_split",
+          "title": "Contexts above 100K require a split or accepted exception",
+          "contract_key": "a4_context_split",
+          "expected": { "action": "SPLIT_OR_EXCEPTION", "threshold": 100000, "exception_types": ["correctness", "safety"] }
+        },
+        {
+          "id": "a4_concurrency",
+          "title": "A4 caps writers and adaptive read-only capacity",
+          "contract_key": "a4_concurrency",
+          "expected": { "writers": 1, "default_read_only_workers": 2, "adaptive_read_only_workers_max": 4, "total_workers_max": 6 }
+        },
+        {
+          "id": "a4_recursion",
+          "title": "Recursive worker spawning is rejected",
+          "contract_key": "a4_recursion",
+          "expected": { "action": "REJECT", "recursive_worker_spawning": false }
+        },
+        {
+          "id": "a4_duplicate_work",
+          "title": "Duplicate ordinary work is rejected",
+          "contract_key": "a4_duplicate_work",
+          "expected": { "action": "REJECT", "ordinary_duplicate_work": false }
+        },
+        {
+          "id": "a4_receipt_reuse",
+          "title": "Matching verification fingerprints reuse a pass receipt",
+          "contract_key": "a4_receipt_reuse",
+          "expected": { "action": "REUSE", "required_fingerprints": ["source", "configuration", "test", "dependency", "external_state"] }
+        },
+        {
+          "id": "a4_receipt_invalidation",
+          "title": "Changed verification fingerprint forces recheck",
+          "contract_key": "a4_receipt_invalidation",
+          "expected": { "action": "REVERIFY", "changed_fingerprint_invalidates": true }
+        },
+        {
+          "id": "a4_findings",
+          "title": "Material worker findings are aggregated and deduplicated",
+          "contract_key": "a4_findings",
+          "expected": { "action": "DEDUPLICATE_MATERIAL_FINDINGS" }
+        },
+        {
+          "id": "a4_benchmark",
+          "title": "Seven-day benchmark reports only observed quota and quality evidence",
+          "contract_key": "a4_benchmark",
+          "expected": { "action": "REPORT_OBSERVED_ONLY", "window_days": 7, "quality_from_lower_tokens": false }
+        },
+        {
+          "id": "a4_stop_when_green",
+          "title": "Green accepted work stops",
+          "contract_key": "a4_stop_when_green",
+          "expected": { "action": "STOP_WHEN_GREEN" }
+        },
+        {
+          "id": "a4_profile_replacement",
+          "title": "Current profile can be replaced without rewriting governance",
+          "contract_key": "a4_profile_replacement",
+          "expected": { "action": "REPLACE_PROFILE_WITHOUT_GLOBAL_POLICY_REWRITE" }
+        }
+      ]
     }
   }
 }

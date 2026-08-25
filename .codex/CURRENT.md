@@ -1,22 +1,31 @@
 # Current Context Vault Work Pointer
 
-TASK: AGENTS-CONSOLIDATION-002
-STATUS: COMPLETE
+TASK: TOKEN-OPT-001-A7
+STATUS: CLOSED / GOVERNANCE VERIFIED / PUSHED
 OWNER: Earl
 BRANCH: governance/agents-consolidation-002
-BASELINE_HEAD: fe69dc2191deac683d09eebaee56ff922f870e7a
-UPSTREAM: origin/main
+BASELINE_HEAD: 4ab0f74dcab6c303b2ea0e6bd994793a7aeef965
+UPSTREAM: origin/governance/agents-consolidation-002
 UPSTREAM_DIVERGENCE_AT_START: 0 ahead / 0 behind
 WORKTREE: D:/Documents/Codex/GitHub/gpt-context-vault
-WORKTREE_STATE_AT_START: CLEAN
+WORKTREE_STATE_AT_START: clean; HAU anchor preserved its pre-existing AGENTS drift and all registered active-writer pointers reported NONE.
 ACTIVE_WRITER: NONE
-ACCEPTED_SPEC: governance/agents/specs/AGENTS-CONSOLIDATION-002-A1.md
-CURRENT_HANDOFF: governance/agents/AGENTS_CONSOLIDATION_REPORT.md
-MUTATION_SCOPE: governance policy, registry, synchronization tooling, deterministic evidence, and project-extension sources only
-EXTERNAL_WRITES: Global Codex managed-root repair; Git-only governance publication to Context Vault, Astral Bridge, and HAU-USC branches. No provider/runtime/database writes.
-BLOCKER: NONE
-VERIFICATION: active local AGENTS 85/85 MATCH; verify-agents PASS for all eligible live/worktree targets; TOKEN-OPT base 10/10 and A1 26/26 PASS; HAU check:agents PASS; HAU focused governance tests 14/14 PASS; HAU remote 15 active/non-recovery branches MATCH plus 4 protected recovery pointers preserved; Astral 4/4 remote branches MATCH; Context Vault 2/2 remote branches MATCH
-IMPLEMENTATION_COMMIT: 602fb0eb43da470dcdc78a63347ea241380e5831
-RELATED_LOCAL_COMMITS: HAU b96c44bbf5b1a60d8e3154f47c7b6b2ced5ad2dc; Astral a93b1b571d829ee63d0382eba62363c30fcb3eba; HAU v0.7.3 appendix c20bfd1cd78b87a5489415af1b316e3ffc70280b
-NEXT_EXACT_ACTION: None. Revalidate only when canonical policy, registry, project extension, target set, branch set, configuration, or relevant external state changes.
-DO_NOT_REPEAT: Do not rerun synchronization, inventory, validators, or backups unless relevant source, registry, target, configuration, or external state changes.
+ACCEPTED_SPEC: governance/agents/specs/TOKEN-OPT-001-A7.md
+CURRENT_HANDOFF: governance/agents/evidence/TOKEN_OPT_A7_2026-08-25/
+EXECUTION_PLANE: deterministic local file, Git, PowerShell, Codex configuration, managed AGENTS synchronization, and bounded local Cognee verification
+CODEX_USAGE_STATE: LOCKED / PROTECTED; usage guard restored with zero non-app-server Codex processes
+MUTATION_SCOPE: accepted A7 governance and routing, personal Native Multi-Agent V2 settings, HAU extension, managed replica sync, SessionEnd timeout 5 to 3, guard parity, and bounded Cognee status classification
+EXTERNAL_WRITES: timestamped backups; personal Codex/router/guard files; eligible managed AGENTS and extensions; one controlled local Ollama process restart before owner steering; normal branch publication
+PROHIBITED: unattended/background Codex, recursive subagent spawn, automatic fallback, DeepSeek activation, credential exposure, destructive Git, Production/deployment/data mutation, silent provider/model substitution, or further Cognee LLM work in this task
+BLOCKER: NONE FOR A7; isolated Cognee local LLM degradation is deferred to COGNEE-LOCAL-LLM-01
+CURRENT_STEP: A7 governance/routing, eligible replica sync, HAU frontend policy, hook timeout, guard, and deterministic verification are complete and published
+NEXT_EXACT_ACTION: Start one fresh owner-started Sol Advisor session after this task closes to verify that A7 is loaded and native bounded delegation is available.
+DO_NOT_REPEAT: do not rerun AGENTS inventory/sync or the full A7 verifier unless governance inputs change; do not continue COGNEE-LOCAL-LLM-01 in this closed task
+STOP: stop after the closure commit is published and final repository/hash/hook state is reconciled
+
+FINAL_EVIDENCE: governance/agents/evidence/TOKEN_OPT_A7_2026-08-25/
+COGNEE_RECEIPT: governance/agents/evidence/TOKEN_OPT_A7_2026-08-25/COGNEE_E2E_RECEIPT.md
+FOLLOW_UP: governance/agents/evidence/TOKEN_OPT_A7_2026-08-25/COGNEE-LOCAL-LLM-01.md
+CONTEXT_VAULT_IMPLEMENTATION_COMMIT: c1175a9
+CONTEXT_VAULT_CLOSURE_COMMIT: resolve with `git log --format=%H -1 -- .codex/CURRENT.md`
+FINAL_VERIFICATION: A4/A6/A7 routing suites PASS; 58 historical behavior fixtures PASS; eligible AGENTS hashes match canonical; TOKEN-OPT verifier PASS with real_codex_calls=0; Cognee classified PARTIALLY_GREEN_WITH_ISOLATED_LLM_DEGRADATION and is not an A7 closure gate

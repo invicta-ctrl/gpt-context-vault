@@ -1,0 +1,23 @@
+{
+    "schema_version":  1,
+    "change_id":  "TOKEN-OPT-001-A6",
+    "verified_at":  "2026-08-24T17:27:50.7762887Z",
+    "status":  "PASS",
+    "task_name":  "Earl Codex Usage Guard",
+    "task_state":  "Running",
+    "watcher_process_ids":  [
+                                13252
+                            ],
+    "app_server_process_ids_before":  [
+                                          8272,
+                                          28992
+                                      ],
+    "app_server_process_ids_after":  [
+                                         8272,
+                                         28992
+                                     ],
+    "dummy_codex_terminated":  true,
+    "real_codex_invoked":  false,
+    "active_manual_permit":  false,
+    "non_app_server_codex_count":  0
+}

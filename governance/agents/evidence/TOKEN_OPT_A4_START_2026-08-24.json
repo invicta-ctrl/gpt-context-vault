@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "evidence_id": "TOKEN-OPT-001-A4-start",
+  "observed_at": "2026-08-24T23:03:18+08:00",
+  "repository": "D:\\Documents\\Codex\\GitHub\\gpt-context-vault",
+  "branch": "governance/agents-consolidation-002",
+  "head": "9a00eeb8bce54bb315d83d1480ef3750ceea8056",
+  "upstream": "origin/governance/agents-consolidation-002",
+  "divergence": {
+    "ahead": 0,
+    "behind": 0
+  },
+  "accepted_dirty_state": [
+    "M protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
+    "?? governance/agents/specs/TOKEN-OPT-001-A2.md",
+    "?? governance/agents/specs/TOKEN-OPT-001-A3.md",
+    "?? governance/agents/specs/TOKEN-OPT-001-A4.md"
+  ],
+  "preserved_spec_sha256": {
+    "TOKEN-OPT-001-A2": "fda3b018dbdf7e3f597cfb07d797633cc8ebbb30cab23f94e1806f9d960918e2",
+    "TOKEN-OPT-001-A3": "dc31c20cef4bc39f4165339e323ebee07c26a3499b8705f840648932f9eec8be",
+    "TOKEN-OPT-001-A4": "d9c94e95430b8f4e510620d2262aa788acfc6160d5be0dcb3a98aa38ece27fa2"
+  },
+  "writer_check": {
+    "matching_process_count": 1,
+    "matching_process_interpretation": "the sole matching codex.exe process is the active A4 session; no competing Codex, Node, or Python writer was observed",
+    "writer_count": 1,
+    "writer_model": "gpt-5.6-terra",
+    "writer_effort": "max"
+  },
+  "authority": {
+    "accepted_spec": "governance/agents/specs/TOKEN-OPT-001-A4.md",
+    "execution_brief": "D:\\Documents\\Codex\\Astral-Bridge\\.ai-bridge\\TOKEN_OPT_v2_ACCOUNT_WIDE_EXECUTION_BRIEF_2026-08-24.md",
+    "continuation_authority": "D:\\Documents\\Codex\\Astral-Bridge\\.ai-bridge\\TOKEN_OPT_v2_A4_CONTINUATION_AUTHORITY_2026-08-24.md"
+  },
+  "do_not_repeat": [
+    "Do not overwrite, rename, or alter TOKEN-OPT-001-A2 or TOKEN-OPT-001-A3.",
+    "Do not repeat the baseline revalidation unless a relevant source, target, configuration, or external state changes.",
+    "Do not synchronize managed replicas or mutate personal state without their separate backup and preflight receipts."
+  ]
+}

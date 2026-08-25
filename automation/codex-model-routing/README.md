@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-08-20
+last_reviewed: 2026-08-25
 ---
 
 # Codex model routing
@@ -37,6 +37,21 @@ not weaken safety.
   is the single account-wide token/context-efficiency authority.
 - [`../../governance/agents/specs/TOKEN-OPT-001-A1.md`](../../governance/agents/specs/TOKEN-OPT-001-A1.md)
   defines the accepted Current/Next Slice Pipeline and read-only scout-ahead amendment.
+- [`../../governance/agents/specs/TOKEN-OPT-001-A4.md`](../../governance/agents/specs/TOKEN-OPT-001-A4.md)
+  preserves the historical role catalog, context envelope, receipts, and benchmark baseline.
+- [`../../governance/agents/specs/TOKEN-OPT-001-A8.md`](../../governance/agents/specs/TOKEN-OPT-001-A8.md)
+  is the active owner-started Sol-parent, model-cap, and manual billable-execution boundary;
+  A7 remains immutable historical evidence.
+- [`manual-codex-execution-gate.json`](manual-codex-execution-gate.json) and
+  [`../codex-usage-guard/`](../codex-usage-guard/) implement the deterministic route gate
+  and local process guard.
+- [`current-routing-profile.json`](current-routing-profile.json) is the active A8
+  selection profile. [`route-compiler.ps1`](route-compiler.ps1) validates context,
+  receipts, the exact manual permit, role topology, writer locks, and route identity; it
+  never starts Codex. Routing metadata never authorizes execution.
+- `contracts/` contains the shared read-only contract and bounded Ox/Terra writer
+  contracts; `verification-receipts.ps1` and `report-seven-day-benchmark.ps1` provide
+  redacted evidence reuse and observed-only seven-day reporting.
 - [`INSTRUCTION_REFINEMENT_STANDARD.md`](INSTRUCTION_REFINEMENT_STANDARD.md)
   defines the preflight gate and safe-stop behavior.
 - [`REFINED_EXECUTION_BRIEF_TEMPLATE.md`](REFINED_EXECUTION_BRIEF_TEMPLATE.md)
@@ -60,16 +75,46 @@ When token, context, delegation, evidence reuse, review, or verification
 efficiency is in scope, retrieve the canonical policy above and expand context
 only for a recorded reason it permits.
 
-The Current/Next Slice Pipeline uses zero children by default and at most one
-read-only scout for an already authorized next slice. The parent revalidates the
-scout packet against the current slice's ending SHA and never auto-starts the next
-slice.
+A8 supersedes A7's incorrect Sol-child and mandatory-zero-start clauses for an explicit
+owner-started Sol session. The effective default remains locked; Sol is the parent and
+may select no workers or multiple useful bounded Luna Max, Terra Max, and Ox Alpha
+workers under model ceilings at depth one. No recursive spawning, unattended/background continuation, or automatic fallback is
+allowed. Historical A4/A6 fixture data remains deterministic evidence, not reusable
+spending authority.
 
 ## Capability compatibility
 
-Projects must verify the installed Codex version and supported model,
-reasoning, hook, agent, sandbox, and `codex exec` behavior before enabling
-automation. Logical route tiers are portable; model identifiers are not. A
-project must reject unsupported identifiers instead of silently substituting a
-more expensive or less safe model.
+Static catalog and configuration validation may run while locked. A real model probe,
+`codex exec`, task creation, task continuation, subagent, retry, or fallback is billable
+execution and requires a new exact manual permit. ChatGPT Web, Astral Bridge, and
+automation must stop and ask Earl rather than performing that probe themselves.
+Unsupported identifiers are rejected; silent substitution is prohibited.
+
+## Deterministic A7 checks
+
+Use a project-local, redacted run-state and telemetry path; do not store live prompts,
+credentials, or raw external state in this vault.
+
+```powershell
+& "$env:USERPROFILE\.codex\usage-guard\Get-CodexUsageStatus.ps1"
+
+powershell -NoProfile -ExecutionPolicy Bypass -File automation\codex-model-routing\route-compiler.ps1 `
+  -ExecutionGatePath automation\codex-model-routing\manual-codex-execution-gate.json `
+  -ManualPermitPath "$env:USERPROFILE\.codex\usage-guard\permit.json" `
+  -RequestPath <redacted-manually-approved-request.json> -StatePath <project-run-state.json> `
+  -TelemetryPath <project-telemetry.jsonl>
+
+powershell -NoProfile -ExecutionPolicy Bypass -File automation\codex-model-routing\verification-receipts.ps1 `
+  -Action Check -ReceiptPath <receipt.json> -SourceFingerprint <sha256> `
+  -ConfigurationFingerprint <sha256> -TestFingerprint <sha256> `
+  -DependencyFingerprint <sha256> -ExternalStateFingerprint <sha256>
+
+powershell -NoProfile -ExecutionPolicy Bypass -File automation\codex-model-routing\report-seven-day-benchmark.ps1 `
+  -TelemetryPath <project-telemetry.jsonl> -OutputPath <observed-report.json> -Days 7
+```
+
+Ox backend or read-only selection requires current zero-cost, health, privacy, and
+writer-lock eligibility plus an exact permit. Ox ineligibility stops for an explicit Sol
+decision. Terra Max is the explicit fallback/integration writer and the sole HAU-USC
+frontend writer; Luna Max remains read-only. Automatic fallback is disabled.
 

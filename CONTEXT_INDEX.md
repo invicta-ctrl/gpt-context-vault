@@ -2,7 +2,7 @@
 schema_version: 1
 status: active
 scope: account-wide
-last_reviewed: 2026-08-20
+last_reviewed: 2026-08-25
 ---
 
 # Context Index
@@ -31,6 +31,8 @@ Use this index only when the root [`AGENTS.md`](AGENTS.md) has not already resol
 | Retrieval protocol | [`protocols/CONTEXT_RETRIEVAL_PROTOCOL.md`](protocols/CONTEXT_RETRIEVAL_PROTOCOL.md) | Minimal-context retrieval process | High | Rare |
 | Codex token and context efficiency | [`protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md`](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md) | Canonical reasoning, delegation, evidence-reuse, review, verification, and stop-when-green policy | High | Through accepted governance changes |
 | Current/Next Slice Pipeline amendment | [`TOKEN-OPT-001-A1`](governance/agents/specs/TOKEN-OPT-001-A1.md) | Accepted read-only scout-ahead, ending-SHA revalidation, cache, compaction, tool-context, and stable-configuration contract | High | Through accepted amendments |
+| Current routing and AGENTS synchronization amendment | [`TOKEN-OPT-001-A4`](governance/agents/specs/TOKEN-OPT-001-A4.md) | Accepted Sol/Terra/Luna/Ox routing, context envelopes, receipts, benchmarks, personal router state, and future AGENTS bootstrap contract | High | Through accepted amendments |
+| Owner-started Sol routing correction | [`TOKEN-OPT-001-A8`](governance/agents/specs/TOKEN-OPT-001-A8.md) | Active Sol-parent topology, model-specific Luna/Terra/Ox ceilings, writer caps, depth-one delegation, and locked background/fallback contract; A7 remains historical evidence | High | Through accepted amendments |
 | Update protocol | [`protocols/MEMORY_UPDATE_PROTOCOL.md`](protocols/MEMORY_UPDATE_PROTOCOL.md) | Persistent-memory update process | High | Rare |
 | Conflict protocol | [`protocols/CONFLICT_RESOLUTION_PROTOCOL.md`](protocols/CONFLICT_RESOLUTION_PROTOCOL.md) | Resolving contradictory context | High | Rare |
 | AI-assisted SDD | [`protocols/AI_ASSISTED_SDD_PROTOCOL.md`](protocols/AI_ASSISTED_SDD_PROTOCOL.md) | Account-wide specification, implementation, review, testing, security, and Git gates | High for software projects | As engineering workflow improves |

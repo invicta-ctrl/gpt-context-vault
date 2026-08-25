@@ -7,11 +7,20 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+function Get-InventoryOptionalProperty {
+    param($Object, [string]$Name, $Default = $null)
+    if ($null -ne $Object -and $Object.PSObject.Properties.Name -contains $Name) {
+        return $Object.$Name
+    }
+    return $Default
+}
+
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
 $registryPath = Join-Path $repoRoot 'governance\agents\AGENTS_REGISTRY.json'
 $registry = Get-Content -LiteralPath $registryPath -Raw | ConvertFrom-Json
 $canonicalPath = [IO.Path]::GetFullPath((Join-Path $repoRoot $registry.canonical.relative_path))
 $canonicalHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $canonicalPath).Hash.ToLowerInvariant()
+$canonicalBytes = [IO.File]::ReadAllBytes($canonicalPath)
 $scanRoot = [IO.Path]::GetFullPath([string]$registry.inventory_scope.project_root)
 $globalPath = [IO.Path]::GetFullPath([string]$registry.inventory_scope.global_codex_agents)
 
@@ -26,6 +35,26 @@ foreach ($target in $registry.managed_replicas) {
 $worktreeByPath = @{}
 foreach ($target in $worktreeTargets) {
     $worktreeByPath[[IO.Path]::GetFullPath([string]$target.path).ToLowerInvariant()] = $target
+}
+$retiredWorktreeByPath = @{}
+if ($registry.PSObject.Properties.Name -contains 'managed_worktree_groups') {
+    foreach ($group in $registry.managed_worktree_groups) {
+        foreach ($artifact in @(Get-InventoryOptionalProperty -Object $group -Name 'retired_unregistered_worktree_artifacts' -Default @())) {
+            $artifactPath = if ($artifact -is [string]) { [string]$artifact } else { [string]$artifact.path }
+            if ([string]::IsNullOrWhiteSpace($artifactPath)) { continue }
+            $agentsPath = Join-Path ([IO.Path]::GetFullPath($artifactPath)) 'AGENTS.md'
+            $retiredWorktreeByPath[$agentsPath.ToLowerInvariant()] = [pscustomobject]@{
+                id = "$($group.id):retired:" + (Split-Path -Leaf $artifactPath)
+                artifact = $artifact
+            }
+        }
+    }
+}
+$verificationArtifactByPath = @{}
+foreach ($artifact in @(Get-InventoryOptionalProperty -Object $registry -Name 'immutable_verification_artifacts' -Default @())) {
+    $artifactPath = [string](Get-InventoryOptionalProperty -Object $artifact -Name 'path' -Default '')
+    if ([string]::IsNullOrWhiteSpace($artifactPath)) { continue }
+    $verificationArtifactByPath[[IO.Path]::GetFullPath($artifactPath).ToLowerInvariant()] = $artifact
 }
 
 $files = @(Get-ChildItem -LiteralPath $scanRoot -File -Recurse -Force -Filter 'AGENTS.md' -ErrorAction Stop)
@@ -61,6 +90,14 @@ $rows = foreach ($file in $files) {
     elseif ($worktreeByPath.ContainsKey($key)) {
         $classification = 'WORKTREE_REPLICA'
         $targetId = [string]$worktreeByPath[$key].id
+    }
+    elseif ($retiredWorktreeByPath.ContainsKey($key)) {
+        $classification = 'RETIRED_UNREGISTERED_WORKTREE_ARTIFACT'
+        $targetId = [string]$retiredWorktreeByPath[$key].id
+    }
+    elseif ($verificationArtifactByPath.ContainsKey($key)) {
+        $classification = 'IMMUTABLE_VERIFICATION_ARTIFACT'
+        $targetId = [string](Get-InventoryOptionalProperty -Object $verificationArtifactByPath[$key] -Name 'id' -Default 'verification-artifact')
     }
     elseif ($path -match '(?i)\\archives\\|\\backups\\|\\private-config\\evidence\\|\\archive\\|\\historical\\') {
         $classification = 'ARCHIVED_OR_HISTORICAL'

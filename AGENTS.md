@@ -7,12 +7,16 @@ canonical_repository: invicta-ctrl/gpt-context-vault
 canonical_relative_path: AGENTS.md
 managed_replica_policy: byte-identical-generated
 project_extension_path: .agents/PROJECT_POLICY.md
-last_reviewed: 2026-08-21
+last_reviewed: 2026-08-25
 ---
 
 # Universal Agent Governance
 
 This is Earl's general operating policy for AI agents and agent-assisted tools.
+
+```text
+GOVERNANCE_REVISION: TOKEN-OPT-001-A8
+```
 
 The only editable general-policy authority is:
 
@@ -108,6 +112,67 @@ Do not repeat expensive reads, tests, builds, reviews, migrations, deployments, 
 
 The canonical token and context-efficiency policy is [protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md](protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md). It governs ordinary reasoning, delegation, evidence reuse, review, verification escalation, abnormal-route reasons, and stop-when-green behavior. Project rules may be stricter but may not weaken safety.
 
+Current role metadata remains in
+[`automation/codex-model-routing/current-routing-profile.json`](automation/codex-model-routing/current-routing-profile.json),
+but it is dormant selection reference only. Billable Codex execution is governed by
+[`automation/codex-model-routing/manual-codex-execution-gate.json`](automation/codex-model-routing/manual-codex-execution-gate.json)
+and the local usage guard; routing metadata never authorizes model execution.
+
+## Billable Codex execution boundary
+
+`TOKEN-OPT-001-A8` is the active account-wide execution boundary. It supersedes only
+A7's incorrect Sol-subagent, mandatory-zero-start, and undifferentiated child-cap
+clauses while preserving A7's safety boundary.
+
+```text
+BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
+CHATGPT WEB SELF-AUTHORIZATION: PROHIBITED
+ASTRAL BRIDGE SELF-AUTHORIZATION: PROHIBITED
+UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
+OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+SOL ROLE: PARENT / ADVISOR / ORCHESTRATOR / INTEGRATOR
+SOL SUBAGENTS: PROHIBITED
+SUBAGENT SPAWNING: FOLLOW DEFAULT @SOL ADVISOR GUIDELINES
+MANDATORY ZERO-WORKER START: NONE
+MAX LUNA MAX SUBAGENTS: 16
+MAX TERRA MAX SUBAGENTS: 2
+MAX OX ALPHA SUBAGENTS: 16
+MAX TOTAL DIRECT SUBAGENTS: 16
+DELEGATION DEPTH: 1
+RECURSIVE CHILD SPAWNING: FORBIDDEN
+AUTOMATIC MODEL FALLBACK: DISABLED
+MAX ACTIVE WRITERS: 2
+MAX WRITERS PER REPOSITORY OR WORKTREE: 1
+APP-SERVER INFRASTRUCTURE: ALLOWED
+```
+
+- ChatGPT Web, Astral Bridge, automations, scheduled tasks, watchdogs, health checks,
+  prompts, and prior continuations may not independently start, resume, retry, delegate,
+  or fall back to a Codex model.
+- “Absolutely necessary” means stop and ask Earl for an exact authorization. It is
+  never self-authorization.
+- Direct deliberate interaction Earl starts inside Codex Desktop is Earl manually
+  starting that specific Sol task. Sol is the parent and may never be selected as its
+  own subagent. It follows the default @sol advisor task-delegation guidelines and may
+  use zero or multiple useful bounded direct workers at depth one. Luna Max and Ox Alpha
+  each have a ceiling of sixteen; Terra Max has a ceiling of two; total direct workers
+  remain bounded by the native session ceiling of sixteen. Children may not spawn.
+- Two writers may run only across proven-isolated repositories or worktrees with
+  separate locks and no shared pointer, migration, release file, generated artifact,
+  provider resource, database state, or incomplete dependency. Otherwise use one writer.
+- Fallback is an explicit Sol routing decision. Automatic provider fallback, silent
+  model substitution, background continuation, and uncontrolled retry remain disabled.
+- Active routing is Sol High; Ox Alpha is preferred for backend implementation and may
+  be read-only when not writing; Terra Max is the explicit fallback or
+  integration-sensitive writer; Luna Max is read-only; DeepSeek is disabled from all
+  active and fallback routes.
+- The deterministic route compiler is a selector and validator only. It never
+  dispatches Codex. A missing, expired, consumed, mismatched, non-manual, recursive,
+  or broad approval remains a hard stop for permit-gated execution.
+- After a canonical governance change, pre-existing write-capable sessions are
+  `STALE_GOVERNANCE` for new mutations. A fresh session must prove the current
+  revision and repository authority were loaded before writing.
+
 ## Project incremental-context rule
 
 When a project contains `.codex/CURRENT.md`:
@@ -161,6 +226,17 @@ When a project lacks a durable resume mechanism, create or repair the smallest p
 - Use bounded outputs and targeted retrieval for large commands.
 - Do not claim a tool, account, file, repository, provider, or external system was accessed unless it was actually accessed.
 
+## Live design-source authority and connector recovery
+
+When an active project explicitly names canonical live design sources and assigns them roles, follow that project-specific authority instead of silently treating an older export, screenshot, generated mirror, or repository snapshot as the current visual source of truth.
+
+- Repair a supported connector authentication failure once through the connector's documented authentication mechanism before declaring the live source unavailable.
+- Do not bypass an authenticated design source with ordinary web fetching merely because connector authentication expired.
+- Distinguish authentication failure from tool-capability limits. If the connector authenticates successfully but does not support the required file type or operation, record that exact limitation and use the project's approved alternate read path, such as an authenticated browser for visual inspection.
+- Use preserved repository exports only for the evidence class they can actually prove. A stale export must not override a newer accessible live source for current visual intent.
+- Design sources govern only the roles assigned by the active project. Repository contracts, authorization, data invariants, security boundaries, and accepted specifications remain authoritative for runtime behavior.
+- Never mutate a design source unless the current accepted task explicitly authorizes the write.
+
 ## Specification gate
 
 Do not implement non-trivial software or system changes from chat instructions alone when the active project uses specification-driven development.
@@ -202,7 +278,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Default to zero children. Use at most one active child only when the work is bounded, independent, non-overlapping, explicitly justified, and expected to reduce total context or latency without weakening verification.
+- Apply the A8 execution boundary: zero unattended or background Codex runs without Earl's exact authorization; Sol subagents prohibited; useful bounded direct Luna Max, Terra Max, and Ox Alpha workers selected under normal @sol advisor guidelines with ceilings 16, 2, and 16 respectively and sixteen total direct workers; depth one; no recursive spawning; no automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.
@@ -365,6 +441,7 @@ Stop the affected operation when:
 - a secret or unnecessary private value is detected;
 - a migration, deployment, destructive operation, or external write lacks exact authority;
 - rollback cannot be demonstrated;
+- billable Codex work is unattended or background without Earl's exact authorization, originates independently from ChatGPT Web, Astral Bridge, automation, scheduling, fallback, retry, or continuation, or exceeds the active owner-started Sol session's A7 depth, child, writer, or lock limits;
 - verification fails;
 - the accepted work unit is complete.
 

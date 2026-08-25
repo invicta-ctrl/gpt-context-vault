@@ -5,7 +5,7 @@ scope: hau-usc-logistics-project-extension
 extension_id: HAU-USC-LOGISTICS-PROJECT-POLICY-V1
 target_repository: invicta-ctrl/hau-usc-logistics-management-system
 universal_governance: ..\AGENTS.md
-last_reviewed: 2026-08-21
+last_reviewed: 2026-08-22
 ---
 
 # HAU-USC Logistics Project Policy Extension
@@ -50,6 +50,28 @@ defaults. Its absence is normal.
 - Non-trivial behavior, architecture, migration, deployment, destructive maintenance, provider mutation, or external action requires an accepted specification or amendment.
 - Stop on a material conflict, missing acceptance criterion, privacy/security uncertainty, migration need, unknown dirty work, active writer conflict, or Production crossover.
 
+## Canonical frontend design-source authority
+
+For HAU-USC frontend integration, the current owner-approved source roles are locked as follows unless Earl explicitly amends them:
+
+1. **Live repository and accepted specifications** are functional truth for routes, backend/API/auth/data contracts, security, privacy, accessibility requirements, and supported behavior. Functional truth always wins over a design that implies unsupported behavior.
+2. **Figma Make — HAU-USC Logistics — Prototyping** is the primary current visual implementation authority and partial code/reference baseline for frontend composition, hierarchy, interaction intent, spacing, typography, responsive intent, and approved visual assets. Canonical file: https://www.figma.com/make/rP9W9MQlZkyQrUx38TVsFS/HAU-USC-Logistics-%E2%80%94-Prototyping?p=f&t=IzRz8zFMhHNpKUHC-0
+3. **Figma Design — HAU-USC Logistics — Frontend Design Lab** is documentation/reference authority for annotations, exploration, rationale, design research, component notes, comparison evidence, and supporting design decisions. Canonical file: https://www.figma.com/design/hXJElH4p72KfgAaoUyfNOC/HAU-USC-Logistics-%E2%80%94-Frontend-Design-Lab?node-id=0-1&p=f&t=MoIJxKJbLcfVZnz0-0
+4. Repository-preserved Figma/Make exports, screenshots, generated mirrors, and historical design branches are fallback evidence only. They do not override a newer accessible live Make state for current visual intent.
+
+### Required Figma access route
+
+- Use the Figma MCP for supported Design-file structured reads, metadata, screenshots, variables, and assets.
+- If Figma MCP reports reauthentication, run the supported Codex OAuth recovery once with "codex mcp login figma", then verify authenticated identity and Design-file access before falling back. Do not describe the connector as unavailable while this supported recovery remains untried.
+- Figma MCP currently authenticates successfully but its metadata/context tools do not support Figma Make files. Treat the message "This tool is not supported for Make files. Supported file type: Design." as a tool-capability limit, not an authentication failure.
+- For live Figma Make visual inspection, use the authenticated Chrome/browser route and the existing signed-in Figma session. Do not substitute normal web fetching.
+- When live Make code/source is not directly extractable through the supported route, use repository-preserved Make code exports only as partial code evidence and compare them against the current live Make visuals before adoption.
+- Never mutate either Figma file unless Earl's current accepted task explicitly authorizes a Figma write.
+
+### Frontend integration acceptance consequence
+
+FI-00 through FI-12 must be audited against these roles. A slice is not visually accepted merely because it matches an older Git mirror when the current live Make composition materially differs. Preserve valid functional work, then repair only the visual/interaction drift required by the current Make authority and the accepted repository contracts.
+
 ## Accepted mainline governance amendment — 2026-08-10
 
 This section preserves the accepted `QUICK Mainline AGENTS Governance Sync + Fast Document-Fix Mode` amendment.
@@ -80,69 +102,93 @@ Legacy `REQUIRED_MODEL: CODEX` metadata in older current records remains superse
 
 ## TOKEN-OPT precedence and HAU model roles
 
-TOKEN-OPT-001 is the sole account-wide token/context-efficiency authority. This
-extension keeps HAU's stricter role separation and safety gates without enabling routine
-agent pools or review cycles. An exact accepted high-risk operation may require a more
-specific route; absent that authority, these defaults apply:
+TOKEN-OPT-001-A8 is the active account-wide routing authority. This extension keeps
+HAU's stricter frontend/backend separation, writer locks, data gates, and release
+safety. Capacity is not routine staffing: the Sol advisor selects the smallest useful
+bounded topology and may choose no workers or multiple direct workers.
 
 ```text
-ORCHESTRATOR_MODEL: GPT-5.6 Sol
+ORCHESTRATOR_MODEL: GPT-5.6 Sol / High
 ORCHESTRATOR_WRITES: FORBIDDEN
-SOL_SUBAGENTS: FORBIDDEN
-MAX_SOL_SUBAGENTS: 0
 
-DEFAULT_CHILDREN: 0
-MAX_ACTIVE_CHILDREN: 1
+SOL_SUBAGENTS: PROHIBITED
+MAX_LUNA_MAX_SUBAGENTS: 16
+MAX_TERRA_MAX_SUBAGENTS: 2
+MAX_OX_ALPHA_SUBAGENTS: 16
+MAX_TOTAL_DIRECT_SUBAGENTS: 16
 DELEGATION_DEPTH: 1
-SUBAGENT_SPAWNER: Sol only
+SUBAGENT_SPAWNER: top-level Sol advisor only
+RECURSIVE_CHILD_SPAWNING: FORBIDDEN
 
-WRITER_MODEL_CLASS: gpt-5.6-terra
-CANONICAL_BRANCH_WRITER_COUNT: 1
-CANONICAL_ACTIVE_WRITER: one Terra Integration Writer when a child writer is required
+MAX_ACTIVE_WRITERS_ACCOUNT_WIDE: 2
+MAX_WRITERS_PER_REPOSITORY_OR_WORKTREE: 1
+AUTOMATIC_MODEL_FALLBACK: DISABLED
+DEEPSEEK_ACTIVE_ROUTING: DISABLED
 
-READER_MODEL_CLASS: gpt-5.6-luna
-LUNA_WRITES: FORBIDDEN
+FRONTEND_BRANCH: frontend-design-integration
+FRONTEND_WRITER: exactly one GPT-5.6 Terra / Max when implementation is required
+FRONTEND_OX: READ_ONLY
+FRONTEND_LUNA: READ_ONLY
 
-ORDINARY_REASONING: high or lower
+BACKEND_PRIMARY_WRITER: Ox Alpha / High
+BACKEND_FALLBACK_OR_INTEGRATION_WRITER: GPT-5.6 Terra / Max
+BACKEND_LUNA: READ_ONLY
+
 ROUTINE_INDEPENDENT_REVIEW: false
 ROUTINE_FULL_SUITE_AFTER_SMALL_MODULE: false
-MODEL_SUBSTITUTION: forbidden unless Earl explicitly amends the task
 STOP_WHEN_GREEN: true
 ```
 
 ### Sol
 
-- Sol is the sole top-level read-only planner, router, reviewer, and acceptance authority.
-- Sol may read evidence, normalize scope, maintain the delegation ledger, spawn at
-  most one bounded Terra or Luna child when TOKEN-OPT-001's delegation gate passes,
-  and produce the owner-facing handoff.
-- Sol never edits repository files, creates patches, stages, commits, pushes, merges, rebases, resets, cleans, deploys, migrates, mutates providers, or rotates recovery pointers.
-- No agent may create a Sol child. Child creation remains with the top-level Sol at depth one.
+- Sol is the sole top-level read-only planner, router, integrator, reviewer, and final
+  acceptance authority.
+- Sol owns the delegation ledger and may select useful bounded direct workers under
+  TOKEN-OPT-001-A8: Luna Max and Ox Alpha each have an independent ceiling of sixteen,
+  Terra Max has an independent ceiling of two, and the total direct-worker ceiling is
+  sixteen. Sol subagents are prohibited; there is no mandatory zero-worker start.
+- Sol never edits repository files, creates patches, stages, commits, pushes, merges,
+  rebases, resets, cleans, deploys, migrates, mutates providers, or rotates recovery
+  pointers unless a separate accepted project policy explicitly changes that role.
+- No child may spawn. No agent may create a Sol child.
 
-### Terra writer
+### Ox Alpha
 
-- The Terra model class is the only child role permitted to mutate repository or
-  provider state when accepted scope authorizes the mutation. Ordinary reasoning is
-  High or lower; MAX is reserved for an exact risk-gated exception.
-- Each write task has exactly one `TERRA_INTEGRATION_WRITER`.
-- The integration writer is the only writer on the canonical task branch/worktree and is recorded as `ACTIVE_WRITER: TERRA_MAX:<task-or-agent-id>`.
-- Additional Terra writers are not a routine option. A specifically accepted high-risk
-  operation may authorize a sequential or otherwise explicitly bounded exception with
-  isolated paths, but the account-wide one-active-child default remains controlling
-  unless that exact accepted authority says otherwise.
-- Writers never share a current pointer, canonical registry, migration, release file,
-  generated manifest, lockfile, or external resource.
-- The integration writer owns canonical integration and conflict resolution after Sol review.
-- Terra does not spawn agents, broaden scope, invoke Sol as a child, or claim acceptance without evidence.
+- Ox is the preferred backend implementation writer when accepted scope authorizes
+  mutation and the provider/model route is eligible.
+- Ox may instead serve read-only scout, audit, or review work only while it does not hold
+  a writer lock.
+- Ox writes are forbidden on `frontend-design-integration`.
+- Ox does not spawn, fall back automatically, broaden scope, or share a writer lock.
 
-### Luna reviewer
+### Terra Max
 
-- Luna is read-only and may map, audit, review, perform security/privacy analysis,
-  inspect test gaps, or run final contradiction review only when the conditional review
-  gate is met. Routine work uses zero Luna children. Ordinary reasoning is High or
-  lower; MAX requires an exact risk-gated exception.
-- Luna never edits tracked state, writes a patch, takes the writer lock, stages, commits, pushes, merges, deploys, migrates, mutates providers, or spawns agents.
-- Luna reports findings to Sol; an authorized Terra performs any repair.
+- Terra is the explicit Sol-routed fallback or integration-sensitive writer.
+- Terra is the only frontend writer on `frontend-design-integration`; implementation
+  uses exactly one Terra writer and one worktree lock.
+- A Terra fallback is a new Sol decision after Ox unavailability, material failure, or
+  integration-risk assessment. It is never automatic provider substitution.
+- Terra does not spawn, broaden scope, share a writer lock, or claim acceptance without
+  evidence.
+
+### Luna Max
+
+- Luna is read-only for scouting, audit, review, security/privacy, scope, architecture,
+  test-gap, and second-opinion work.
+- Luna never edits tracked state, writes a patch, takes a writer lock, stages, commits,
+  pushes, merges, deploys, migrates, mutates providers, or spawns agents.
+
+### Writer isolation and prohibited routing
+
+- At most two writers may coexist account-wide, only in different proven-isolated
+  repositories or worktrees with separate locks, owned paths, and no race on a current
+  pointer, migration, release file, generated artifact, provider resource, database
+  state, or incomplete dependency.
+- Every repository or worktree has at most one writer.
+- DeepSeek is forbidden as writer, scout, reviewer, and fallback. Credentials and
+  historical proof may remain inactive and must not be exposed or deleted.
+- Production, provider, database, migration, Google, and external-data writes still
+  require exact accepted authority and owner approval.
 
 ## Canonical writer lock and delegation ledger
 
@@ -272,7 +318,7 @@ This mode excludes history rewrites, deletion of unknown work, executable auth/s
 
 1. Sol reads the exact target and direct authority.
 2. Sol defines the minimal diff, owned paths, and exclusions.
-3. Sol assigns one Terra Integration Writer. Default staffing is one Terra, zero Luna, zero Sol children.
+3. Sol assigns one Terra Integration Writer. Luna review is added only when the bounded trigger below applies; Sol subagents are prohibited.
 4. Terra edits only required documents and directly coupled governance validation.
 5. Terra runs focused documentation checks.
 6. Sol reviews the complete diff once.

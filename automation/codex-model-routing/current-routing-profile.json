@@ -1,0 +1,220 @@
+{
+  "schema_version": 3,
+  "profile_id": "TOKEN-OPT-001-A8-current",
+  "policy_id": "TOKEN-OPT-001",
+  "accepted_amendment": "TOKEN-OPT-001-A8",
+  "governance_revision": "TOKEN-OPT-001-A8",
+  "last_reviewed": "2026-08-25",
+  "catalog": {
+    "required_models": [
+      {
+        "id": "gpt-5.6-sol",
+        "effort": "high",
+        "role": "orchestrator"
+      },
+      {
+        "id": "openrouter/stealth/ox-alpha",
+        "effort": "high",
+        "role": "backend_primary_writer_or_read_only_worker"
+      },
+      {
+        "id": "gpt-5.6-terra",
+        "effort": "max",
+        "role": "fallback_integration_or_frontend_writer"
+      },
+      {
+        "id": "gpt-5.6-luna",
+        "effort": "max",
+        "role": "read_only_worker"
+      }
+    ],
+    "disabled_models": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
+    ]
+  },
+  "roles": {
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "read_only": false,
+      "child_eligible": false
+    },
+    "writer": {
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "max",
+      "read_only": false,
+      "child_eligible": true,
+      "contract": "contracts/terra-writer-contract.json",
+      "status": "HISTORICAL_A4_A6_COMPATIBILITY"
+    },
+    "read_only_worker": {
+      "durable": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max"
+      },
+      "ephemeral": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high"
+      },
+      "contract": "contracts/read-only-worker-contract.json",
+      "status": "HISTORICAL_A4_A6_COMPATIBILITY"
+    }
+  },
+  "active_roles": {
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "repository_writes": false,
+      "child_eligible": false
+    },
+    "writers": {
+      "backend_primary": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "contract": "contracts/ox-writer-contract.json"
+      },
+      "integration_fallback": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "contract": "contracts/terra-writer-contract.json",
+        "requires_explicit_sol_decision": true
+      },
+      "hau_frontend": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "contract": "contracts/terra-writer-contract.json",
+        "max_target_writers": 1
+      }
+    },
+    "read_only_workers": {
+      "luna": {
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max",
+        "contract": "contracts/read-only-worker-contract.json"
+      },
+      "ox": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "contract": "contracts/read-only-worker-contract.json",
+        "requires_no_writer_lock": true
+      }
+    }
+  },
+  "fallbacks": {
+    "active": [],
+    "automatic": false,
+    "explicit_sol_only": [
+      {
+        "from": "openrouter/stealth/ox-alpha",
+        "to": "gpt-5.6-terra",
+        "role": "writer"
+      }
+    ],
+    "forbidden": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
+    ],
+    "historical_ox": [
+      "gpt-5.6-luna"
+    ]
+  },
+  "ox_eligibility": {
+    "provider": "openrouter",
+    "cache_cadence_seconds": 900,
+    "acceptable_health": [
+      "healthy",
+      "acceptable"
+    ],
+    "allowed_data_classifications": [
+      "public",
+      "internal",
+      "non_sensitive"
+    ],
+    "failure_behavior": "mark_ineligible_then_stop_for_explicit_sol_reroute"
+  },
+  "concurrency": {
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "advisor_selects_smallest_useful_topology": true,
+    "max_delegation_depth": 1,
+    "max_active_children": 16,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
+    "max_overlapping_writers": 1,
+    "default_read_only_workers": 0,
+    "adaptive_read_only_workers_min": 0,
+    "adaptive_read_only_workers_max": 16,
+    "independent_burst_total_workers_max": 16,
+    "recursive_worker_spawning": false,
+    "ordinary_duplicate_work": "prohibited",
+    "stop_when_green": true,
+    "isolation_required_for_second_writer": true
+  },
+  "context_envelope": {
+    "dispatch_seed_tokens_max": 12000,
+    "worker_working_tokens_max": 32000,
+    "normal_hard_ceiling_tokens": 64000,
+    "oversize_reason_label": "OVERSIZE_CONTEXT_REASON",
+    "split_or_exception_threshold_tokens": 100000,
+    "exception_types": [
+      "correctness",
+      "safety"
+    ]
+  },
+  "verification_receipts": {
+    "fingerprint_fields": [
+      "source",
+      "configuration",
+      "test",
+      "dependency",
+      "external_state"
+    ],
+    "reuse_requires": "all_fingerprints_match_and_prior_status_is_PASS"
+  },
+  "telemetry": {
+    "redacted": true,
+    "prohibited_fields": [
+      "prompt",
+      "completion",
+      "credentials",
+      "provider_keys",
+      "raw_external_state",
+      "raw_source_content"
+    ]
+  },
+  "benchmark": {
+    "window_days": 7,
+    "quality_claim_rule": "compare_only_observed_quality_evidence",
+    "quota_metric": "native_weighted_quota"
+  },
+  "role_catalog_status": "ACTIVE_A8_SELECTION_ONLY",
+  "execution_boundary": {
+    "policy_id": "TOKEN-OPT-001-A8",
+    "gate_path": "manual-codex-execution-gate.json",
+    "default_state": "LOCKED",
+    "manual_only": true,
+    "owner_started_sol_session": true,
+    "max_processes": 1,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "allow_subagents": true,
+    "max_delegation_depth": 1,
+    "recursive_spawning": false,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
+    "background_continuation": false,
+    "automatic_fallback": false,
+    "route_compiler_is_dispatcher": false
+  }
+}

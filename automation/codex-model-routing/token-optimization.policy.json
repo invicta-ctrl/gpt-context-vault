@@ -1,19 +1,90 @@
 {
-  "schema_version": 2,
+  "schema_version": 6,
   "policy_id": "TOKEN-OPT-001",
   "accepted_amendments": [
-    "TOKEN-OPT-001-A1"
+    "TOKEN-OPT-001-A1",
+    "TOKEN-OPT-001-A2",
+    "TOKEN-OPT-001-A3",
+    "TOKEN-OPT-001-A4",
+    "TOKEN-OPT-001-A5",
+    "TOKEN-OPT-001-A6",
+    "TOKEN-OPT-001-A7",
+    "TOKEN-OPT-001-A8"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
     "ordinary_reasoning_effort": "high",
-    "max_concurrent_threads_per_session": 2,
-    "default_children": 0,
-    "max_active_children": 1,
+    "max_concurrent_threads_per_session": 16,
+    "max_adaptive_read_only_workers": 16,
+    "max_total_active_workers": 16,
+    "max_overlapping_writers": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "max_delegation_depth": 1,
+    "recursive_worker_spawning": false,
     "routine_independent_review": false,
-    "routine_full_suite_after_small_module": false
+    "routine_full_suite_after_small_module": false,
+    "agents_enabled": true,
+    "multi_agent_v2_enabled": true,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "advisor_selects_smallest_useful_topology": true,
+    "allow_subagents": true,
+    "background_continuation": false,
+    "automatic_fallback": false
+  },
+  "current_routing_v2": {
+    "profile_path": "automation/codex-model-routing/current-routing-profile.json",
+    "orchestrator": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "owner_started_only": true
+    },
+    "writers": {
+      "backend_primary": {
+        "model": "openrouter/stealth/ox-alpha",
+        "reasoning_effort": "high",
+        "eligibility": "provider_available_and_zero_prompt_and_zero_completion_and_acceptable_health_and_suitable_data"
+      },
+      "integration_fallback": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "explicit_sol_decision_required": true
+      },
+      "hau_frontend": {
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max"
+      }
+    },
+    "read_only_workers": {
+      "luna": {"model": "gpt-5.6-luna", "reasoning_effort": "max"},
+      "ox": {"model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high", "requires_no_writer_lock": true}
+    },
+    "disabled_models": [
+      "deepseek-v4-pro",
+      "deepseek/deepseek-v4-pro",
+      "deepseek/deepseek-v4-flash",
+      "deepseek/deepseek-v4-flash-vision-exp"
+    ],
+    "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
+    "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json",
+    "ox_writer_contract": "automation/codex-model-routing/contracts/ox-writer-contract.json",
+    "status": "ACTIVE_A8_SELECTION_ONLY",
+    "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json"
+  },
+  "context_envelope_v2": {
+    "dispatch_seed_tokens_max": 12000,
+    "worker_working_tokens_max": 32000,
+    "normal_hard_ceiling_tokens": 64000,
+    "oversize_reason_label": "OVERSIZE_CONTEXT_REASON",
+    "split_or_exception_threshold_tokens": 100000,
+    "oversize_exception_types": [
+      "correctness",
+      "safety"
+    ]
   },
   "context": {
     "normal_route": [
@@ -38,13 +109,14 @@
   },
   "verification": {
     "reuse_keys": [
-      "commit_sha",
-      "artifact_hash",
+      "source",
       "configuration",
-      "environment",
+      "test",
+      "dependency",
       "external_state"
     ],
     "reverify_reason_label": "REVERIFY_REASON",
+    "receipt_reuse_requires": "all_fingerprints_match_and_prior_status_is_PASS",
     "test_route": [
       "targeted",
       "affected_subsystem",
@@ -62,10 +134,11 @@
   ],
   "current_next_slice_pipeline": {
     "pipeline_name": "CURRENT_NEXT_SLICE_PIPELINE",
-    "zero_children_default": true,
-    "max_active_children": 1,
+    "advisor_selects_smallest_useful_topology": true,
+    "max_active_children": 16,
     "max_depth": 1,
-    "one_writer": true,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
     "scout_read_only": true,
     "scout_may_delegate": false,
     "next_slice_must_be_authorized": true,
@@ -191,7 +264,8 @@
       "token_quantity_saved",
       "compaction_preserved_every_semantic_detail",
       "mcp_token_consumption"
-    ]
+    ],
+    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_TOKEN_OPT_001_A8"
   },
   "behavior_contract": {
     "small_bug": {
@@ -237,6 +311,14 @@
       "action": "PARENT_OR_TOOL_FIRST",
       "default_children": 0,
       "max_active_children": 1,
+      "justification_required": true
+    },
+    "a8_subagent_opportunity": {
+      "action": "SOL_ADVISOR_SELECTS_BOUNDED_TOPOLOGY",
+      "zero_workers_allowed": true,
+      "multiple_direct_workers_allowed": true,
+      "sol_subagents_allowed": false,
+      "max_total_direct_subagents": 16,
       "justification_required": true
     },
     "conflicting_governance": {
@@ -363,6 +445,232 @@
     },
     "a1_unsupported_efficiency_percentage": {
       "action": "VIOLATION"
+    },
+    "a4_catalog_validation": {
+      "action": "VALIDATE_CATALOG",
+      "required_models": [
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna",
+        "openrouter/stealth/ox-alpha"
+      ]
+    },
+    "a4_sol_high": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high"
+    },
+    "a4_terra_writer": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-terra",
+      "reasoning_effort": "max",
+      "writers": 1
+    },
+    "a4_luna_worker": {
+      "action": "ROUTE",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "read_only": true
+    },
+    "a4_ox_eligible": {
+      "action": "ROUTE",
+      "model": "openrouter/stealth/ox-alpha",
+      "reasoning_effort": "high",
+      "read_only": true
+    },
+    "a4_ox_provider_unavailable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "PROVIDER_UNAVAILABLE"
+    },
+    "a4_ox_price_nonzero": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "PRICE_NOT_EXACTLY_ZERO"
+    },
+    "a4_ox_health_unacceptable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "HEALTH_UNACCEPTABLE"
+    },
+    "a4_ox_data_unsuitable": {
+      "action": "FALLBACK_TO_LUNA",
+      "reason": "DATA_CLASSIFICATION_UNSUITABLE"
+    },
+    "a4_ox_failure": {
+      "action": "MARK_INELIGIBLE_AND_FALLBACK_ONCE",
+      "retry": false
+    },
+    "a4_disabled_deepseek": {
+      "action": "REJECT",
+      "models": [
+        "deepseek-v4-pro",
+        "deepseek/deepseek-v4-pro"
+      ]
+    },
+    "a4_context_envelope": {
+      "dispatch_seed_max": 12000,
+      "worker_working_max": 32000,
+      "normal_hard_ceiling": 64000,
+      "oversize_reason": "OVERSIZE_CONTEXT_REASON"
+    },
+    "a4_context_split": {
+      "action": "SPLIT_OR_EXCEPTION",
+      "threshold": 100000,
+      "exception_types": [
+        "correctness",
+        "safety"
+      ]
+    },
+    "a4_concurrency": {
+      "writers": 1,
+      "default_read_only_workers": 2,
+      "adaptive_read_only_workers_max": 4,
+      "total_workers_max": 6
+    },
+    "a4_recursion": {
+      "action": "REJECT",
+      "recursive_worker_spawning": false
+    },
+    "a4_duplicate_work": {
+      "action": "REJECT",
+      "ordinary_duplicate_work": false
+    },
+    "a4_receipt_reuse": {
+      "action": "REUSE",
+      "required_fingerprints": [
+        "source",
+        "configuration",
+        "test",
+        "dependency",
+        "external_state"
+      ]
+    },
+    "a4_receipt_invalidation": {
+      "action": "REVERIFY",
+      "changed_fingerprint_invalidates": true
+    },
+    "a4_findings": {
+      "action": "DEDUPLICATE_MATERIAL_FINDINGS"
+    },
+    "a4_benchmark": {
+      "action": "REPORT_OBSERVED_ONLY",
+      "window_days": 7,
+      "quality_from_lower_tokens": false
+    },
+    "a4_stop_when_green": {
+      "action": "STOP_WHEN_GREEN"
+    },
+    "a4_profile_replacement": {
+      "action": "REPLACE_PROFILE_WITHOUT_GLOBAL_POLICY_REWRITE"
+    },
+    "a6_missing_manual_permit": {
+      "action": "REJECT",
+      "reason": "CODEX_USAGE_LOCKED"
+    },
+    "a6_nonmanual_origin": {
+      "action": "REJECT",
+      "reason": "MANUAL_USER_ORIGIN_REQUIRED"
+    },
+    "a6_second_process": {
+      "action": "REJECT",
+      "reason": "SECOND_PROCESS_DISABLED"
+    },
+    "a6_child_or_subagent": {
+      "action": "REJECT",
+      "max_children": 0,
+      "allow_subagents": false
+    },
+    "a6_background_continuation": {
+      "action": "REJECT",
+      "reason": "BACKGROUND_CONTINUATION_DISABLED"
+    },
+    "a6_automatic_fallback": {
+      "action": "REJECT",
+      "reason": "AUTOMATIC_FALLBACK_DISABLED"
+    },
+    "a6_exact_permit": {
+      "action": "VALIDATE_ONLY",
+      "exact_fields": [
+        "purpose",
+        "model",
+        "reasoning",
+        "role"
+      ],
+      "dispatcher": false
+    },
+    "a6_green_locked_check": {
+      "action": "STOP",
+      "model_execution": false
+    },
+    "a7_owner_started_sol_session": {
+      "action": "ALLOW_MANUAL_SELECTION_ONLY",
+      "default_children": 0,
+      "max_children": 16,
+      "max_delegation_depth": 1,
+      "recursive_spawning": false
+    },
+    "a7_writer_limits": {
+      "action": "ENFORCE_WRITER_LOCKS",
+      "max_active_writers_account_wide": 2,
+      "max_writers_per_repository_or_worktree": 1
+    },
+    "a7_role_routing": {
+      "sol": "orchestrator",
+      "ox": "backend_primary_writer_or_read_only",
+      "terra": "explicit_fallback_integration_or_hau_frontend_writer",
+      "luna": "read_only",
+      "deepseek": "DISABLED"
+    },
+    "a8_owner_started_sol_session": {
+      "action": "ALLOW_MANUAL_SOL_ADVISOR_SELECTION_ONLY",
+      "sol_subagents_allowed": false,
+      "zero_workers_allowed": true,
+      "multiple_direct_workers_allowed": true,
+      "max_luna_max_subagents": 16,
+      "max_terra_max_subagents": 2,
+      "max_ox_alpha_subagents": 16,
+      "max_total_direct_subagents": 16,
+      "max_delegation_depth": 1,
+      "recursive_spawning": false
+    },
+    "a8_writer_limits_separate": {
+      "action": "ENFORCE_WRITER_LOCKS_INDEPENDENT_OF_SUBAGENT_CAPS",
+      "max_active_writers_account_wide": 2,
+      "max_writers_per_repository_or_worktree": 1
     }
+  },
+  "billable_execution_boundary": {
+    "policy_id": "TOKEN-OPT-001-A8",
+    "gate_path": "automation/codex-model-routing/manual-codex-execution-gate.json",
+    "guard_source": "automation/codex-usage-guard",
+    "guard_task": "Earl Codex Usage Guard",
+    "default_state": "LOCKED",
+    "manual_only": true,
+    "owner_started_sol_session": true,
+    "allowed_origins": [
+      "manual_user"
+    ],
+    "prohibited_origins": [
+      "ChatGPT_Web",
+      "Astral_Bridge",
+      "automation",
+      "scheduled_task",
+      "background_agent"
+    ],
+    "require_new_per_run": true,
+    "exact_purpose_model_reasoning_role": true,
+    "max_processes": 1,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "allow_subagents": true,
+    "max_delegation_depth": 1,
+    "recursive_spawning": false,
+    "max_active_writers_account_wide": 2,
+    "max_writers_per_repository_or_worktree": 1,
+    "background_continuation": false,
+    "automatic_fallback": false,
+    "route_compiler_is_dispatcher": false,
+    "absolutely_necessary_behavior": "STOP_AND_ASK_EARL"
   }
 }

@@ -6,6 +6,19 @@ Select the least expensive model and reasoning level that can reliably complete
 the validated brief. Routing is a constrained decision, not a claim that the
 largest model is always better.
 
+## Manual execution boundary
+
+Routing is selection metadata, not permission to spend Codex allowance. Under A8, the
+default is locked. ChatGPT Web, Astral Bridge, automation, scheduling, prior prompts,
+and accepted autonomous continuations may not start or resume Codex. Only an explicit
+owner-started Sol session may route billable work.
+
+One permit names one exact purpose, model, reasoning level, and role. It authorizes one
+primary Sol advisor process and bounded direct workers selected under normal @sol
+guidelines: Luna Max up to 16, Terra Max up to 2, and Ox Alpha up to 16, with 16 total,
+depth one, no Sol subagents, and no recursive spawning, automatic fallback, or background
+continuation. Zero workers is valid but not mandatory. The route compiler never dispatches.
+
 ## Dimensions
 
 Score the refined brief for ambiguity, repository exploration, breadth, required
@@ -26,18 +39,17 @@ catalog:
 | `deep_review` | High-risk work, release blockers, or a lower tier failed with evidence |
 
 Reasoning should be `low` or `medium` for fast work and may use `high` for
-ordinary implementation, exploration, or consequential judgment. Ordinary work
-does not exceed High by default. Higher installed values are risk-gated
-exceptions, not routine routing choices. Never use an unsupported value.
+ordinary implementation, exploration, or consequential judgment. The accepted A4
+current profile is the explicit role-specific exception: Sol uses `high`, Terra
+writer and Luna durable worker use `max`, and eligible Ox uses `high`. Never use
+an unsupported value or substitute a model outside the current profile.
 
 ## Current Codex compatibility rule
 
-The project must verify actual model aliases before routing. Current local
-profiles may expose account-specific aliases such as `gpt-5.6-terra`,
-`gpt-5.6-luna`, and `gpt-5.6-sol`; public Codex documentation also describes
-`gpt-5.6`, `gpt-5.6-terra`, and `gpt-5.3-codex-spark`. The route schema must
-allow only the project's verified set. Do not silently treat `Ultra`, `Max`, or
-another UI label as a CLI reasoning value.
+Use the static local catalog to validate exact aliases and supported reasoning values.
+A real capability probe is billable Codex execution and must not be launched by ChatGPT
+Web, Astral Bridge, or automation. A probe requires its own manual permit. Never treat a
+UI label as a CLI value or silently substitute another model.
 
 ## Selection guidance
 
@@ -50,39 +62,44 @@ another UI label as a CLI reasoning value.
 - Explain why a cheaper tier is insufficient and why a more expensive tier is
   unnecessary.
 
-## Subagents and worktrees
+## Current execution capacity
 
-Use zero children by default. Permit one active child maximum only when the work
-is bounded, independent, non-overlapping, explicitly justified, and expected to
-reduce total context or latency without weakening verification. Keep delegation
-depth at one. Prefer read-only exploration, testing, or review to parallel
-writes; any child write requires isolated ownership and the repository's writer
-rules. A sequential task stays with the parent even when it is large.
+```text
+DEFAULT PROCESSES: 0
+MANUALLY PERMITTED OWNER-STARTED SOL PROCESSES: 1
+SOL SUBAGENTS: 0
+MANDATORY ZERO-WORKER START: NONE
+MAXIMUM LUNA MAX SUBAGENTS: 16
+MAXIMUM TERRA MAX SUBAGENTS: 2
+MAXIMUM OX ALPHA SUBAGENTS: 16
+MAXIMUM TOTAL DIRECT SUBAGENTS: 16
+MAXIMUM DELEGATION DEPTH: 1
+MAXIMUM ACTIVE WRITERS ACCOUNT-WIDE: 2
+MAXIMUM WRITERS PER REPOSITORY/WORKTREE: 1
+BACKGROUND CONTINUATION: 0
+AUTOMATIC FALLBACK: 0
+```
 
-## Current/next-slice scouting
+Sol High is the parent planner, router, integrator, and final reviewer and is never
+child-eligible. The Sol advisor may choose no workers or multiple useful bounded direct
+workers; model ceilings are not staffing targets. Ox Alpha High
+is the preferred backend writer when eligible and may be read-only without a writer-lock
+conflict. Terra Max is the explicit Sol-routed fallback/integration writer and the sole
+HAU-USC frontend writer. Luna Max is read-only. DeepSeek is disabled. A second writer
+requires proven isolation and no target may have more than one writer.
 
-An optional read-only scout may prepare one already authorized next slice while the
-sole writer finishes the current slice. The scout may not write or delegate. It is
-disabled for trivial, inferred, critical, destructive, migration, Production,
-provider, database, security-ambiguous, writer-conflicted, or dirty-unknown work.
+## Historical current/next-slice scouting
 
-The parent records the scout baseline SHA, requires `STALE_IF`, and compares the
-packet with the current slice's ending SHA. Reuse only revalidated facts. Never auto-start
-the next slice; an unapproved next slice receives a handoff and stops.
-
-Where controllable, keep stable authority and workflow schemas before volatile SHA,
-failure, PR, provider, timestamp, and run state. Cache claims require runtime
-telemetry. Manual compaction requires a durable checkpoint and post-compaction Git
-and authority rehydration. Material tool-context expansion requires
-`TOOL_CONTEXT_EXPANSION_REASON`. Mid-slice configuration changes require their
-recorded reason, old and new values, authority, invalidated evidence, and rollback.
+A1 scout-ahead semantics remain preserved as historical policy evidence. A8 permits
+only explicit, bounded direct non-Sol workers in an owner-started session. Deterministic
+non-model tools may prepare bounded evidence when otherwise authorized, but neither
+tools nor children may auto-start the next slice.
 
 ## Escalation
 
-Escalate one meaningful level at a time only when evidence shows the root cause
-is unresolved, architecture is more ambiguous, scope expanded, tests reveal
-broader risk, or security/data-integrity impact is higher than routed. Do not
-escalate merely because a worker took time.
+Escalation to a different model, reasoning level, role, retry, or fallback requires an
+explicit Sol decision and a matching exact permit. Evidence may justify the decision,
+but it never authorizes an automatic route. Do not escalate merely because work took time.
 
 ## Verification and safe stops
 
@@ -90,12 +107,13 @@ Every route names an allowlisted verification profile. Use targeted checks
 first, then affected and required acceptance checks. Do not run a full suite after every small module.
 Independent review is conditional on material risk,
 uncertainty, or explicit owner request rather than routine ceremony. Reuse
-same-SHA evidence while its source, configuration, environment, artifact, and
-external-state assumptions remain valid, and stop when accepted evidence is
-green.
+same-SHA evidence only through a passing verification receipt whose source,
+configuration, test, dependency, and external-state fingerprints all match. Record
+only redacted telemetry and stop when accepted evidence is green.
 
-Block when the refinement is invalid, the route is unsupported, the worktree
-is unsafe, documentation conflicts materially, or a destructive/deployment/
-migration/external-write action lacks explicit approval. A hook can add context
+Block when the refinement is invalid, the route is unsupported, a fresh exact manual
+permit is missing, the origin is ChatGPT Web/Astral/automation, another Codex process
+exists, the worktree is unsafe, documentation conflicts materially, or a destructive/
+deployment/migration/external-write action lacks explicit approval. A hook can add context
 or block supported tool calls, but it is not the sole routing boundary.
 

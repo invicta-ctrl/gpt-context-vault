@@ -1,388 +1,194 @@
 [CmdletBinding()]
 param(
-    [string]$VaultRoot = "",
+    [string]$VaultRoot = '',
     [string]$CodexHome = "$env:USERPROFILE\.codex",
-    [string]$BackupManifest = "",
-    [switch]$SkipPersonal
+    [string]$CatalogPath = "$env:USERPROFILE\.codex\codex-router\merged-models.json",
+    [string]$RouterStatePath = "$env:USERPROFILE\.codex\codex-router\multi-agent-settings.json",
+    [string]$BackupManifest = '',
+    [switch]$SkipPersonal,
+    [switch]$SkipCatalog
 )
 
-$ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+if ([string]::IsNullOrWhiteSpace($VaultRoot)) { $VaultRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')) }
 
-if ([string]::IsNullOrWhiteSpace($VaultRoot)) {
-    $VaultRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
-}
-
-function Pass([string]$Name) {
-    Write-Host ("PASS " + $Name)
-}
-
+function Pass([string]$Name) { Write-Host ('PASS ' + $Name) }
 function Assert-True([bool]$Condition, [string]$Name) {
-    if (-not $Condition) {
-        throw ("FAIL " + $Name)
-    }
+    if (-not $Condition) { throw ('FAIL ' + $Name) }
     Pass $Name
 }
-
 function Read-Required([string]$Path) {
-    Assert-True (Test-Path -LiteralPath $Path -PathType Leaf) ("file exists: " + $Path)
-    return [IO.File]::ReadAllText($Path)
+    Assert-True (Test-Path -LiteralPath $Path -PathType Leaf) ('file exists: ' + $Path)
+    [IO.File]::ReadAllText($Path)
+}
+function Assert-Parse([string]$Path) {
+    $tokens = $null; $errors = $null
+    [Management.Automation.Language.Parser]::ParseFile($Path, [ref]$tokens, [ref]$errors) | Out-Null
+    Assert-True ($errors.Count -eq 0) ('PowerShell parse: ' + $Path)
+}
+function Get-ModelEfforts($Model) {
+    @($Model.supported_reasoning_levels | ForEach-Object { if ($_ -is [string]) { [string]$_ } else { [string]$_.effort } })
 }
 
-function Assert-ReadRequiredPurity {
-    $tempPath = [IO.Path]::GetTempFileName()
-    $expected = "TOKEN_OPT_PRESENT_MARKER"
+$paths = [ordered]@{
+    agents = Join-Path $VaultRoot 'AGENTS.md'
+    policy_md = Join-Path $VaultRoot 'protocols\CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md'
+    policy_json = Join-Path $VaultRoot 'automation\codex-model-routing\token-optimization.policy.json'
+    fixtures = Join-Path $VaultRoot 'automation\codex-model-routing\token-optimization.behavior-fixtures.json'
+    profile = Join-Path $VaultRoot 'automation\codex-model-routing\current-routing-profile.json'
+    gate = Join-Path $VaultRoot 'automation\codex-model-routing\manual-codex-execution-gate.json'
+    compiler = Join-Path $VaultRoot 'automation\codex-model-routing\route-compiler.ps1'
+    a4_test = Join-Path $VaultRoot 'automation\codex-model-routing\test-a4-routing.ps1'
+    a6_test = Join-Path $VaultRoot 'automation\codex-model-routing\test-a6-manual-execution-gate.ps1'
+    a7_test = Join-Path $VaultRoot 'automation\codex-model-routing\test-a7-owner-started-sol-routing.ps1'
+    a8_test = Join-Path $VaultRoot 'automation\codex-model-routing\test-a8-sol-advisor-routing.ps1'
+    ox_contract = Join-Path $VaultRoot 'automation\codex-model-routing\contracts\ox-writer-contract.json'
+    readme = Join-Path $VaultRoot 'automation\codex-model-routing\README.md'
+    standard = Join-Path $VaultRoot 'automation\codex-model-routing\ROUTING_STANDARD.md'
+    extension = Join-Path $VaultRoot 'governance\agents\extensions\global-codex.PROJECT_POLICY.md'
+    a2 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A2.md'
+    a3 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A3.md'
+    a4 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A4.md'
+    a5 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A5.md'
+    a6 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A6.md'
+    a7 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A7.md'
+    a8 = Join-Path $VaultRoot 'governance\agents\specs\TOKEN-OPT-001-A8.md'
+}
+$content = @{}
+foreach ($entry in $paths.GetEnumerator()) { $content[$entry.Key] = Read-Required $entry.Value }
 
-    try {
-        [IO.File]::WriteAllText($tempPath, $expected)
-        $actual = Read-Required $tempPath
+foreach ($marker in @('GOVERNANCE_REVISION: TOKEN-OPT-001-A8','BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT','OWNER-STARTED SOL SESSION','SOL SUBAGENTS: PROHIBITED','MAX LUNA MAX SUBAGENTS: 16','MAX TERRA MAX SUBAGENTS: 2','MAX OX ALPHA SUBAGENTS: 16','DELEGATION DEPTH: 1','DeepSeek is disabled')) {
+    Assert-True (($content.agents + "`n" + $content.policy_md).Contains($marker)) ('canonical A8 marker: ' + $marker)
+}
+Assert-True (-not [regex]::IsMatch(($content.agents + "`n" + $content.policy_md), '(?m)^DEFAULT CHILDREN:\s*0\s*$|^MAX (?:DIRECT )?SOL (?:CHILDREN|SUBAGENTS):\s*16\s*$')) 'active governance has no mandatory zero-start or Sol-child ceiling'
+Assert-True ([regex]::IsMatch($content.readme, '(?i)routing metadata never authorizes')) 'routing README denies implicit execution authority'
+Assert-True $content.standard.Contains('Routing is selection metadata, not permission') 'routing standard separates selection and execution'
+Assert-True $content.extension.Contains('Native Multi-Agent V2 is enabled') 'global Codex extension enables Native V2'
 
-        Assert-True (($actual -is [string]) -and ($actual -ceq $expected)) "Read-Required returns file content only"
-        Assert-True $actual.Contains("TOKEN_OPT_PRESENT_MARKER") "regression marker present passes"
+$specHashes = [ordered]@{
+    a2 = 'fda3b018dbdf7e3f597cfb07d797633cc8ebbb30cab23f94e1806f9d960918e2'
+    a3 = 'dc31c20cef4bc39f4165339e323ebee07c26a3499b8705f840648932f9eec8be'
+    a4 = 'd9c94e95430b8f4e510620d2262aa788acfc6160d5be0dcb3a98aa38ece27fa2'
+    a5 = '26506857adafe95f523aa927a4562034d20a5b10a615053f30ff4012f3f96843'
+    a6 = '7036975cc0ef3ec3580f060c49759e8d07871f927a06f9e91674fd5d9c95de47'
+}
+foreach ($key in @('a2','a3','a4','a5','a6')) {
+    $hash = (Get-FileHash -LiteralPath $paths[$key] -Algorithm SHA256).Hash.ToLowerInvariant()
+    Assert-True ($hash -eq $specHashes[$key]) ("preserved $($key.ToUpperInvariant()) hash")
+}
+Assert-True ($content.a7.Contains('status: accepted') -and $content.a7.Contains('TOKEN-OPT-001-A7')) 'A7 accepted specification'
+Assert-True ($content.a8.Contains('status: accepted') -and $content.a8.Contains('TOKEN-OPT-001-A8')) 'A8 accepted specification'
 
-        $missingMarkerFailed = $false
-        try {
-            Assert-True $actual.Contains("TOKEN_OPT_ABSENT_MARKER") "regression marker absent"
-        }
-        catch {
-            $missingMarkerFailed = $_.Exception.Message -eq "FAIL regression marker absent"
-        }
-        Assert-True $missingMarkerFailed "regression marker absent fails"
-    }
-    finally {
-        if ([IO.File]::Exists($tempPath)) {
-            [IO.File]::Delete($tempPath)
-        }
-    }
+$policy = $content.policy_json | ConvertFrom-Json
+$profile = $content.profile | ConvertFrom-Json
+$gate = $content.gate | ConvertFrom-Json
+$fixtureData = $content.fixtures | ConvertFrom-Json
+Assert-True ([int]$policy.schema_version -eq 6) 'policy schema version 6'
+foreach ($amendment in @('TOKEN-OPT-001-A1','TOKEN-OPT-001-A2','TOKEN-OPT-001-A3','TOKEN-OPT-001-A4','TOKEN-OPT-001-A5','TOKEN-OPT-001-A6','TOKEN-OPT-001-A7','TOKEN-OPT-001-A8')) {
+    Assert-True (@($policy.accepted_amendments) -contains $amendment) ('accepted amendment: ' + $amendment)
+}
+Assert-True ([bool]$policy.defaults.agents_enabled -and [bool]$policy.defaults.multi_agent_v2_enabled) 'policy Native V2 enabled'
+Assert-True (-not [bool]$policy.defaults.sol_subagents_allowed -and [bool]$policy.defaults.advisor_selects_smallest_useful_topology) 'policy Sol parent and adaptive topology'
+Assert-True ([int]$policy.defaults.max_luna_max_subagents -eq 16 -and [int]$policy.defaults.max_terra_max_subagents -eq 2 -and [int]$policy.defaults.max_ox_alpha_subagents -eq 16 -and [int]$policy.defaults.max_total_direct_subagents -eq 16) 'policy model-specific subagent ceilings'
+Assert-True ([int]$policy.defaults.max_delegation_depth -eq 1 -and -not [bool]$policy.defaults.recursive_worker_spawning) 'policy depth one non-recursive'
+Assert-True ([int]$policy.defaults.max_overlapping_writers -eq 2 -and [int]$policy.defaults.max_writers_per_repository_or_worktree -eq 1) 'policy writer caps 2 account 1 target'
+Assert-True (-not [bool]$policy.defaults.background_continuation -and -not [bool]$policy.defaults.automatic_fallback) 'policy background and fallback disabled'
+
+Assert-True ([string]$profile.profile_id -eq 'TOKEN-OPT-001-A8-current') 'profile identity A8'
+Assert-True ([string]$profile.role_catalog_status -eq 'ACTIVE_A8_SELECTION_ONLY') 'profile A8 selection active'
+Assert-True ([string]$profile.active_roles.orchestrator.model -eq 'gpt-5.6-sol' -and [string]$profile.active_roles.orchestrator.reasoning_effort -eq 'high') 'Sol High parent'
+Assert-True ([string]$profile.active_roles.writers.backend_primary.model -eq 'openrouter/stealth/ox-alpha') 'Ox backend primary'
+Assert-True ([string]$profile.active_roles.writers.integration_fallback.model -eq 'gpt-5.6-terra' -and [bool]$profile.active_roles.writers.integration_fallback.requires_explicit_sol_decision) 'Terra explicit fallback'
+Assert-True ([string]$profile.active_roles.writers.hau_frontend.model -eq 'gpt-5.6-terra') 'HAU frontend Terra writer'
+Assert-True ([string]$profile.active_roles.read_only_workers.luna.model -eq 'gpt-5.6-luna') 'Luna read-only'
+Assert-True (-not [bool]$profile.concurrency.sol_subagents_allowed -and [int]$profile.concurrency.max_luna_max_subagents -eq 16 -and [int]$profile.concurrency.max_terra_max_subagents -eq 2 -and [int]$profile.concurrency.max_ox_alpha_subagents -eq 16) 'profile model-specific subagent ceilings'
+Assert-True (@($profile.fallbacks.active).Count -eq 0 -and -not [bool]$profile.fallbacks.automatic) 'no active automatic fallback'
+Assert-True (@($profile.catalog.disabled_models | Where-Object { [string]$_ -like '*deepseek*' }).Count -ge 4) 'DeepSeek disabled aliases recorded'
+
+Assert-True ([string]$gate.policy_id -eq 'TOKEN-OPT-001-A8') 'gate policy A8'
+Assert-True ([string]$gate.default_state -eq 'LOCKED' -and [bool]$gate.manual_only -and [bool]$gate.owner_started_sol_session) 'gate locked owner-started manual'
+Assert-True (-not [bool]$gate.sol_subagents_allowed -and [bool]$gate.allow_subagents) 'gate prohibits Sol subagents and allows bounded workers'
+Assert-True ([int]$gate.max_luna_max_subagents -eq 16 -and [int]$gate.max_terra_max_subagents -eq 2 -and [int]$gate.max_ox_alpha_subagents -eq 16 -and [int]$gate.max_total_direct_subagents -eq 16) 'gate model-specific subagent ceilings'
+Assert-True ([int]$gate.max_delegation_depth -eq 1 -and -not [bool]$gate.recursive_spawning) 'gate non-recursive depth one'
+Assert-True ([int]$gate.max_active_writers_account_wide -eq 2 -and [int]$gate.max_writers_per_repository_or_worktree -eq 1) 'gate writer caps'
+Assert-True (-not [bool]$gate.background_continuation -and -not [bool]$gate.automatic_fallback -and -not [bool]$gate.route_compiler_is_dispatcher) 'gate no background fallback or dispatch'
+foreach ($origin in @('ChatGPT_Web','Astral_Bridge','automation','scheduled_task','background_agent')) {
+    Assert-True (@($gate.prohibited_origins) -contains $origin) ('gate prohibited origin: ' + $origin)
 }
 
-function Get-SingleStringSetting([string]$Text, [string]$Key, [string]$Label) {
-    $pattern = "(?m)^\s*" + [regex]::Escape($Key) + "\s*=\s*`"([^`"]+)`"\s*$"
-    $matches = [regex]::Matches($Text, $pattern)
-    Assert-True ($matches.Count -eq 1) ("single active setting: " + $Label)
-    return $matches[0].Groups[1].Value
-}
-
-function Get-SingleIntSetting([string]$Text, [string]$Key, [string]$Label) {
-    $pattern = "(?m)^\s*" + [regex]::Escape($Key) + "\s*=\s*(\d+)\s*$"
-    $matches = [regex]::Matches($Text, $pattern)
-    Assert-True ($matches.Count -eq 1) ("single active setting: " + $Label)
-    return [int]$matches[0].Groups[1].Value
-}
-
-function Get-StringSha256([string]$Text) {
-    $algorithm = [Security.Cryptography.SHA256]::Create()
-    try {
-        return (($algorithm.ComputeHash([Text.Encoding]::UTF8.GetBytes($Text)) | ForEach-Object { $_.ToString("x2") }) -join "")
-    }
-    finally {
-        $algorithm.Dispose()
-    }
-}
-
-Assert-ReadRequiredPurity
-
-$policyMarkdownPath = Join-Path $VaultRoot "protocols\CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md"
-$policyJsonPath = Join-Path $VaultRoot "automation\codex-model-routing\token-optimization.policy.json"
-$fixturesPath = Join-Path $VaultRoot "automation\codex-model-routing\token-optimization.behavior-fixtures.json"
-$agentsPath = Join-Path $VaultRoot "AGENTS.md"
-$startPath = Join-Path $VaultRoot "START_HERE.md"
-$indexPath = Join-Path $VaultRoot "CONTEXT_INDEX.md"
-$retrievalPath = Join-Path $VaultRoot "protocols\CONTEXT_RETRIEVAL_PROTOCOL.md"
-$routingReadmePath = Join-Path $VaultRoot "automation\codex-model-routing\README.md"
-$routingStandardPath = Join-Path $VaultRoot "automation\codex-model-routing\ROUTING_STANDARD.md"
-$specPath = Join-Path $VaultRoot "governance\agents\specs\TOKEN-OPT-001.md"
-$a1SpecPath = Join-Path $VaultRoot "governance\agents\specs\TOKEN-OPT-001-A1.md"
-
-$policyMarkdown = Read-Required $policyMarkdownPath
-$agents = Read-Required $agentsPath
-$start = Read-Required $startPath
-$index = Read-Required $indexPath
-$retrieval = Read-Required $retrievalPath
-$routingReadme = Read-Required $routingReadmePath
-$routingStandard = Read-Required $routingStandardPath
-$spec = Read-Required $specPath
-$a1Spec = Read-Required $a1SpecPath
-
-$requiredPolicyMarkers = @(
-    "MAXIMIZE VERIFIED PROGRESS PER TOKEN",
-    "GOVERNANCE WINS OVER TOKEN SAVINGS",
-    "CONTEXT_EXPANSION_REASON:",
-    "REVERIFY_REASON:",
-    "ZERO CHILDREN BY DEFAULT",
-    "ONE ACTIVE CHILD MAX",
-    "CURRENT WRITER FINISHES CURRENT SLICE",
-    "NEVER AUTO-START THE NEXT SLICE",
-    "CACHE HIT: UNVERIFIED / UNAVAILABLE",
-    "TOOL_CONTEXT_EXPANSION_REASON",
-    "CONFIG_CHANGE_REASON",
-    "STOP WHEN GREEN"
-)
-foreach ($marker in $requiredPolicyMarkers) {
-    Assert-True $policyMarkdown.Contains($marker) ("canonical marker: " + $marker)
-}
-
-Assert-True $spec.Contains("status: accepted") "accepted specification status"
-Assert-True $spec.Contains("APPROVE TOKEN-OPT-001 AS WRITTEN") "approval evidence in specification"
-Assert-True $a1Spec.Contains("status: accepted") "accepted A1 specification status"
-Assert-True $a1Spec.Contains("APPROVE TOKEN-OPT-001-A1 AS WRITTEN") "approval evidence in A1 specification"
-
-$canonicalRelative = "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md"
-Assert-True $agents.Contains($canonicalRelative) "AGENTS routes to canonical policy"
-Assert-True $start.Contains($canonicalRelative) "START_HERE routes to canonical policy"
-Assert-True $index.Contains($canonicalRelative) "CONTEXT_INDEX indexes canonical policy"
-Assert-True $retrieval.Contains($canonicalRelative) "retrieval protocol routes to canonical policy"
-Assert-True $routingReadme.Contains($canonicalRelative) "routing README routes to canonical policy"
-Assert-True $routingStandard.Contains("zero children by default") "routing standard zero-child default"
-Assert-True $routingStandard.Contains("one active child") "routing standard one-child maximum"
-Assert-True $routingStandard.Contains("Independent review is conditional") "routing standard conditional review"
-Assert-True $routingStandard.Contains("Do not run a full suite after every small module") "routing standard focused test escalation"
-Assert-True $routingStandard.Contains("read-only scout") "routing standard read-only scout"
-Assert-True $routingStandard.Contains("Never auto-start") "routing standard no auto-start"
-
-$policy = (Read-Required $policyJsonPath) | ConvertFrom-Json
-$fixtureData = (Read-Required $fixturesPath) | ConvertFrom-Json
-
-Assert-True ($policy.schema_version -eq 2) "policy schema version"
-Assert-True ($policy.policy_id -eq "TOKEN-OPT-001") "policy id"
-Assert-True (@($policy.accepted_amendments) -contains "TOKEN-OPT-001-A1") "accepted A1 amendment in policy"
-Assert-True ($policy.canonical_policy -eq $canonicalRelative) "canonical policy path"
-Assert-True ($policy.defaults.global_model -eq "gpt-5.6-sol") "machine global model"
-Assert-True ($policy.defaults.ordinary_reasoning_effort -eq "high") "machine ordinary reasoning"
-Assert-True ([int]$policy.defaults.max_concurrent_threads_per_session -le 2) "machine thread maximum"
-Assert-True ([int]$policy.defaults.default_children -eq 0) "machine zero-child default"
-Assert-True ([int]$policy.defaults.max_active_children -le 1) "machine active-child maximum"
-Assert-True ([int]$policy.defaults.max_delegation_depth -le 1) "machine delegation depth"
-Assert-True (-not [bool]$policy.defaults.routine_independent_review) "machine routine review disabled"
-Assert-True (-not [bool]$policy.defaults.routine_full_suite_after_small_module) "machine routine full suite disabled"
-Assert-True ($policy.context.expansion_reason_label -eq "CONTEXT_EXPANSION_REASON") "context expansion label"
-Assert-True ($policy.verification.reverify_reason_label -eq "REVERIFY_REASON") "reverification label"
-
-$pipeline = $policy.current_next_slice_pipeline
-$requiredPipelineValues = [ordered]@{
-    pipeline_name = "CURRENT_NEXT_SLICE_PIPELINE"
-    zero_children_default = $true
-    max_active_children = 1
-    max_depth = 1
-    one_writer = $true
-    scout_read_only = $true
-    scout_may_delegate = $false
-    next_slice_must_be_authorized = $true
-    auto_start_next_slice = $false
-    scout_packet_required = $true
-    ending_sha_revalidation_required = $true
-    stale_if_required = $true
-    critical_operation_disable_rules = $true
-    project_stricter_rule_wins = $true
-    cache_friendly_prompt_ordering = $true
-    static_context_before_dynamic_context = $true
-    cache_claim_requires_telemetry = $true
-    context_compaction_supported = $true
-    manual_compaction_requires_checkpoint = $true
-    post_compaction_rehydration_required = $true
-    durable_evidence_preserved = $true
-    task_relevant_tool_context = $true
-    tool_context_expansion_reason_required = $true
-    tool_context_expansion_reason_label = "TOOL_CONTEXT_EXPANSION_REASON"
-    progressive_disclosure_preferred = $true
-    shared_mcp_disable_requires_separate_authority = $true
-    stable_slice_configuration = $true
-    config_change_reason_required = $true
-    unsupported_efficiency_percentages_prohibited = $true
-}
-foreach ($entry in $requiredPipelineValues.GetEnumerator()) {
-    Assert-True ($pipeline.PSObject.Properties[$entry.Key].Value -eq $entry.Value) ("A1 machine contract: " + $entry.Key)
-}
-
-$expectedScoutSpawnConditions = @(
-    "named_next_slice_has_drafting_authority",
-    "bounded_independent_preparation_reduces_reconstruction",
-    "single_child_slot_available",
-    "current_writer_remains_sole_writer",
-    "read_paths_and_stop_conditions_explicit",
-    "no_stricter_project_prohibition"
-)
-$expectedScoutDisableConditions = @(
-    "trivial_task",
-    "inferred_future_work",
-    "critical_or_destructive_operation",
-    "migration_or_production",
-    "provider_or_database_mutation",
-    "security_or_privacy_ambiguity",
-    "writer_conflict",
-    "dirty_unknown_state",
-    "missing_authority",
-    "child_slot_required_by_writer_or_reviewer"
-)
-$expectedScoutInterruptConditions = @(
-    "wrong_repository_branch_or_baseline",
-    "controlling_authority_conflict",
-    "writer_conflict",
-    "security_privacy_or_data_integrity_risk_affecting_current_work"
-)
-Assert-True ((@($pipeline.scout_spawn_conditions) | ConvertTo-Json -Compress) -eq ($expectedScoutSpawnConditions | ConvertTo-Json -Compress)) "A1 scout spawn conditions"
-Assert-True ((@($pipeline.scout_disable_conditions) | ConvertTo-Json -Compress) -eq ($expectedScoutDisableConditions | ConvertTo-Json -Compress)) "A1 scout disable conditions"
-Assert-True ((@($pipeline.scout_interrupt_conditions) | ConvertTo-Json -Compress) -eq ($expectedScoutInterruptConditions | ConvertTo-Json -Compress)) "A1 scout interrupt conditions"
-
-$expectedRevalidationStates = @("VALID", "PARTIALLY_STALE", "STALE", "BLOCKED", "NO_OP")
-Assert-True ((@($pipeline.revalidation_states) | ConvertTo-Json -Compress) -eq ($expectedRevalidationStates | ConvertTo-Json -Compress)) "A1 revalidation states"
-
-$expectedPacketFields = @(
-    "SCOUT_STATUS", "NEXT_SLICE_ID", "NEXT_SLICE_AUTHORITY", "SCOUT_BASELINE_SHA",
-    "OBSERVED_AT", "STALE_IF", "FACTS", "INFERENCES", "UNVERIFIED", "OBJECTIVE",
-    "IN_SCOPE", "OUT_OF_SCOPE", "LIKELY_OWNED_PATHS", "EXCLUDED_PATHS", "DEPENDENCIES",
-    "CURRENT_INVARIANTS", "EXPECTED_ACCEPTANCE_CRITERIA", "FOCUSED_TEST_PLAN",
-    "SECURITY_OR_PRIVACY_GATES", "CONFIGURATION_GATES", "OWNER_DECISIONS_REQUIRED",
-    "RISKS", "BLOCKERS", "DO_NOT_REPEAT", "NO_WRITE_ATTESTATION"
-)
-Assert-True ((@($pipeline.scout_packet_fields) | ConvertTo-Json -Compress) -eq ($expectedPacketFields | ConvertTo-Json -Compress)) "A1 scout packet schema"
-$expectedStablePrefix = @("authority_hierarchy", "universal_safety_and_one_writer_rules", "durable_project_rules", "stable_workflow_contract", "stable_tool_schemas")
-$expectedDynamicSuffix = @("current_slice", "baseline_sha", "current_failures_and_changed_paths", "volatile_pr_provider_tool_state", "timestamps_and_run_ids")
-$expectedCompactionFields = @("AUTHORITY", "HEAD_TREE", "WORKTREE", "WRITER_LOCK", "OBJECTIVE", "COMPLETED", "CHANGED_FILES", "TESTS", "BLOCKERS", "NEXT_SAFE_ACTION", "DO_NOT_REPEAT")
-$expectedConfigChangeFields = @("CONFIG_CHANGE_REASON", "OLD_VALUE", "NEW_VALUE", "AUTHORITY", "EVIDENCE_INVALIDATED", "ROLLBACK_REVERSION")
-Assert-True ((@($pipeline.stable_prompt_prefix) | ConvertTo-Json -Compress) -eq ($expectedStablePrefix | ConvertTo-Json -Compress)) "A1 stable prompt prefix"
-Assert-True ((@($pipeline.dynamic_prompt_suffix) | ConvertTo-Json -Compress) -eq ($expectedDynamicSuffix | ConvertTo-Json -Compress)) "A1 dynamic prompt suffix"
-Assert-True ((@($pipeline.compaction_checkpoint_fields) | ConvertTo-Json -Compress) -eq ($expectedCompactionFields | ConvertTo-Json -Compress)) "A1 compaction checkpoint schema"
-Assert-True ((@($pipeline.configuration_change_fields) | ConvertTo-Json -Compress) -eq ($expectedConfigChangeFields | ConvertTo-Json -Compress)) "A1 configuration-change schema"
-$expectedStaticLimits = @("runtime_scout_zero_writes", "cache_hit", "token_quantity_saved", "compaction_preserved_every_semantic_detail", "mcp_token_consumption")
-Assert-True ((@($pipeline.static_validator_cannot_prove) | ConvertTo-Json -Compress) -eq ($expectedStaticLimits | ConvertTo-Json -Compress)) "A1 static-validator limits"
-
-$baseSuite = $fixtureData.fixture_suites.PSObject.Properties["TOKEN-OPT-001"].Value
-$a1Suite = $fixtureData.fixture_suites.PSObject.Properties["TOKEN-OPT-001-A1"].Value
-$fixtures = @($baseSuite.fixtures)
-$a1Fixtures = @($a1Suite.fixtures)
-Assert-True ([int]$baseSuite.suite_version -eq 1) "base fixture suite version"
-Assert-True ([int]$baseSuite.fixture_count -eq 10) "base declared fixture count"
-Assert-True ($fixtures.Count -eq 10) "base fixture count = 10"
-$baseFixtureCanonicalJson = $fixtures | ConvertTo-Json -Depth 20 -Compress
-Assert-True ((Get-StringSha256 $baseFixtureCanonicalJson) -eq "eb5314d707734395ebf2a23b9294cda6855a2dfbeacf6e4645fba1de5513ba58") "base fixture meanings unchanged from merged TOKEN-OPT-001"
-Assert-True ([int]$a1Suite.suite_version -eq 1) "A1 fixture suite version"
-Assert-True ([int]$a1Suite.fixture_count -eq 26) "A1 declared fixture count"
-Assert-True ($a1Fixtures.Count -eq 26) "A1 fixture count = 26"
-
-$ids = @($fixtures | ForEach-Object { $_.id })
-Assert-True ((@($ids | Sort-Object -Unique)).Count -eq 10) "fixture ids unique"
-
-$expectedIds = @(
-    "small_bug",
-    "new_session_continuation",
-    "missing_specification",
-    "failing_focused_test",
-    "fresh_existing_verification",
-    "stale_verification",
-    "large_repository",
-    "subagent_opportunity",
-    "conflicting_governance",
-    "optimization_versus_safety"
-)
-foreach ($id in $expectedIds) {
-    Assert-True ($ids -contains $id) ("fixture exists: " + $id)
-}
-
-$a1Ids = @($a1Fixtures | ForEach-Object { $_.id })
-$expectedA1Ids = @(
-    "a1_trivial_task",
-    "a1_authorized_next_slice",
-    "a1_inferred_next_slice",
-    "a1_critical_mutation",
-    "a1_scout_write_attempt",
-    "a1_scout_child_spawn_attempt",
-    "a1_second_active_child",
-    "a1_stale_if_change",
-    "a1_current_green_next_unapproved",
-    "a1_stricter_project_rule",
-    "a1_scout_authority_conflict",
-    "a1_same_sha_evidence",
-    "a1_writer_occupies_child_slot",
-    "a1_reviewer_needed",
-    "a1_completion_proven",
-    "a1_stable_before_volatile",
-    "a1_cache_without_telemetry",
-    "a1_safe_checkpoint_compaction",
-    "a1_critical_midflight_compaction",
-    "a1_duplicate_logs",
-    "a1_durable_audit_history",
-    "a1_unused_external_mcp",
-    "a1_stable_tool_schema",
-    "a1_unrecorded_config_change",
-    "a1_required_config_change",
-    "a1_unsupported_efficiency_percentage"
-)
-Assert-True ((@($a1Ids | Sort-Object -Unique)).Count -eq 26) "A1 fixture ids unique"
-foreach ($id in $expectedA1Ids) {
-    Assert-True ($a1Ids -contains $id) ("A1 fixture exists: " + $id)
-}
-Assert-True ((@($ids + $a1Ids | Sort-Object -Unique)).Count -eq 36) "all fixture ids globally unique"
-
-foreach ($fixture in $fixtures) {
+$baseSuite = $fixtureData.fixture_suites.PSObject.Properties['TOKEN-OPT-001'].Value
+$a1Suite = $fixtureData.fixture_suites.PSObject.Properties['TOKEN-OPT-001-A1'].Value
+$a4Suite = $fixtureData.fixture_suites.PSObject.Properties['TOKEN-OPT-001-A4'].Value
+$allFixtures = @(@($baseSuite.fixtures) + @($a1Suite.fixtures) + @($a4Suite.fixtures))
+Assert-True (@($allFixtures).Count -eq 58 -and @($allFixtures | ForEach-Object { $_.id } | Sort-Object -Unique).Count -eq 58) '58 historical behavior fixtures preserved'
+foreach ($fixture in $allFixtures) {
     $contract = $policy.behavior_contract.PSObject.Properties[$fixture.contract_key].Value
-    Assert-True ($null -ne $contract) ("behavior contract exists: " + $fixture.id)
-    $actualJson = $contract | ConvertTo-Json -Depth 20 -Compress
-    $expectedJson = $fixture.expected | ConvertTo-Json -Depth 20 -Compress
-    Assert-True ($actualJson -eq $expectedJson) ("behavior fixture: " + $fixture.id)
+    Assert-True ($null -ne $contract -and ($contract | ConvertTo-Json -Depth 20 -Compress) -eq ($fixture.expected | ConvertTo-Json -Depth 20 -Compress)) ('historical behavior fixture: ' + $fixture.id)
 }
+$routeFixture = (Read-Required (Join-Path $PSScriptRoot 'fixtures\a4-route-compiler-fixtures.json')) | ConvertFrom-Json
+Assert-True (@($routeFixture.scenarios).Count -eq 27) '27 A4 route fixtures preserved'
 
-foreach ($fixture in $a1Fixtures) {
-    $contract = $policy.behavior_contract.PSObject.Properties[$fixture.contract_key].Value
-    Assert-True ($null -ne $contract) ("A1 behavior contract exists: " + $fixture.id)
-    $actualJson = $contract | ConvertTo-Json -Depth 20 -Compress
-    $expectedJson = $fixture.expected | ConvertTo-Json -Depth 20 -Compress
-    Assert-True ($actualJson -eq $expectedJson) ("A1 behavior fixture: " + $fixture.id)
+foreach ($script in @($paths.compiler,$paths.a4_test,$paths.a6_test,$paths.a7_test,$paths.a8_test)) { Assert-Parse $script }
+$guardSource = Join-Path $VaultRoot 'automation\codex-usage-guard'
+foreach ($name in @('CodexUsageGuard.ps1','Enable-CodexUsage.ps1','Disable-CodexUsage.ps1','Get-CodexUsageStatus.ps1','Install-CodexUsageGuard.ps1','Test-CodexUsageGuard.ps1')) {
+    Assert-Parse (Join-Path $guardSource $name)
 }
+Assert-True ((Read-Required (Join-Path $guardSource 'Enable-CodexUsage.ps1')).Contains('sol_subagents_allowed = $false')) 'manual permit records A8 Sol-child prohibition'
 
-$boundedActiveGovernance = @(
-    $agents,
-    $start,
-    $index,
-    $retrieval,
-    $routingReadme,
-    $routingStandard,
-    $policyMarkdown,
-    $spec,
-    $a1Spec,
-    (Read-Required $policyJsonPath),
-    (Read-Required $fixturesPath)
-) -join "`n"
+$a4Output = @(& $paths.a4_test -VaultRoot $VaultRoot)
+Assert-True (($a4Output -join "`n") -like '*SUMMARY PASS*') 'A4 historical routing suite under A6'
+$a6Output = @(& $paths.a6_test -VaultRoot $VaultRoot)
+Assert-True (($a6Output -join "`n") -like '*real_codex_calls=0*') 'A6 historical manual gate suite'
+$a7Output = @(& $paths.a7_test -VaultRoot $VaultRoot)
+Assert-True (($a7Output -join "`n") -like '*real_codex_calls=0*') 'A7 owner-started Sol routing suite'
+$a8Output = @(& $paths.a8_test -VaultRoot $VaultRoot)
+Assert-True (($a8Output -join "`n") -like '*real_codex_calls=0*') 'A8 Sol advisor routing suite'
 
-$contradictionPatterns = @(
-    '"default_children"\s*:\s*[1-9]\d*',
-    '"max_active_children"\s*:\s*(?:[2-9]|[1-9]\d+)',
-    '"max_delegation_depth"\s*:\s*(?:[2-9]|[1-9]\d+)',
-    '"max_depth"\s*:\s*(?:[2-9]|[1-9]\d+)',
-    '"auto_start_next_slice"\s*:\s*true',
-    '(?i)scout on every task',
-    '(?i)reviewer on every task'
-)
-Assert-True ([regex]::IsMatch('"max_active_children": 10', $contradictionPatterns[1])) "bounded contradiction pattern rejects multi-digit child count"
-foreach ($pattern in $contradictionPatterns) {
-    Assert-True (-not [regex]::IsMatch($boundedActiveGovernance, $pattern)) ("bounded active-governance contradiction absent: " + $pattern)
+if (-not $SkipCatalog) {
+    $catalog = (Read-Required $CatalogPath) | ConvertFrom-Json
+    foreach ($required in @(
+        @{ id = 'gpt-5.6-sol'; effort = 'high' },
+        @{ id = 'gpt-5.6-terra'; effort = 'max' },
+        @{ id = 'gpt-5.6-luna'; effort = 'max' },
+        @{ id = 'openrouter/stealth/ox-alpha'; effort = 'high' }
+    )) {
+        $model = @($catalog.models | Where-Object { [string]$_.slug -eq $required.id }) | Select-Object -First 1
+        Assert-True ($null -ne $model -and (Get-ModelEfforts $model) -contains $required.effort) ('catalog model and effort: ' + $required.id)
+    }
 }
-Assert-True (-not [regex]::IsMatch($boundedActiveGovernance, '\b\d+(?:\.\d+)?\s*%')) "unsupported universal percentage absent"
-Pass "bounded active-governance contradiction scan excludes archive and history"
 
 if (-not $SkipPersonal) {
-    $configPath = Join-Path $CodexHome "config.toml"
-    $advisorPath = Join-Path $CodexHome "agents\sol-advisor.toml"
-    $config = Read-Required $configPath
-    $advisor = Read-Required $advisorPath
-
-    Assert-True ((Get-SingleStringSetting $config "model" "global model") -eq "gpt-5.6-sol") "active global model"
-    Assert-True ((Get-SingleStringSetting $config "model_reasoning_effort" "ordinary reasoning") -eq "high") "active ordinary reasoning"
-    Assert-True ((Get-SingleIntSetting $config "max_concurrent_threads_per_session" "concurrent threads") -le 2) "active concurrent-thread maximum"
-    Assert-True ((Get-SingleStringSetting $advisor "model" "Sol Advisor model") -eq "gpt-5.6-sol") "Sol Advisor model"
-    Assert-True ((Get-SingleStringSetting $advisor "model_reasoning_effort" "Sol Advisor reasoning") -eq "high") "Sol Advisor reasoning"
-
-    if (-not [string]::IsNullOrWhiteSpace($BackupManifest)) {
-        $manifest = (Read-Required $BackupManifest) | ConvertFrom-Json
-        Assert-True ($manifest.change_id -eq "TOKEN-OPT-001") "backup manifest change id"
-        foreach ($entry in @($manifest.files)) {
-            Assert-True (Test-Path -LiteralPath $entry.backup_path -PathType Leaf) ("backup exists: " + $entry.backup_path)
-            $backupHash = (Get-FileHash -LiteralPath $entry.backup_path -Algorithm SHA256).Hash.ToLowerInvariant()
-            $backupBytes = (Get-Item -LiteralPath $entry.backup_path).Length
-            Assert-True ($backupHash -eq $entry.backup_sha256) ("backup hash: " + $entry.backup_path)
-            Assert-True ($backupHash -eq $entry.original_sha256) ("backup equals original hash: " + $entry.backup_path)
-            Assert-True ($backupBytes -eq [int64]$entry.byte_count) ("backup bytes: " + $entry.backup_path)
-        }
+    $config = Read-Required (Join-Path $CodexHome 'config.toml')
+    Assert-True ([regex]::IsMatch($config, '(?ms)^\[agents\]\s*\r?\nenabled\s*=\s*true\s*\r?\nmax_concurrent_threads_per_session\s*=\s*16\s*$')) 'personal agents enabled thread cap 16'
+    Assert-True ([regex]::IsMatch($config, '(?m)^multi_agent_v2\s*=\s*\{\s*enabled\s*=\s*true,') -and $config.Contains('expose_spawn_agent_model_overrides = true')) 'personal Native V2 and model overrides enabled'
+    $router = (Read-Required $RouterStatePath) | ConvertFrom-Json
+    $expectedEnabled = @('gpt-5.6-luna','gpt-5.6-terra','openrouter/stealth/ox-alpha')
+    Assert-True ((@($router.enabled | Sort-Object) -join '|') -eq ($expectedEnabled -join '|')) 'router enabled child models exact'
+    Assert-True (@($router.enabled | Where-Object { [string]$_ -like '*deepseek*' }).Count -eq 0) 'DeepSeek absent from enabled routing'
+    Assert-True ([string]$router.execution_gate.policy_id -eq 'TOKEN-OPT-001-A8' -and -not [bool]$router.execution_gate.sol_subagents_allowed -and [int]$router.execution_gate.max_luna_max_subagents -eq 16 -and [int]$router.execution_gate.max_terra_max_subagents -eq 2 -and [int]$router.execution_gate.max_ox_alpha_subagents -eq 16) 'router A8 gate'
+    $picker = (Read-Required (Join-Path $CodexHome 'codex-router\model-picker.json')) | ConvertFrom-Json
+    Assert-True (@($picker.seeded | Where-Object { [string]$_ -like '*deepseek*' }).Count -eq 0) 'DeepSeek absent from picker seeds'
+    $providers = (Read-Required (Join-Path $CodexHome 'codex-router\enabled-providers.json')) | ConvertFrom-Json
+    Assert-True (@($providers.providers) -notcontains 'deepseek') 'DeepSeek provider inactive'
+    $hooks = (Read-Required (Join-Path $CodexHome 'hooks.json')) | ConvertFrom-Json
+    $sessionEnd = @($hooks.hooks.SessionEnd[0].hooks | Where-Object { [string]$_.command -like '*lean-ctx*observe*' })
+    Assert-True ($sessionEnd.Count -eq 1 -and [int]$sessionEnd[0].timeout -eq 3) 'SessionEnd lean-ctx timeout 3'
+    $installedGuard = Join-Path $CodexHome 'usage-guard'
+    foreach ($name in @('CodexUsageGuard.ps1','Enable-CodexUsage.ps1','Disable-CodexUsage.ps1','Get-CodexUsageStatus.ps1','Install-CodexUsageGuard.ps1','Test-CodexUsageGuard.ps1','README.md')) {
+        Assert-True ((Get-FileHash -LiteralPath (Join-Path $guardSource $name) -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath (Join-Path $installedGuard $name) -Algorithm SHA256).Hash) ('installed guard equals source: ' + $name)
     }
+    $status = (@(& (Join-Path $installedGuard 'Get-CodexUsageStatus.ps1')) -join "`n") | ConvertFrom-Json
+    Assert-True ([string]$status.status -eq 'PROTECTED' -and [int]$status.billable_or_interactive_codex.count -eq 0) 'usage guard protected with zero billable processes'
+    $guardTestOutput = @(& (Join-Path $installedGuard 'Test-CodexUsageGuard.ps1'))
+    Assert-True (($guardTestOutput -join "`n") -like '*real_codex_calls=0*') 'usage guard harmless-dummy self-test'
 }
 
-Write-Output ("SUMMARY PASS base_fixtures=" + $fixtures.Count + " a1_fixtures=" + $a1Fixtures.Count + " personal=" + ($(if ($SkipPersonal) { "SKIPPED" } else { "PASS" })))
+if (-not [string]::IsNullOrWhiteSpace($BackupManifest)) {
+    $manifest = (Read-Required $BackupManifest) | ConvertFrom-Json
+    Assert-True ($null -ne $manifest -and [int]$manifest.verified_count -eq 24) 'A7 backup manifest 24 verified files'
+}
+$newFiles = @($paths.agents,$paths.policy_md,$paths.policy_json,$paths.profile,$paths.gate,$paths.compiler,$paths.a8_test,$paths.ox_contract,$paths.readme,$paths.standard,$paths.extension,$paths.a8) + @(Get-ChildItem -LiteralPath $guardSource -File | ForEach-Object { $_.FullName })
+$redactedText = @($newFiles | ForEach-Object { [IO.File]::ReadAllText($_) }) -join "`n"
+Assert-True (-not [regex]::IsMatch($redactedText, '(?i)(?:(?:^|[^A-Za-z0-9])sk-[A-Za-z0-9_-]{12,}|api[_-]?key\s*[=:]\s*["''][^"'']{12,}|password\s*[=:]\s*["''][^"'']{8,})')) 'A8 source redaction scan'
+Write-Output ('SUMMARY PASS policy=A8 sol_subagents=0 luna_cap=16 terra_cap=2 ox_cap=16 depth=1 writer_caps=2/1 behavior_fixtures=58 personal=' + $(if ($SkipPersonal) { 'SKIPPED' } else { 'PASS' }) + ' catalog=' + $(if ($SkipCatalog) { 'SKIPPED' } else { 'PASS' }) + ' real_codex_calls=0')
