@@ -102,19 +102,22 @@ Legacy `REQUIRED_MODEL: CODEX` metadata in older current records remains superse
 
 ## TOKEN-OPT precedence and HAU model roles
 
-TOKEN-OPT-001-A7 is the active account-wide routing authority. This extension keeps
+TOKEN-OPT-001-A8 is the active account-wide routing authority. This extension keeps
 HAU's stricter frontend/backend separation, writer locks, data gates, and release
-safety. Capacity is not routine staffing: every active owner-started Sol session begins
-with zero children and delegates only useful bounded work.
+safety. Capacity is not routine staffing: the Sol advisor selects the smallest useful
+bounded topology and may choose no workers or multiple direct workers.
 
 ```text
 ORCHESTRATOR_MODEL: GPT-5.6 Sol / High
 ORCHESTRATOR_WRITES: FORBIDDEN
 
-DEFAULT_CHILDREN: 0
-MAX_SOL_SUBAGENTS: 16
+SOL_SUBAGENTS: PROHIBITED
+MAX_LUNA_MAX_SUBAGENTS: 16
+MAX_TERRA_MAX_SUBAGENTS: 2
+MAX_OX_ALPHA_SUBAGENTS: 16
+MAX_TOTAL_DIRECT_SUBAGENTS: 16
 DELEGATION_DEPTH: 1
-SUBAGENT_SPAWNER: top-level Sol only
+SUBAGENT_SPAWNER: top-level Sol advisor only
 RECURSIVE_CHILD_SPAWNING: FORBIDDEN
 
 MAX_ACTIVE_WRITERS_ACCOUNT_WIDE: 2
@@ -140,8 +143,10 @@ STOP_WHEN_GREEN: true
 
 - Sol is the sole top-level read-only planner, router, integrator, reviewer, and final
   acceptance authority.
-- Sol owns the delegation ledger and may spawn up to sixteen direct, bounded children
-  when useful. Default staffing is zero children.
+- Sol owns the delegation ledger and may select useful bounded direct workers under
+  TOKEN-OPT-001-A8: Luna Max and Ox Alpha each have an independent ceiling of sixteen,
+  Terra Max has an independent ceiling of two, and the total direct-worker ceiling is
+  sixteen. Sol subagents are prohibited; there is no mandatory zero-worker start.
 - Sol never edits repository files, creates patches, stages, commits, pushes, merges,
   rebases, resets, cleans, deploys, migrates, mutates providers, or rotates recovery
   pointers unless a separate accepted project policy explicitly changes that role.
@@ -313,7 +318,7 @@ This mode excludes history rewrites, deletion of unknown work, executable auth/s
 
 1. Sol reads the exact target and direct authority.
 2. Sol defines the minimal diff, owned paths, and exclusions.
-3. Sol assigns one Terra Integration Writer. Default staffing is one Terra, zero Luna, zero Sol children.
+3. Sol assigns one Terra Integration Writer. Luna review is added only when the bounded trigger below applies; Sol subagents are prohibited.
 4. Terra edits only required documents and directly coupled governance validation.
 5. Terra runs focused documentation checks.
 6. Sol reviews the complete diff once.

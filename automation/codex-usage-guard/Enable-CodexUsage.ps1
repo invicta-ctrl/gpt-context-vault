@@ -45,7 +45,7 @@ if ([string]::IsNullOrWhiteSpace($purpose)) { throw 'Purpose is required.' }
 $challenge = Get-Random -Minimum 100000 -Maximum 999999
 Write-Host ''
 Write-Host 'This creates one time-bounded permit. It does not start Codex.'
-Write-Host 'It authorizes one owner-started Sol session with zero children by default, up to 16 direct children, zero background continuation, and no automatic fallback.'
+Write-Host 'It authorizes one owner-started Sol advisor session with no Sol subagents; bounded Luna Max (16), Terra Max (2), and Ox Alpha (16) direct-worker ceilings; zero background continuation; and no automatic fallback.'
 Write-Host "Type this challenge exactly to approve: $challenge"
 $typed = (Read-Host 'Challenge').Trim()
 if ($typed -ne [string]$challenge) { throw 'Approval challenge did not match.' }
@@ -69,8 +69,11 @@ $permit = [ordered]@{
     allowed_roles = @($Role)
     allow_subagents = $true
     max_processes = 1
-    default_children = 0
-    max_children = 16
+    sol_subagents_allowed = $false
+    max_luna_max_subagents = 16
+    max_terra_max_subagents = 2
+    max_ox_alpha_subagents = 16
+    max_total_direct_subagents = 16
     max_delegation_depth = 1
     recursive_spawning = $false
     background_continuation = $false
@@ -105,8 +108,11 @@ catch { }
     allowed_reasoning = $permit.allowed_reasoning
     allowed_role = $Role
     max_processes = 1
-    default_children = 0
-    max_children = 16
+    sol_subagents_allowed = $false
+    max_luna_max_subagents = 16
+    max_terra_max_subagents = 2
+    max_ox_alpha_subagents = 16
+    max_total_direct_subagents = 16
     max_delegation_depth = 1
     codex_started = $false
     next_action = 'Earl must manually start the one approved Codex task. Run Disable-CodexUsage.ps1 when finished.'

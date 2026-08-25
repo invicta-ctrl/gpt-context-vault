@@ -39,12 +39,13 @@ not weaken safety.
   defines the accepted Current/Next Slice Pipeline and read-only scout-ahead amendment.
 - [`../../governance/agents/specs/TOKEN-OPT-001-A4.md`](../../governance/agents/specs/TOKEN-OPT-001-A4.md)
   preserves the historical role catalog, context envelope, receipts, and benchmark baseline.
-- [`../../governance/agents/specs/TOKEN-OPT-001-A7.md`](../../governance/agents/specs/TOKEN-OPT-001-A7.md)
-  is the active owner-started Sol routing and manual billable-execution boundary.
+- [`../../governance/agents/specs/TOKEN-OPT-001-A8.md`](../../governance/agents/specs/TOKEN-OPT-001-A8.md)
+  is the active owner-started Sol-parent, model-cap, and manual billable-execution boundary;
+  A7 remains immutable historical evidence.
 - [`manual-codex-execution-gate.json`](manual-codex-execution-gate.json) and
   [`../codex-usage-guard/`](../codex-usage-guard/) implement the deterministic route gate
   and local process guard.
-- [`current-routing-profile.json`](current-routing-profile.json) is the active A7
+- [`current-routing-profile.json`](current-routing-profile.json) is the active A8
   selection profile. [`route-compiler.ps1`](route-compiler.ps1) validates context,
   receipts, the exact manual permit, role topology, writer locks, and route identity; it
   never starts Codex. Routing metadata never authorizes execution.
@@ -74,9 +75,10 @@ When token, context, delegation, evidence reuse, review, or verification
 efficiency is in scope, retrieve the canonical policy above and expand context
 only for a recorded reason it permits.
 
-A7 supersedes A6 only for an explicit owner-started Sol session. The effective default
-remains locked with zero children; Sol may route up to 16 direct children at depth one.
-No recursive spawning, unattended/background continuation, or automatic fallback is
+A8 supersedes A7's incorrect Sol-child and mandatory-zero-start clauses for an explicit
+owner-started Sol session. The effective default remains locked; Sol is the parent and
+may select no workers or multiple useful bounded Luna Max, Terra Max, and Ox Alpha
+workers under model ceilings at depth one. No recursive spawning, unattended/background continuation, or automatic fallback is
 allowed. Historical A4/A6 fixture data remains deterministic evidence, not reusable
 spending authority.
 

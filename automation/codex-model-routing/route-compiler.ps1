@@ -61,7 +61,7 @@ function Get-ManualExecutionGate {
     param([string]$Path)
     $gate = Read-JsonRequired -Path $Path -Label 'manual Codex execution gate'
     $policyId = [string](Get-OptionalProperty $gate 'policy_id' '')
-    Assert-Route ($policyId -in @('TOKEN-OPT-001-A6', 'TOKEN-OPT-001-A7')) 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
+    Assert-Route ($policyId -in @('TOKEN-OPT-001-A6', 'TOKEN-OPT-001-A7', 'TOKEN-OPT-001-A8')) 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
     Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -in @(1, 2)) 'MANUAL_EXECUTION_GATE_INVALID'
     Assert-Route ([string](Get-OptionalProperty $gate 'default_state' '') -eq 'LOCKED') 'MANUAL_EXECUTION_GATE_NOT_LOCKED'
     Assert-Route ([bool](Get-OptionalProperty $gate 'manual_only' $false)) 'MANUAL_EXECUTION_GATE_NOT_MANUAL_ONLY'
@@ -70,10 +70,23 @@ function Get-ManualExecutionGate {
         Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
         Assert-Route (-not [bool](Get-OptionalProperty $gate 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
     }
-    else {
+    elseif ($policyId -eq 'TOKEN-OPT-001-A7') {
         Assert-Route ([bool](Get-OptionalProperty $gate 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
         Assert-Route ([int](Get-OptionalProperty $gate 'default_children' -1) -eq 0) 'MANUAL_EXECUTION_GATE_DEFAULT_CHILDREN_INVALID'
         Assert-Route ([int](Get-OptionalProperty $gate 'max_children' -1) -eq 16) 'MANUAL_EXECUTION_GATE_CHILD_LIMIT_INVALID'
+        Assert-Route ([bool](Get-OptionalProperty $gate 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $gate 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_active_writers_account_wide' 0) -eq 2) 'ACCOUNT_WRITER_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_writers_per_repository_or_worktree' 0) -eq 1) 'TARGET_WRITER_LIMIT_INVALID'
+    }
+    else {
+        Assert-Route ([bool](Get-OptionalProperty $gate 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
+        Assert-Route (-not [bool](Get-OptionalProperty $gate 'sol_subagents_allowed' $true)) 'SOL_SUBAGENTS_PROHIBITED'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_luna_max_subagents' 0) -eq 16) 'LUNA_MAX_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_terra_max_subagents' 0) -eq 2) 'TERRA_MAX_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_ox_alpha_subagents' 0) -eq 16) 'OX_ALPHA_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $gate 'max_total_direct_subagents' 0) -eq 16) 'TOTAL_DIRECT_SUBAGENT_LIMIT_INVALID'
         Assert-Route ([bool](Get-OptionalProperty $gate 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
         Assert-Route ([int](Get-OptionalProperty $gate 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
         Assert-Route (-not [bool](Get-OptionalProperty $gate 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
@@ -133,13 +146,38 @@ function Assert-ManualExecutionPreconditions {
         Assert-Route ($ActiveWriters -eq 0 -and $ActiveReadOnly -eq 0 -and $ActiveTotal -eq 0) 'SECOND_PROCESS_DISABLED'
         Assert-Route (@(Get-NonInfrastructureCodexProcesses).Count -eq 0) 'SECOND_PROCESS_DISABLED'
     }
-    else {
+    elseif ($policyId -eq 'TOKEN-OPT-001-A7') {
         Assert-Route ([bool](Get-OptionalProperty $Request 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
         $requestedChildren = Get-Integer -Value (Get-OptionalProperty $Request 'requested_children' 0) -Label 'requested_children'
         Assert-Route ($requestedChildren -le 16) 'SOL_CHILD_LIMIT_EXCEEDED'
         Assert-Route ($ActiveTotal -le 16) 'SOL_CHILD_LIMIT_EXCEEDED'
         $subagentRequested = [bool](Get-OptionalProperty $Request 'subagent_requested' ($requestedChildren -gt 0))
         Assert-Route (($requestedChildren -gt 0) -eq $subagentRequested) 'SUBAGENT_REQUEST_COUNT_MISMATCH'
+        $depth = Get-Integer -Value (Get-OptionalProperty $Request 'delegation_depth' 0) -Label 'delegation_depth'
+        Assert-Route ($depth -le 1) 'DELEGATION_DEPTH_EXCEEDED'
+        Assert-Route (-not [bool](Get-OptionalProperty $Request 'spawned_by_worker' $false)) 'RECURSIVE_SPAWNING_DISABLED'
+        if ($Role -eq 'writer') {
+            $targetWriters = Get-Integer -Value (Get-OptionalProperty $Request 'active_writers_target' 0) -Label 'active_writers_target'
+            Assert-Route ($ActiveWriters -lt 2) 'ACCOUNT_WRITER_LIMIT_EXCEEDED'
+            Assert-Route ($targetWriters -lt 1) 'TARGET_WRITER_LIMIT_EXCEEDED'
+        }
+    }
+    else {
+        Assert-Route ([bool](Get-OptionalProperty $Request 'owner_started_sol_session' $false)) 'OWNER_STARTED_SOL_SESSION_REQUIRED'
+        $requestedLuna = Get-Integer -Value (Get-OptionalProperty $Request 'requested_luna_max_subagents' 0) -Label 'requested_luna_max_subagents'
+        $requestedTerra = Get-Integer -Value (Get-OptionalProperty $Request 'requested_terra_max_subagents' 0) -Label 'requested_terra_max_subagents'
+        $requestedOx = Get-Integer -Value (Get-OptionalProperty $Request 'requested_ox_alpha_subagents' 0) -Label 'requested_ox_alpha_subagents'
+        $requestedSol = Get-Integer -Value (Get-OptionalProperty $Request 'requested_sol_subagents' 0) -Label 'requested_sol_subagents'
+        $requestedTotal = $requestedLuna + $requestedTerra + $requestedOx + $requestedSol
+        Assert-Route ($requestedSol -eq 0) 'SOL_SUBAGENTS_PROHIBITED'
+        Assert-Route ($requestedLuna -le 16) 'LUNA_MAX_SUBAGENT_LIMIT_EXCEEDED'
+        Assert-Route ($requestedTerra -le 2) 'TERRA_MAX_SUBAGENT_LIMIT_EXCEEDED'
+        Assert-Route ($requestedOx -le 16) 'OX_ALPHA_SUBAGENT_LIMIT_EXCEEDED'
+        Assert-Route ($requestedTotal -le 16 -and $ActiveTotal -le 16) 'TOTAL_DIRECT_SUBAGENT_LIMIT_EXCEEDED'
+        $subagentRequested = [bool](Get-OptionalProperty $Request 'subagent_requested' ($requestedTotal -gt 0))
+        Assert-Route (($requestedTotal -gt 0) -eq $subagentRequested) 'SUBAGENT_REQUEST_COUNT_MISMATCH'
+        $requestedModel = [string](Get-OptionalProperty $Request 'requested_model' '')
+        Assert-Route (-not ($subagentRequested -and $requestedModel -eq 'gpt-5.6-sol')) 'SOL_SUBAGENTS_PROHIBITED'
         $depth = Get-Integer -Value (Get-OptionalProperty $Request 'delegation_depth' 0) -Label 'delegation_depth'
         Assert-Route ($depth -le 1) 'DELEGATION_DEPTH_EXCEEDED'
         Assert-Route (-not [bool](Get-OptionalProperty $Request 'spawned_by_worker' $false)) 'RECURSIVE_SPAWNING_DISABLED'
@@ -159,9 +197,19 @@ function Assert-ManualExecutionPreconditions {
         Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 0) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
         Assert-Route (-not [bool](Get-OptionalProperty $permit 'allow_subagents' $true)) 'SUBAGENTS_DISABLED'
     }
-    else {
+    elseif ($policyId -eq 'TOKEN-OPT-001-A7') {
         Assert-Route ([int](Get-OptionalProperty $permit 'default_children' -1) -eq 0) 'MANUAL_PERMIT_DEFAULT_CHILDREN_INVALID'
         Assert-Route ([int](Get-OptionalProperty $permit 'max_children' -1) -eq 16) 'MANUAL_PERMIT_CHILD_LIMIT_INVALID'
+        Assert-Route ([bool](Get-OptionalProperty $permit 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
+        Assert-Route (-not [bool](Get-OptionalProperty $permit 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
+    }
+    else {
+        Assert-Route (-not [bool](Get-OptionalProperty $permit 'sol_subagents_allowed' $true)) 'SOL_SUBAGENTS_PROHIBITED'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_luna_max_subagents' 0) -eq 16) 'LUNA_MAX_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_terra_max_subagents' 0) -eq 2) 'TERRA_MAX_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_ox_alpha_subagents' 0) -eq 16) 'OX_ALPHA_SUBAGENT_LIMIT_INVALID'
+        Assert-Route ([int](Get-OptionalProperty $permit 'max_total_direct_subagents' 0) -eq 16) 'TOTAL_DIRECT_SUBAGENT_LIMIT_INVALID'
         Assert-Route ([bool](Get-OptionalProperty $permit 'allow_subagents' $false)) 'SUBAGENTS_MUST_BE_AVAILABLE'
         Assert-Route ([int](Get-OptionalProperty $permit 'max_delegation_depth' 0) -eq 1) 'DELEGATION_DEPTH_INVALID'
         Assert-Route (-not [bool](Get-OptionalProperty $permit 'recursive_spawning' $true)) 'RECURSIVE_SPAWNING_DISABLED'
@@ -696,8 +744,13 @@ $result = [ordered]@{
         manual_only = $true
         max_processes = 1
         default_children = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { 0 } else { $null }
-        max_children = [int](Get-OptionalProperty $executionGate 'max_children' 0)
-        max_delegation_depth = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { 1 } else { 0 }
+        max_children = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { [int](Get-OptionalProperty $executionGate 'max_children' 0) } else { 0 }
+        sol_subagents_allowed = if ($executionPolicyId -eq 'TOKEN-OPT-001-A8') { [bool](Get-OptionalProperty $executionGate 'sol_subagents_allowed' $false) } else { $null }
+        max_luna_max_subagents = if ($executionPolicyId -eq 'TOKEN-OPT-001-A8') { [int](Get-OptionalProperty $executionGate 'max_luna_max_subagents' 0) } else { 0 }
+        max_terra_max_subagents = if ($executionPolicyId -eq 'TOKEN-OPT-001-A8') { [int](Get-OptionalProperty $executionGate 'max_terra_max_subagents' 0) } else { 0 }
+        max_ox_alpha_subagents = if ($executionPolicyId -eq 'TOKEN-OPT-001-A8') { [int](Get-OptionalProperty $executionGate 'max_ox_alpha_subagents' 0) } else { 0 }
+        max_total_direct_subagents = if ($executionPolicyId -eq 'TOKEN-OPT-001-A8') { [int](Get-OptionalProperty $executionGate 'max_total_direct_subagents' 0) } else { 0 }
+        max_delegation_depth = if ($executionPolicyId -in @('TOKEN-OPT-001-A7','TOKEN-OPT-001-A8')) { 1 } else { 0 }
         background_continuation = $false
         automatic_fallback = $false
         dispatcher = $false

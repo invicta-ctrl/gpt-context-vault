@@ -15,7 +15,7 @@ last_reviewed: 2026-08-25
 This is Earl's general operating policy for AI agents and agent-assisted tools.
 
 ```text
-GOVERNANCE_REVISION: TOKEN-OPT-001-A7
+GOVERNANCE_REVISION: TOKEN-OPT-001-A8
 ```
 
 The only editable general-policy authority is:
@@ -120,17 +120,24 @@ and the local usage guard; routing metadata never authorizes model execution.
 
 ## Billable Codex execution boundary
 
-`TOKEN-OPT-001-A7` is the active account-wide execution boundary. It supersedes A6
-only for bounded delegation inside an active owner-started Sol session.
+`TOKEN-OPT-001-A8` is the active account-wide execution boundary. It supersedes only
+A7's incorrect Sol-subagent, mandatory-zero-start, and undifferentiated child-cap
+clauses while preserving A7's safety boundary.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
 CHATGPT WEB SELF-AUTHORIZATION: PROHIBITED
 ASTRAL BRIDGE SELF-AUTHORIZATION: PROHIBITED
 UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
-OWNER-STARTED SOL SESSION: SOL ADVISOR GOVERNS
-DEFAULT CHILDREN: 0
-MAX SOL SUBAGENTS: 16
+OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+SOL ROLE: PARENT / ADVISOR / ORCHESTRATOR / INTEGRATOR
+SOL SUBAGENTS: PROHIBITED
+SUBAGENT SPAWNING: FOLLOW DEFAULT @SOL ADVISOR GUIDELINES
+MANDATORY ZERO-WORKER START: NONE
+MAX LUNA MAX SUBAGENTS: 16
+MAX TERRA MAX SUBAGENTS: 2
+MAX OX ALPHA SUBAGENTS: 16
+MAX TOTAL DIRECT SUBAGENTS: 16
 DELEGATION DEPTH: 1
 RECURSIVE CHILD SPAWNING: FORBIDDEN
 AUTOMATIC MODEL FALLBACK: DISABLED
@@ -145,8 +152,11 @@ APP-SERVER INFRASTRUCTURE: ALLOWED
 - “Absolutely necessary” means stop and ask Earl for an exact authorization. It is
   never self-authorization.
 - Direct deliberate interaction Earl starts inside Codex Desktop is Earl manually
-  starting that specific Sol task. Sol starts with zero children and may delegate up
-  to sixteen bounded, useful direct children at depth one. Children may not spawn.
+  starting that specific Sol task. Sol is the parent and may never be selected as its
+  own subagent. It follows the default @sol advisor task-delegation guidelines and may
+  use zero or multiple useful bounded direct workers at depth one. Luna Max and Ox Alpha
+  each have a ceiling of sixteen; Terra Max has a ceiling of two; total direct workers
+  remain bounded by the native session ceiling of sixteen. Children may not spawn.
 - Two writers may run only across proven-isolated repositories or worktrees with
   separate locks and no shared pointer, migration, release file, generated artifact,
   provider resource, database state, or incomplete dependency. Otherwise use one writer.
@@ -268,7 +278,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Apply the A7 execution boundary: zero unattended or background Codex runs without Earl's exact authorization; zero children by default; up to sixteen direct Sol children at depth one inside an active owner-started Sol session; no recursive spawning; no automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree.
+- Apply the A8 execution boundary: zero unattended or background Codex runs without Earl's exact authorization; Sol subagents prohibited; useful bounded direct Luna Max, Terra Max, and Ox Alpha workers selected under normal @sol advisor guidelines with ceilings 16, 2, and 16 respectively and sixteen total direct workers; depth one; no recursive spawning; no automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.

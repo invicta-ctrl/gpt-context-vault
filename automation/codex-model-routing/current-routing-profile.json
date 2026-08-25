@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
-  "profile_id": "TOKEN-OPT-001-A7-current",
+  "profile_id": "TOKEN-OPT-001-A8-current",
   "policy_id": "TOKEN-OPT-001",
-  "accepted_amendment": "TOKEN-OPT-001-A7",
-  "governance_revision": "TOKEN-OPT-001-A7",
+  "accepted_amendment": "TOKEN-OPT-001-A8",
+  "governance_revision": "TOKEN-OPT-001-A8",
   "last_reviewed": "2026-08-25",
   "catalog": {
     "required_models": [
@@ -138,8 +138,12 @@
     "failure_behavior": "mark_ineligible_then_stop_for_explicit_sol_reroute"
   },
   "concurrency": {
-    "default_children": 0,
-    "max_sol_subagents": 16,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "advisor_selects_smallest_useful_topology": true,
     "max_delegation_depth": 1,
     "max_active_children": 16,
     "max_active_writers_account_wide": 2,
@@ -191,16 +195,19 @@
     "quality_claim_rule": "compare_only_observed_quality_evidence",
     "quota_metric": "native_weighted_quota"
   },
-  "role_catalog_status": "ACTIVE_A7_SELECTION_ONLY",
+  "role_catalog_status": "ACTIVE_A8_SELECTION_ONLY",
   "execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A7",
+    "policy_id": "TOKEN-OPT-001-A8",
     "gate_path": "manual-codex-execution-gate.json",
     "default_state": "LOCKED",
     "manual_only": true,
     "owner_started_sol_session": true,
     "max_processes": 1,
-    "default_children": 0,
-    "max_children": 16,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
     "allow_subagents": true,
     "max_delegation_depth": 1,
     "recursive_spawning": false,

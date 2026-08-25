@@ -8,15 +8,16 @@ largest model is always better.
 
 ## Manual execution boundary
 
-Routing is selection metadata, not permission to spend Codex allowance. Under A7, the
+Routing is selection metadata, not permission to spend Codex allowance. Under A8, the
 default is locked. ChatGPT Web, Astral Bridge, automation, scheduling, prior prompts,
 and accepted autonomous continuations may not start or resume Codex. Only an explicit
 owner-started Sol session may route billable work.
 
 One permit names one exact purpose, model, reasoning level, and role. It authorizes one
-primary Sol process, zero children by default, at most 16 direct children, depth one,
-and no recursive spawning, automatic fallback, or background continuation. The route
-compiler never dispatches a process.
+primary Sol advisor process and bounded direct workers selected under normal @sol
+guidelines: Luna Max up to 16, Terra Max up to 2, and Ox Alpha up to 16, with 16 total,
+depth one, no Sol subagents, and no recursive spawning, automatic fallback, or background
+continuation. Zero workers is valid but not mandatory. The route compiler never dispatches.
 
 ## Dimensions
 
@@ -66,8 +67,12 @@ UI label as a CLI value or silently substitute another model.
 ```text
 DEFAULT PROCESSES: 0
 MANUALLY PERMITTED OWNER-STARTED SOL PROCESSES: 1
-DEFAULT CHILDREN OR SUBAGENTS: 0
-MAXIMUM DIRECT SOL SUBAGENTS: 16
+SOL SUBAGENTS: 0
+MANDATORY ZERO-WORKER START: NONE
+MAXIMUM LUNA MAX SUBAGENTS: 16
+MAXIMUM TERRA MAX SUBAGENTS: 2
+MAXIMUM OX ALPHA SUBAGENTS: 16
+MAXIMUM TOTAL DIRECT SUBAGENTS: 16
 MAXIMUM DELEGATION DEPTH: 1
 MAXIMUM ACTIVE WRITERS ACCOUNT-WIDE: 2
 MAXIMUM WRITERS PER REPOSITORY/WORKTREE: 1
@@ -75,7 +80,9 @@ BACKGROUND CONTINUATION: 0
 AUTOMATIC FALLBACK: 0
 ```
 
-Sol High is the parent planner, router, integrator, and final reviewer. Ox Alpha High
+Sol High is the parent planner, router, integrator, and final reviewer and is never
+child-eligible. The Sol advisor may choose no workers or multiple useful bounded direct
+workers; model ceilings are not staffing targets. Ox Alpha High
 is the preferred backend writer when eligible and may be read-only without a writer-lock
 conflict. Terra Max is the explicit Sol-routed fallback/integration writer and the sole
 HAU-USC frontend writer. Luna Max is read-only. DeepSeek is disabled. A second writer
@@ -83,8 +90,8 @@ requires proven isolation and no target may have more than one writer.
 
 ## Historical current/next-slice scouting
 
-A1 scout-ahead semantics remain preserved as historical policy evidence. A7 permits
-only explicit, bounded direct Sol children in an owner-started session. Deterministic
+A1 scout-ahead semantics remain preserved as historical policy evidence. A8 permits
+only explicit, bounded direct non-Sol workers in an owner-started session. Deterministic
 non-model tools may prepare bounded evidence when otherwise authorized, but neither
 tools nor children may auto-start the next slice.
 

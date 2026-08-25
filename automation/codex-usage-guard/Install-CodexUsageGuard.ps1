@@ -11,7 +11,7 @@ $ErrorActionPreference = 'Stop'
 $Utf8NoBom = [Text.UTF8Encoding]::new($false)
 $Timestamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
 if ([string]::IsNullOrWhiteSpace($BackupRoot)) {
-    $BackupRoot = Join-Path $env:USERPROFILE ".codex\backups\TOKEN-OPT-001-A6-GUARD-$Timestamp"
+    $BackupRoot = Join-Path $env:USERPROFILE ".codex\backups\TOKEN-OPT-001-A8-GUARD-$Timestamp"
 }
 
 $required = @(
@@ -100,22 +100,28 @@ foreach ($name in $required) {
 }
 
 $permit = [ordered]@{
-    schema_version = 1
+    schema_version = 2
     approval_id = $null
     state = 'LOCKED'
     issued_by = $null
     issued_at = $null
     expires_at = $null
-    purpose = 'Default A6 manual-only lock'
+    purpose = 'Default A8 manual-only lock'
     origin = $null
     manual_interactive = $false
     allowed_model = 'default'
     allowed_reasoning = 'default'
     allowed_role = $null
     allowed_roles = @()
-    allow_subagents = $false
+    allow_subagents = $true
     max_processes = 1
-    max_children = 0
+    sol_subagents_allowed = $false
+    max_luna_max_subagents = 16
+    max_terra_max_subagents = 2
+    max_ox_alpha_subagents = 16
+    max_total_direct_subagents = 16
+    max_delegation_depth = 1
+    recursive_spawning = $false
     background_continuation = $false
     automatic_fallback = $false
     consumed = $false
@@ -165,7 +171,7 @@ if ($billable.Count -ne 0) { throw "Non-app-server Codex process remains after g
 
 $manifest = [ordered]@{
     schema_version = 1
-    change_id = 'TOKEN-OPT-001-A6-GUARD-INSTALL'
+    change_id = 'TOKEN-OPT-001-A8-GUARD-INSTALL'
     installed_at = (Get-Date).ToUniversalTime().ToString('o')
     source_root = [IO.Path]::GetFullPath($SourceRoot)
     install_root = [IO.Path]::GetFullPath($InstallRoot)

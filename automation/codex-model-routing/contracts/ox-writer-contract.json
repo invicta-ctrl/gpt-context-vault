@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "contract_id": "TOKEN-OPT-001-A7-ox-writer",
+  "contract_id": "TOKEN-OPT-001-A8-ox-writer",
   "role": "writer",
   "model": "openrouter/stealth/ox-alpha",
   "reasoning_effort": "high",
+  "max_direct_subagents_of_model": 16,
   "sandbox": "workspace-write",
   "max_active_writers_account_wide": 2,
   "max_writers_per_repository_or_worktree": 1,

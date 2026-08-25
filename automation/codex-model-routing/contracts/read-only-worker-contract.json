@@ -1,11 +1,16 @@
 {
   "schema_version": 1,
-  "contract_id": "TOKEN-OPT-001-A4-read-only-worker",
+  "contract_id": "TOKEN-OPT-001-A8-read-only-worker",
   "role": "read_only_worker",
   "models": [
     "gpt-5.6-luna",
     "openrouter/stealth/ox-alpha"
   ],
+  "model_ceilings": {
+    "gpt-5.6-luna": 16,
+    "openrouter/stealth/ox-alpha": 16
+  },
+  "sol_subagents_allowed": false,
   "sandbox": "read-only",
   "may_write": false,
   "may_delegate": false,

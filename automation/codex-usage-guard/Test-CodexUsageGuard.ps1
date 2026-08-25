@@ -56,7 +56,7 @@ $preAppServerIds = @($preAppServers | ForEach-Object { [int]$_.ProcessId } | Sor
 Assert-Test ($preAppServers.Count -ge 1) 'at least one app-server infrastructure process exists'
 Assert-Test (@($preCodex | Where-Object { [string]$_.CommandLine -notmatch '(?i)(^|\s)app-server(?:\s|$)' }).Count -eq 0) 'no non-app-server Codex before dummy test'
 
-$tempRoot = Join-Path ([IO.Path]::GetTempPath()) ('a6-codex-usage-guard-' + [Guid]::NewGuid().ToString('N'))
+$tempRoot = Join-Path ([IO.Path]::GetTempPath()) ('a8-codex-usage-guard-' + [Guid]::NewGuid().ToString('N'))
 $dummy = $null
 try {
     New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
@@ -93,7 +93,7 @@ Assert-Test ([int]$status.billable_or_interactive_codex.count -eq 0) 'status rep
 
 $result = [ordered]@{
     schema_version = 1
-    change_id = 'TOKEN-OPT-001-A6'
+    change_id = 'TOKEN-OPT-001-A8'
     verified_at = (Get-Date).ToUniversalTime().ToString('o')
     status = 'PASS'
     task_name = $TaskName

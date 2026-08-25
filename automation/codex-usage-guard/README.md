@@ -1,6 +1,6 @@
 # Codex Usage Guard
 
-`TOKEN-OPT-001-A7` separates always-on Codex infrastructure from owner-started Codex model execution.
+`TOKEN-OPT-001-A8` separates always-on Codex infrastructure from owner-started Codex model execution.
 
 ## Default state
 
@@ -9,8 +9,12 @@ Codex app-server infrastructure: allowed
 Codex model execution: locked
 Automated Codex runs: 0
 Background continuations: 0
-Codex children/subagents by default: 0
-Maximum direct Sol subagents: 16
+Sol subagents: prohibited
+Mandatory zero-worker start: none
+Maximum Luna Max subagents: 16
+Maximum Terra Max subagents: 2
+Maximum Ox Alpha subagents: 16
+Maximum total direct subagents: 16
 Maximum delegation depth: 1
 Automatic fallback: disabled
 Maximum primary processes after one manual permit: 1
@@ -47,8 +51,9 @@ The command requires an exact model, reasoning level, role, purpose, and random 
 common automation parents. It creates a single-use permit but **does not start Codex**.
 After the permit is active, manually start the one approved Codex task. The first
 eligible primary process consumes the permit; a second primary process, recursive child,
-automatic retry/fallback, or later continuation is blocked. The owner-started Sol session may
-route up to 16 direct non-recursive children under A7 writer-lock rules.
+automatic retry/fallback, or later continuation is blocked. The owner-started Sol advisor
+may choose no workers or multiple useful bounded direct Luna Max, Terra Max, and Ox Alpha
+workers under A8 model ceilings and writer-lock rules. Sol is never a subagent.
 
 When the task is finished, or whenever the permit should be withdrawn, run:
 
@@ -78,7 +83,7 @@ preserving the existing app-server process IDs.
 Every installation creates a timestamped backup under:
 
 ```text
-C:\Users\adria\.codex\backups\TOKEN-OPT-001-A6-GUARD-<timestamp>
+C:\Users\adria\.codex\backups\TOKEN-OPT-001-A8-GUARD-<timestamp>
 ```
 
 The backup contains the prior scheduled-task XML, the prior local guard files, hashes,

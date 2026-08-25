@@ -81,7 +81,7 @@ function Get-ManualPermit {
     catch {
         return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_INVALID_JSON'; Permit = $null }
     }
-    foreach ($field in @('approval_id','state','issued_by','issued_at','expires_at','purpose','manual_interactive','allowed_model','allowed_reasoning','allowed_role','allowed_roles','allow_subagents','max_processes','default_children','max_children','max_delegation_depth','recursive_spawning','consumed')) {
+    foreach ($field in @('approval_id','state','issued_by','issued_at','expires_at','purpose','manual_interactive','allowed_model','allowed_reasoning','allowed_role','allowed_roles','allow_subagents','max_processes','sol_subagents_allowed','max_luna_max_subagents','max_terra_max_subagents','max_ox_alpha_subagents','max_total_direct_subagents','max_delegation_depth','recursive_spawning','consumed')) {
         if ($permit.PSObject.Properties.Name -notcontains $field) {
             return [pscustomobject]@{ Valid = $false; Reason = "MANUAL_PERMIT_MISSING_$($field.ToUpperInvariant())"; Permit = $permit }
         }
@@ -95,7 +95,7 @@ function Get-ManualPermit {
     if ([int]$permit.max_processes -ne 1) {
         return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_PROCESS_LIMIT_INVALID'; Permit = $permit }
     }
-    if (-not [bool]$permit.allow_subagents -or [int]$permit.default_children -ne 0 -or [int]$permit.max_children -ne 16 -or [int]$permit.max_delegation_depth -ne 1 -or [bool]$permit.recursive_spawning) {
+    if (-not [bool]$permit.allow_subagents -or [bool]$permit.sol_subagents_allowed -or [int]$permit.max_luna_max_subagents -ne 16 -or [int]$permit.max_terra_max_subagents -ne 2 -or [int]$permit.max_ox_alpha_subagents -ne 16 -or [int]$permit.max_total_direct_subagents -ne 16 -or [int]$permit.max_delegation_depth -ne 1 -or [bool]$permit.recursive_spawning) {
         return [pscustomobject]@{ Valid = $false; Reason = 'MANUAL_PERMIT_SUBAGENT_BOUNDARY_INVALID'; Permit = $permit }
     }
     $allowedModel = if ($permit.PSObject.Properties.Name -contains 'allowed_model') { [string]$permit.allowed_model } else { '' }
@@ -222,8 +222,11 @@ if ($SelfTest) {
             allowed_roles = @('writer')
             allow_subagents = $true
             max_processes = 1
-            default_children = 0
-            max_children = 16
+            sol_subagents_allowed = $false
+            max_luna_max_subagents = 16
+            max_terra_max_subagents = 2
+            max_ox_alpha_subagents = 16
+            max_total_direct_subagents = 16
             max_delegation_depth = 1
             recursive_spawning = $false
             background_continuation = $false
@@ -272,7 +275,7 @@ if ($SelfTest) {
             second_process_denied = -not [bool]$secondDecision.Valid -and [string]$secondDecision.Reason -eq 'MANUAL_PERMIT_ALREADY_CONSUMED'
             expired_permit_denied = -not [bool]$expiredState.Valid -and [string]$expiredState.Reason -eq 'MANUAL_PERMIT_EXPIRED'
             revoked_permit_denied = -not [bool]$revokedState.Valid -and [string]$revokedState.Reason -eq 'MANUAL_PERMIT_REVOKED'
-            subagent_boundary_recorded = [bool]$consumedPermit.allow_subagents -and [int]$consumedPermit.default_children -eq 0 -and [int]$consumedPermit.max_children -eq 16 -and [int]$consumedPermit.max_delegation_depth -eq 1 -and -not [bool]$consumedPermit.recursive_spawning
+            subagent_boundary_recorded = [bool]$consumedPermit.allow_subagents -and -not [bool]$consumedPermit.sol_subagents_allowed -and [int]$consumedPermit.max_luna_max_subagents -eq 16 -and [int]$consumedPermit.max_terra_max_subagents -eq 2 -and [int]$consumedPermit.max_ox_alpha_subagents -eq 16 -and [int]$consumedPermit.max_total_direct_subagents -eq 16 -and [int]$consumedPermit.max_delegation_depth -eq 1 -and -not [bool]$consumedPermit.recursive_spawning
             exact_role_recorded = [string]$consumedPermit.allowed_role -eq 'writer' -and @($consumedPermit.allowed_roles).Count -eq 1
         }
         $failed = @($checks.GetEnumerator() | Where-Object { -not $_.Value })

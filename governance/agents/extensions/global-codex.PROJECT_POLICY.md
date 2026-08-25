@@ -25,8 +25,10 @@ Read the byte-identical universal `AGENTS.md` first. This file adds only local C
 
 For every repository unless a stricter accepted project rule applies:
 
-- Native Multi-Agent V2 is enabled with zero default children, sixteen maximum direct
-  Sol children, depth one, and recursive child spawning disabled.
+- Native Multi-Agent V2 is enabled with no Sol child eligibility, model-specific direct
+  worker ceilings of Luna Max 16, Terra Max 2, and Ox Alpha 16, sixteen total direct
+  workers, depth one, and recursive child spawning disabled. No mandatory zero-worker
+  startup applies; capacity is not a staffing target.
 - Unattended, background, scheduled, watchdog, ChatGPT Web, and Astral-initiated Codex
   work remains prohibited without Earl's exact authorization.
 - Direct work Earl deliberately starts inside Codex Desktop is an owner-started Sol
@@ -107,7 +109,7 @@ After changing this extension:
 - confirm the universal root replica still matches the canonical master;
 - confirm this file remains the only registered local Codex extension;
 - run the canonical AGENTS verification script;
-- verify A7 agents/concurrency/router settings, depth-one delegation, zero default children, writer caps, and DeepSeek-disabled active routes without reading or changing credential values;
+- verify A8 agents/concurrency/router settings, Sol-child prohibition, model-specific worker ceilings, depth-one delegation, writer caps, and DeepSeek-disabled active routes without reading or changing credential values;
 - report the exact local files changed and backup path.
 
 A request to change universal rules in `C:\Users\adria\.codex\AGENTS.md` must be redirected to the Context Vault canonical master.

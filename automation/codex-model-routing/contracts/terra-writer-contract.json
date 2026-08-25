@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "contract_id": "TOKEN-OPT-001-A4-terra-writer",
+  "contract_id": "TOKEN-OPT-001-A8-terra-writer",
   "role": "writer",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "max",
+  "max_direct_subagents_of_model": 2,
   "sandbox": "workspace-write",
   "max_overlapping_writers": 1,
   "may_spawn_workers": false,

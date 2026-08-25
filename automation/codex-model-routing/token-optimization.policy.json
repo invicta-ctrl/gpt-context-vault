@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "policy_id": "TOKEN-OPT-001",
   "accepted_amendments": [
     "TOKEN-OPT-001-A1",
@@ -8,14 +8,14 @@
     "TOKEN-OPT-001-A4",
     "TOKEN-OPT-001-A5",
     "TOKEN-OPT-001-A6",
-    "TOKEN-OPT-001-A7"
+    "TOKEN-OPT-001-A7",
+    "TOKEN-OPT-001-A8"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
     "global_model": "gpt-5.6-sol",
     "ordinary_reasoning_effort": "high",
     "max_concurrent_threads_per_session": 16,
-    "default_read_only_workers": 0,
     "max_adaptive_read_only_workers": 16,
     "max_total_active_workers": 16,
     "max_overlapping_writers": 2,
@@ -26,8 +26,12 @@
     "routine_full_suite_after_small_module": false,
     "agents_enabled": true,
     "multi_agent_v2_enabled": true,
-    "default_children": 0,
-    "max_children": 16,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
+    "advisor_selects_smallest_useful_topology": true,
     "allow_subagents": true,
     "background_continuation": false,
     "automatic_fallback": false
@@ -68,7 +72,7 @@
     "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
     "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json",
     "ox_writer_contract": "automation/codex-model-routing/contracts/ox-writer-contract.json",
-    "status": "ACTIVE_A7_SELECTION_ONLY",
+    "status": "ACTIVE_A8_SELECTION_ONLY",
     "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json"
   },
   "context_envelope_v2": {
@@ -130,7 +134,7 @@
   ],
   "current_next_slice_pipeline": {
     "pipeline_name": "CURRENT_NEXT_SLICE_PIPELINE",
-    "zero_children_default": true,
+    "advisor_selects_smallest_useful_topology": true,
     "max_active_children": 16,
     "max_depth": 1,
     "max_active_writers_account_wide": 2,
@@ -261,7 +265,7 @@
       "compaction_preserved_every_semantic_detail",
       "mcp_token_consumption"
     ],
-    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_TOKEN_OPT_001_A7"
+    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_TOKEN_OPT_001_A8"
   },
   "behavior_contract": {
     "small_bug": {
@@ -307,6 +311,14 @@
       "action": "PARENT_OR_TOOL_FIRST",
       "default_children": 0,
       "max_active_children": 1,
+      "justification_required": true
+    },
+    "a8_subagent_opportunity": {
+      "action": "SOL_ADVISOR_SELECTS_BOUNDED_TOPOLOGY",
+      "zero_workers_allowed": true,
+      "multiple_direct_workers_allowed": true,
+      "sol_subagents_allowed": false,
+      "max_total_direct_subagents": 16,
       "justification_required": true
     },
     "conflicting_governance": {
@@ -606,10 +618,27 @@
       "terra": "explicit_fallback_integration_or_hau_frontend_writer",
       "luna": "read_only",
       "deepseek": "DISABLED"
+    },
+    "a8_owner_started_sol_session": {
+      "action": "ALLOW_MANUAL_SOL_ADVISOR_SELECTION_ONLY",
+      "sol_subagents_allowed": false,
+      "zero_workers_allowed": true,
+      "multiple_direct_workers_allowed": true,
+      "max_luna_max_subagents": 16,
+      "max_terra_max_subagents": 2,
+      "max_ox_alpha_subagents": 16,
+      "max_total_direct_subagents": 16,
+      "max_delegation_depth": 1,
+      "recursive_spawning": false
+    },
+    "a8_writer_limits_separate": {
+      "action": "ENFORCE_WRITER_LOCKS_INDEPENDENT_OF_SUBAGENT_CAPS",
+      "max_active_writers_account_wide": 2,
+      "max_writers_per_repository_or_worktree": 1
     }
   },
   "billable_execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A7",
+    "policy_id": "TOKEN-OPT-001-A8",
     "gate_path": "automation/codex-model-routing/manual-codex-execution-gate.json",
     "guard_source": "automation/codex-usage-guard",
     "guard_task": "Earl Codex Usage Guard",
@@ -629,8 +658,11 @@
     "require_new_per_run": true,
     "exact_purpose_model_reasoning_role": true,
     "max_processes": 1,
-    "default_children": 0,
-    "max_children": 16,
+    "sol_subagents_allowed": false,
+    "max_luna_max_subagents": 16,
+    "max_terra_max_subagents": 2,
+    "max_ox_alpha_subagents": 16,
+    "max_total_direct_subagents": 16,
     "allow_subagents": true,
     "max_delegation_depth": 1,
     "recursive_spawning": false,

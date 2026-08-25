@@ -25,19 +25,23 @@ repositories may add stricter local rules. They may not weaken accepted specific
 security boundaries, privacy, data invariants, backup, rollback, release, migration, or
 Git safeguards.
 
-## A7 owner-started Sol execution boundary
+## A8 owner-started Sol execution boundary
 
-A7 preserves A6's locked default and its prohibition on ChatGPT Web, Astral Bridge,
+A8 preserves A7's locked default and its prohibition on ChatGPT Web, Astral Bridge,
 automation, scheduling, watchdog, retry, fallback, and background self-authorization.
-It supersedes A6 only where A6 prohibited bounded delegation inside an active
-owner-started Sol session.
+It supersedes only A7's incorrect Sol-subagent, mandatory-zero-start, and
+undifferentiated child-cap clauses.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
 UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
-OWNER-STARTED SOL SESSION: SOL ADVISOR GOVERNS
-DEFAULT CHILDREN: 0
-MAX SOL SUBAGENTS: 16
+OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+SOL SUBAGENTS: PROHIBITED
+MANDATORY ZERO-WORKER START: NONE
+MAX LUNA MAX SUBAGENTS: 16
+MAX TERRA MAX SUBAGENTS: 2
+MAX OX ALPHA SUBAGENTS: 16
+MAX TOTAL DIRECT SUBAGENTS: 16
 DELEGATION DEPTH: 1
 RECURSIVE CHILD SPAWNING: FORBIDDEN
 AUTOMATIC FALLBACK: DISABLED
@@ -48,15 +52,18 @@ ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
 ```
 
 A permit-gated CLI run still requires a fresh exact interactive approval. An active
-owner-started Sol session may use up to sixteen direct children under the same bounded
-task, starts with zero children, and cannot recurse. A second writer is permitted only
+owner-started Sol session follows the normal @sol advisor delegation guidelines and may
+use no workers or multiple useful bounded direct workers under the same task. Sol cannot
+be a subagent; Luna Max and Ox Alpha each have a ceiling of sixteen, Terra Max has a
+ceiling of two, total direct workers are capped at sixteen, and delegation cannot recurse.
+A second writer is permitted only
 in a different proven-isolated repository or worktree with a separate lock and no
 shared mutable state or incomplete dependency.
 
 The local scheduled `Earl Codex Usage Guard` continues to preserve only
 `codex app-server` infrastructure while locked and to terminate unpermitted primary
 `codex.exe` processes. Native children inside an authorized Sol session are governed
-by the A7 depth, child, role, writer, and fallback contract. The deterministic route
+by the A8 depth, model-cap, role, writer, and fallback contract. The deterministic route
 compiler validates routing metadata but is never a dispatcher.
 
 Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
@@ -217,8 +224,12 @@ in [`current-routing-profile.json`](../automation/codex-model-routing/current-ro
 selects and validates models but cannot authorize or dispatch work.
 
 ```text
-DEFAULT CHILDREN: 0
-MAX DIRECT SOL CHILDREN: 16
+SOL SUBAGENTS: PROHIBITED
+MANDATORY ZERO-WORKER START: NONE
+LUNA MAX DIRECT-WORKER CEILING: 16
+TERRA MAX DIRECT-WORKER CEILING: 2
+OX ALPHA DIRECT-WORKER CEILING: 16
+TOTAL DIRECT-WORKER CEILING: 16
 DELEGATION DEPTH: 1
 BACKGROUND CONTINUATION: DISABLED
 AUTOMATIC FALLBACK: DISABLED
@@ -561,18 +572,20 @@ ROLLBACK / REVERSION
 
 ## Deterministic anti-drift defaults
 
-The global parent remains `gpt-5.6-sol` at `high`. Native Codex thread capacity is
-sixteen, default child count is zero, delegation depth is one, and recursive spawning is
-disabled. The routing profile—not this Markdown policy—selects live child models and
-efforts. Sol is disabled as a child. Ox/High, Terra/Max, and Luna/Max are eligible only
+The global parent remains `gpt-5.6-sol` at `high`. Native Codex direct-worker capacity
+is sixteen, with no mandatory zero-worker startup; delegation depth is one and recursive
+spawning is disabled. The routing profile—not this Markdown policy—selects live child
+models and efforts. Sol is disabled as a child. Luna/Max and Ox/High each have a ceiling
+of sixteen, while Terra/Max has a ceiling of two. These ceilings are not staffing targets.
+Ox/High, Terra/Max, and Luna/Max are eligible only
 through their contracts and project overrides. DeepSeek aliases remain disabled from
 active and fallback routes.
 
 The machine-readable current profile, contracts, compiler, redacted telemetry,
 verification-receipt tool, observed-only benchmark command, unchanged historical
-fixtures, and focused A7 validator live under `automation/codex-model-routing/`.
+fixtures, and focused A8 validator live under `automation/codex-model-routing/`.
 The A1 one-scout pipeline remains a specialized current/next-slice rule; it does not
-increase the default child count or authorize the next slice.
+increase the model-specific worker ceilings or authorize the next slice.
 
 ## Stop condition
 
