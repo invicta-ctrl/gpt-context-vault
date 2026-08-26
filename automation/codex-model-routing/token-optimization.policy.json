@@ -9,7 +9,8 @@
     "TOKEN-OPT-001-A5",
     "TOKEN-OPT-001-A6",
     "TOKEN-OPT-001-A7",
-    "TOKEN-OPT-001-A8"
+    "TOKEN-OPT-001-A8",
+    "SOL-ADVISOR-GLOBAL-001"
   ],
   "canonical_policy": "protocols/CODEX_TOKEN_OPTIMIZATION_AND_CONTEXT_EFFICIENCY_RULES.md",
   "defaults": {
@@ -38,30 +39,35 @@
   },
   "current_routing_v2": {
     "profile_path": "automation/codex-model-routing/current-routing-profile.json",
+    "contract_id": "SOL-ADVISOR-GLOBAL-001",
+    "route_declaration_required": true,
+    "modes": ["solo", "delegate", "audit", "full"],
+    "solo_default": true,
+    "default_auxiliaries_max": 1,
     "orchestrator": {
       "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
       "owner_started_only": true
     },
-    "writers": {
-      "backend_primary": {
-        "model": "openrouter/stealth/ox-alpha",
-        "reasoning_effort": "high",
-        "eligibility": "provider_available_and_zero_prompt_and_zero_completion_and_acceptable_health_and_suitable_data"
-      },
-      "integration_fallback": {
-        "model": "gpt-5.6-terra",
-        "reasoning_effort": "max",
-        "explicit_sol_decision_required": true
-      },
-      "hau_frontend": {
-        "model": "gpt-5.6-terra",
-        "reasoning_effort": "max"
-      }
+    "native_implementation_lanes": {
+      "bounded": { "role": "sol_advisor_luna_implementer", "model": "gpt-5.6-luna", "reasoning_effort": "max" },
+      "high_risk": { "role": "sol_advisor_terra_implementer", "model": "gpt-5.6-terra", "reasoning_effort": "high" }
     },
-    "read_only_workers": {
-      "luna": {"model": "gpt-5.6-luna", "reasoning_effort": "max"},
-      "ox": {"model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high", "requires_no_writer_lock": true}
+    "fresh_sol_review": {
+      "role": "sol_advisor_sol_reviewer",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "read_only": true,
+      "fresh_read_only_for": ["audit", "full"]
+    },
+    "ox_overlay": {
+      "status": "OX_OVERLAY_DISABLED",
+      "role": "sol_advisor_ox_implementer",
+      "model": "openrouter/stealth/ox-alpha",
+      "reasoning_effort": "high",
+      "implementation_only": true,
+      "eligible_only_when": "exact_callable_runtime_identity_and_zero_prompt_and_zero_completion_and_unambiguous_billing_and_acceptable_health_and_capabilities_and_suitable_data",
+      "disabled_behavior": "select_native_lane_before_dispatch"
     },
     "disabled_models": [
       "deepseek-v4-pro",
@@ -69,11 +75,9 @@
       "deepseek/deepseek-v4-flash",
       "deepseek/deepseek-v4-flash-vision-exp"
     ],
-    "shared_read_only_contract": "automation/codex-model-routing/contracts/read-only-worker-contract.json",
-    "terra_writer_contract": "automation/codex-model-routing/contracts/terra-writer-contract.json",
-    "ox_writer_contract": "automation/codex-model-routing/contracts/ox-writer-contract.json",
-    "status": "ACTIVE_A8_SELECTION_ONLY",
-    "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json"
+    "status": "ACTIVE_SOL_ADVISOR_GLOBAL_001",
+    "execution_gate": "automation/codex-model-routing/manual-codex-execution-gate.json",
+    "legacy_guard_safety_caps_only": true
   },
   "context_envelope_v2": {
     "dispatch_seed_tokens_max": 12000,
@@ -265,7 +269,7 @@
       "compaction_preserved_every_semantic_detail",
       "mcp_token_consumption"
     ],
-    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_TOKEN_OPT_001_A8"
+    "billable_codex_execution_override": "OWNER_STARTED_SOL_SESSION_ONLY_BY_SOL_ADVISOR_GLOBAL_001"
   },
   "behavior_contract": {
     "small_bug": {
@@ -638,7 +642,7 @@
     }
   },
   "billable_execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A8",
+    "policy_id": "SOL-ADVISOR-GLOBAL-001",
     "gate_path": "automation/codex-model-routing/manual-codex-execution-gate.json",
     "guard_source": "automation/codex-usage-guard",
     "guard_task": "Earl Codex Usage Guard",
@@ -658,7 +662,9 @@
     "require_new_per_run": true,
     "exact_purpose_model_reasoning_role": true,
     "max_processes": 1,
+    "default_auxiliaries_max": 1,
     "sol_subagents_allowed": false,
+    "fresh_sol_reviewer_allowed": true,
     "max_luna_max_subagents": 16,
     "max_terra_max_subagents": 2,
     "max_ox_alpha_subagents": 16,
@@ -671,6 +677,7 @@
     "background_continuation": false,
     "automatic_fallback": false,
     "route_compiler_is_dispatcher": false,
-    "absolutely_necessary_behavior": "STOP_AND_ASK_EARL"
+    "absolutely_necessary_behavior": "STOP_AND_ASK_EARL",
+    "legacy_guard_safety_caps_only": true
   }
 }

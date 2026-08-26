@@ -12,6 +12,10 @@ last_reviewed: 2026-08-19
 
 Read the byte-identical universal root `AGENTS.md` first. This extension preserves Astral Bridge-specific product, bootstrap, protected-source, security, and verification rules.
 
+## Sol Advisor inheritance
+
+Inherit `SOL-ADVISOR-GLOBAL-001` without weakening Astral Bridge protected-source, connector, privacy, recovery, or external-state safeguards. Sol / High selects `solo|delegate|audit|full`; Ox is temporary implementation-only and fail-closed; Luna / Max and Terra / High are the native implementation lanes; fresh Sol / High alone reviews audit/full work.
+
 ## Scope
 
 This extension governs the entire Astral Bridge repository.

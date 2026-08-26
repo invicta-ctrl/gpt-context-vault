@@ -11,6 +11,12 @@ This directory contains the reusable account-wide standard for turning natural
 instructions into safe, repository-grounded Codex work. It is governance and
 templates, not a project runtime directory.
 
+## Current routing contract
+
+`SOL-ADVISOR-GLOBAL-001` defines `solo|delegate|audit|full`: solo is the default
+with at most one auxiliary; Luna / Max and Terra / High are native implementation
+lanes; Ox is implementation-only and fail-closed. A8 is locked safety/history only.
+
 ## Authority boundary
 
 Use the following order for every routed task:
@@ -39,14 +45,16 @@ not weaken safety.
   defines the accepted Current/Next Slice Pipeline and read-only scout-ahead amendment.
 - [`../../governance/agents/specs/TOKEN-OPT-001-A4.md`](../../governance/agents/specs/TOKEN-OPT-001-A4.md)
   preserves the historical role catalog, context envelope, receipts, and benchmark baseline.
+- [`../../governance/agents/specs/SOL-ADVISOR-GLOBAL-001.md`](../../governance/agents/specs/SOL-ADVISOR-GLOBAL-001.md)
+  is the active Sol Advisor routing contract.
 - [`../../governance/agents/specs/TOKEN-OPT-001-A8.md`](../../governance/agents/specs/TOKEN-OPT-001-A8.md)
-  is the active owner-started Sol-parent, model-cap, and manual billable-execution boundary;
-  A7 remains immutable historical evidence.
+  is locked safety/history provenance for the manual billable-execution guard; A7 remains
+  immutable historical evidence.
 - [`manual-codex-execution-gate.json`](manual-codex-execution-gate.json) and
   [`../codex-usage-guard/`](../codex-usage-guard/) implement the deterministic route gate
   and local process guard.
-- [`current-routing-profile.json`](current-routing-profile.json) is the active A8
-  selection profile. [`route-compiler.ps1`](route-compiler.ps1) validates context,
+- [`current-routing-profile.json`](current-routing-profile.json) is the active
+  `SOL-ADVISOR-GLOBAL-001` selection profile. [`route-compiler.ps1`](route-compiler.ps1) validates context,
   receipts, the exact manual permit, role topology, writer locks, and route identity; it
   never starts Codex. Routing metadata never authorizes execution.
 - `contracts/` contains the shared read-only contract and bounded Ox/Terra writer
@@ -75,12 +83,13 @@ When token, context, delegation, evidence reuse, review, or verification
 efficiency is in scope, retrieve the canonical policy above and expand context
 only for a recorded reason it permits.
 
-A8 supersedes A7's incorrect Sol-child and mandatory-zero-start clauses for an explicit
-owner-started Sol session. The effective default remains locked; Sol is the parent and
-may select no workers or multiple useful bounded Luna Max, Terra Max, and Ox Alpha
-workers under model ceilings at depth one. No recursive spawning, unattended/background continuation, or automatic fallback is
-allowed. Historical A4/A6 fixture data remains deterministic evidence, not reusable
-spending authority.
+`SOL-ADVISOR-GLOBAL-001` requires a declared `solo`, `delegate`, `audit`, or `full`
+route. Solo is the default and each declared route has at most one auxiliary: Luna / Max
+handles bounded implementation, Terra / High handles high-risk implementation, and fresh
+Sol / High is the audit/full reviewer. A8 remains locked safety/history only; its numeric
+caps preserve guard compatibility, not active staffing. No recursive spawning,
+unattended/background continuation, or automatic fallback is allowed. Historical A4/A6
+fixture data remains deterministic evidence, not reusable spending authority.
 
 ## Capability compatibility
 
@@ -90,7 +99,7 @@ execution and requires a new exact manual permit. ChatGPT Web, Astral Bridge, an
 automation must stop and ask Earl rather than performing that probe themselves.
 Unsupported identifiers are rejected; silent substitution is prohibited.
 
-## Deterministic A8 checks
+## Deterministic current routing checks
 
 Use a project-local, redacted run-state and telemetry path; do not store live prompts,
 credentials, or raw external state in this vault.
@@ -113,8 +122,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File automation\codex-model-routi
   -TelemetryPath <project-telemetry.jsonl> -OutputPath <observed-report.json> -Days 7
 ```
 
-Ox backend or read-only selection requires current zero-cost, health, privacy, and
-writer-lock eligibility plus an exact permit. Ox ineligibility stops for an explicit Sol
-decision. Terra Max is the explicit fallback/integration writer and the sole HAU-USC
-frontend writer; Luna Max remains read-only. Automatic fallback is disabled.
+Active Ox implementation selection requires current exact runtime identity, callable
+provider availability, exact zero input/output price, unambiguous billing, acceptable
+health, required capabilities, suitable data, and an exact permit. Ineligibility resolves
+to Luna / Max or Terra / High before dispatch within the declared route, without retry or
+automatic fallback. A8 is locked safety/history only; it does not select a model, effort,
+reviewer, or staffing topology.
 

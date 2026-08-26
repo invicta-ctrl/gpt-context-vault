@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "spec_id": "AGENTS-CONSOLIDATION-002",
-  "updated_at": "2026-08-25T00:00:00Z",
+  "updated_at": "2026-08-26T00:00:00Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -144,7 +144,7 @@
       "inventory_classification_when_drift": "PROJECT_SPECIFIC_LEGACY",
       "notes": "AGENTS-CONSOLIDATION-002 explicitly authorizes the governance-only root and extension synchronization while preserving unrelated dirty work and exact pre-change bytes.",
       "active_root_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
-      "active_extension_sha256": "666eee42490c99ac28c857f9a195c3689f4608c09cd84101b18b9934aa7aeb5e"
+      "active_extension_sha256": "58aaf928650766e986cc1f684dcf6549365eddfa374dc61ab9a64419c835726b"
     },
     {
       "id": "astral-bridge",

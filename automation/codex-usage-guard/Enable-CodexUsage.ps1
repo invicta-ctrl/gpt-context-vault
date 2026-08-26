@@ -3,7 +3,10 @@ param(
     [ValidateRange(5, 240)][int]$DurationMinutes = 60,
     [Parameter(Mandatory)][ValidateNotNullOrEmpty()][string]$Model,
     [Parameter(Mandatory)][ValidateSet('low','medium','high','xhigh','max','ultra')][string]$Reasoning,
-    [Parameter(Mandatory)][ValidateSet('orchestrator','writer','read_only_worker')][string]$Role
+    [Parameter(Mandatory)][ValidateSet('orchestrator','writer','reviewer')][string]$Role,
+    [switch]$ContractProbe,
+    [string]$ProbeApprovalId = '',
+    [string]$ProbePurpose = ''
 )
 
 Set-StrictMode -Version Latest
@@ -12,6 +15,80 @@ $ErrorActionPreference = 'Stop'
 $GuardRoot = Join-Path $env:USERPROFILE '.codex\usage-guard'
 $PermitPath = Join-Path $GuardRoot 'permit.json'
 $Utf8NoBom = [Text.UTF8Encoding]::new($false)
+
+function Assert-ManualPermitContract {
+    param(
+        [string]$PermitModel,
+        [string]$PermitReasoning,
+        [string]$PermitRole,
+        [string]$Purpose,
+        [string]$ApprovalId
+    )
+
+    if ($PermitModel -in @('default','*')) { throw 'An exact model is required.' }
+    if ([string]::IsNullOrWhiteSpace($Purpose)) { throw 'Purpose is required.' }
+    if ([string]::IsNullOrWhiteSpace($ApprovalId)) { throw 'Approval ID is required.' }
+    if ($PermitRole -eq 'reviewer' -and ($PermitModel -ne 'gpt-5.6-sol' -or $PermitReasoning -ne 'high')) {
+        throw 'Reviewer permits require exact gpt-5.6-sol with high reasoning.'
+    }
+}
+
+function New-ManualCodexPermit {
+    param(
+        [string]$PermitModel,
+        [string]$PermitReasoning,
+        [string]$PermitRole,
+        [string]$Purpose,
+        [string]$ApprovalId,
+        [string]$IssuedByAccount,
+        [DateTimeOffset]$IssuedAt,
+        [int]$PermitDurationMinutes
+    )
+
+    Assert-ManualPermitContract -PermitModel $PermitModel -PermitReasoning $PermitReasoning -PermitRole $PermitRole -Purpose $Purpose -ApprovalId $ApprovalId
+    return [ordered]@{
+        schema_version = 2
+        approval_id = $ApprovalId
+        state = 'ACTIVE'
+        issued_by = 'Earl'
+        issued_by_account = $IssuedByAccount
+        issued_at = $IssuedAt.ToString('o')
+        expires_at = $IssuedAt.AddMinutes($PermitDurationMinutes).ToString('o')
+        purpose = $Purpose
+        origin = 'manual_user'
+        manual_interactive = $true
+        allowed_model = $PermitModel
+        allowed_reasoning = $PermitReasoning
+        allowed_role = $PermitRole
+        allowed_roles = @($PermitRole)
+        allow_subagents = $true
+        max_processes = 1
+        sol_subagents_allowed = $false
+        default_auxiliaries_max = 1
+        fresh_sol_reviewer_allowed = $true
+        max_fresh_sol_reviewers = 1
+        legacy_guard_safety_caps_only = $true
+        max_luna_max_subagents = 16
+        max_terra_max_subagents = 2
+        max_ox_alpha_subagents = 16
+        max_total_direct_subagents = 16
+        max_delegation_depth = 1
+        recursive_spawning = $false
+        background_continuation = $false
+        automatic_fallback = $false
+        consumed = $false
+        process_id = $null
+        process_started_at = $null
+    }
+}
+
+if ($ContractProbe) {
+    $probeId = if ([string]::IsNullOrWhiteSpace($ProbeApprovalId)) { [Guid]::NewGuid().ToString('D') } else { $ProbeApprovalId }
+    $probePurpose = if ([string]::IsNullOrWhiteSpace($ProbePurpose)) { 'SOL-ADVISOR-GLOBAL-001 contract probe' } else { $ProbePurpose }
+    $probePermit = New-ManualCodexPermit -PermitModel $Model -PermitReasoning $Reasoning -PermitRole $Role -Purpose $probePurpose -ApprovalId $probeId -IssuedByAccount 'CONTRACT_PROBE' -IssuedAt ([DateTimeOffset]::UtcNow) -PermitDurationMinutes $DurationMinutes
+    $probePermit | ConvertTo-Json -Depth 8
+    return
+}
 
 if ($Host.Name -ne 'ConsoleHost') {
     throw 'Manual Codex approval requires an interactive Windows console.'
@@ -39,9 +116,7 @@ if (Test-Path -LiteralPath $PermitPath -PathType Leaf) {
     catch { }
 }
 
-if ($Model -in @('default','*')) { throw 'An exact model is required.' }
 $purpose = (Read-Host 'Describe the one Codex task being approved').Trim()
-if ([string]::IsNullOrWhiteSpace($purpose)) { throw 'Purpose is required.' }
 $challenge = Get-Random -Minimum 100000 -Maximum 999999
 Write-Host ''
 Write-Host 'This creates one time-bounded permit. It does not start Codex.'
@@ -52,36 +127,7 @@ if ($typed -ne [string]$challenge) { throw 'Approval challenge did not match.' }
 
 $now = [DateTimeOffset]::UtcNow
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-$permit = [ordered]@{
-    schema_version = 2
-    approval_id = [Guid]::NewGuid().ToString('D')
-    state = 'ACTIVE'
-    issued_by = 'Earl'
-    issued_by_account = $identity.Name
-    issued_at = $now.ToString('o')
-    expires_at = $now.AddMinutes($DurationMinutes).ToString('o')
-    purpose = $purpose
-    origin = 'manual_user'
-    manual_interactive = $true
-    allowed_model = $Model
-    allowed_reasoning = $Reasoning
-    allowed_role = $Role
-    allowed_roles = @($Role)
-    allow_subagents = $true
-    max_processes = 1
-    sol_subagents_allowed = $false
-    max_luna_max_subagents = 16
-    max_terra_max_subagents = 2
-    max_ox_alpha_subagents = 16
-    max_total_direct_subagents = 16
-    max_delegation_depth = 1
-    recursive_spawning = $false
-    background_continuation = $false
-    automatic_fallback = $false
-    consumed = $false
-    process_id = $null
-    process_started_at = $null
-}
+$permit = New-ManualCodexPermit -PermitModel $Model -PermitReasoning $Reasoning -PermitRole $Role -Purpose $purpose -ApprovalId ([Guid]::NewGuid().ToString('D')) -IssuedByAccount $identity.Name -IssuedAt $now -PermitDurationMinutes $DurationMinutes
 
 New-Item -ItemType Directory -Force -Path $GuardRoot | Out-Null
 $temp = Join-Path $GuardRoot ('.manual-codex-permit-' + [Guid]::NewGuid().ToString('N') + '.tmp')
@@ -109,6 +155,10 @@ catch { }
     allowed_role = $Role
     max_processes = 1
     sol_subagents_allowed = $false
+    default_auxiliaries_max = 1
+    fresh_sol_reviewer_allowed = $true
+    max_fresh_sol_reviewers = 1
+    legacy_guard_safety_caps_only = $true
     max_luna_max_subagents = 16
     max_terra_max_subagents = 2
     max_ox_alpha_subagents = 16

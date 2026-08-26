@@ -8,16 +8,21 @@ largest model is always better.
 
 ## Manual execution boundary
 
-Routing is selection metadata, not permission to spend Codex allowance. Under A8, the
-default is locked. ChatGPT Web, Astral Bridge, automation, scheduling, prior prompts,
-and accepted autonomous continuations may not start or resume Codex. Only an explicit
-owner-started Sol session may route billable work.
+Routing is selection metadata, not permission to spend Codex allowance.
+`SOL-ADVISOR-GLOBAL-001` defines `solo|delegate|audit|full`: solo is the default with at
+most one auxiliary; Luna / Max and Terra / High are native implementation lanes; Ox is
+implementation-only and fail-closed. A8 is locked safety/history only. ChatGPT Web,
+Astral Bridge, automation, scheduling, prior prompts, and accepted autonomous
+continuations may not start or resume Codex. Only an explicit owner-started Sol session
+may route billable work.
 
-One permit names one exact purpose, model, reasoning level, and role. It authorizes one
-primary Sol advisor process and bounded direct workers selected under normal @sol
-guidelines: Luna Max up to 16, Terra Max up to 2, and Ox Alpha up to 16, with 16 total,
-depth one, no Sol subagents, and no recursive spawning, automatic fallback, or background
-continuation. Zero workers is valid but not mandatory. The route compiler never dispatches.
+One permit names one exact purpose, model, reasoning level, and role. The active Sol
+route uses zero auxiliaries for `solo`, one native implementer for `delegate`, one fresh
+Sol reviewer for `audit`, and one implementer or one reviewer per `full` compiler
+invocation. Retained A8 numeric caps are safety ceilings; they do not authorize a larger
+default topology. Delegation depth remains one, Sol subagents and recursive spawning are
+prohibited, and automatic fallback or background continuation is disabled. The route
+compiler never dispatches.
 
 ## Dimensions
 
@@ -39,10 +44,11 @@ catalog:
 | `deep_review` | High-risk work, release blockers, or a lower tier failed with evidence |
 
 Reasoning should be `low` or `medium` for fast work and may use `high` for
-ordinary implementation, exploration, or consequential judgment. The accepted A4
-current profile is the explicit role-specific exception: Sol uses `high`, Terra
-writer and Luna durable worker use `max`, and eligible Ox uses `high`. Never use
-an unsupported value or substitute a model outside the current profile.
+ordinary implementation, exploration, or consequential judgment. The active
+`SOL-ADVISOR-GLOBAL-001` profile is the role-specific exception: Sol uses `high`, Luna
+bounded implementation uses `max`, Terra high-risk implementation uses `high`, and
+eligible Ox implementation uses `high`. Never use an unsupported value or substitute a
+model outside the current profile.
 
 ## Current Codex compatibility rule
 
@@ -67,12 +73,14 @@ UI label as a CLI value or silently substitute another model.
 ```text
 DEFAULT PROCESSES: 0
 MANUALLY PERMITTED OWNER-STARTED SOL PROCESSES: 1
+CURRENT MODES: solo | delegate | audit | full
+SOLO DEFAULT: TRUE
+MAXIMUM AUXILIARIES PER DECLARED ROUTE: 1
 SOL SUBAGENTS: 0
-MANDATORY ZERO-WORKER START: NONE
-MAXIMUM LUNA MAX SUBAGENTS: 16
-MAXIMUM TERRA MAX SUBAGENTS: 2
-MAXIMUM OX ALPHA SUBAGENTS: 16
-MAXIMUM TOTAL DIRECT SUBAGENTS: 16
+RETAINED A8 LUNA MAX SAFETY CEILING: 16
+RETAINED A8 TERRA MAX SAFETY CEILING: 2
+RETAINED A8 OX ALPHA SAFETY CEILING: 16
+RETAINED A8 TOTAL DIRECT SUBAGENT SAFETY CEILING: 16
 MAXIMUM DELEGATION DEPTH: 1
 MAXIMUM ACTIVE WRITERS ACCOUNT-WIDE: 2
 MAXIMUM WRITERS PER REPOSITORY/WORKTREE: 1
@@ -80,20 +88,20 @@ BACKGROUND CONTINUATION: 0
 AUTOMATIC FALLBACK: 0
 ```
 
-Sol High is the parent planner, router, integrator, and final reviewer and is never
-child-eligible. The Sol advisor may choose no workers or multiple useful bounded direct
-workers; model ceilings are not staffing targets. Ox Alpha High
-is the preferred backend writer when eligible and may be read-only without a writer-lock
-conflict. Terra Max is the explicit Sol-routed fallback/integration writer and the sole
-HAU-USC frontend writer. Luna Max is read-only. DeepSeek is disabled. A second writer
-requires proven isolation and no target may have more than one writer.
+Sol / High is the parent planner, router, integrator, and final acceptance authority and
+is never child-eligible. `solo` has zero auxiliaries; `delegate` has one Luna / Max or
+Terra / High implementer; `audit` has one fresh read-only Sol / High reviewer; and each
+`full` invocation has exactly one implementer or one reviewer. Ox / High is
+implementation-only when its exact gate passes; otherwise the selector chooses the native
+lane before dispatch. A8 is locked safety/history only. DeepSeek is disabled. A second
+writer requires proven isolation and no target may have more than one writer.
 
 ## Historical current/next-slice scouting
 
-A1 scout-ahead semantics remain preserved as historical policy evidence. A8 permits
-only explicit, bounded direct non-Sol workers in an owner-started session. Deterministic
-non-model tools may prepare bounded evidence when otherwise authorized, but neither
-tools nor children may auto-start the next slice.
+A1 scout-ahead semantics and A8 routing topology remain historical policy evidence.
+A8 is locked safety/history only: deterministic non-model tools may prepare bounded
+evidence when otherwise authorized, but neither tools nor children may auto-start the
+next slice.
 
 ## Escalation
 

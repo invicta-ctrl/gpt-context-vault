@@ -1,6 +1,10 @@
 # Codex Usage Guard
 
-`TOKEN-OPT-001-A8` separates always-on Codex infrastructure from owner-started Codex model execution.
+`SOL-ADVISOR-GLOBAL-001` is the active routing contract: `solo|delegate|audit|full`,
+with solo as the default and at most one auxiliary; Luna / Max and Terra / High are native
+implementation lanes; Ox is implementation-only and fail-closed. A8 is locked
+safety/history only and separates always-on Codex infrastructure from owner-started Codex
+model execution.
 
 ## Default state
 
@@ -11,6 +15,7 @@ Automated Codex runs: 0
 Background continuations: 0
 Sol subagents: prohibited
 Mandatory zero-worker start: none
+A8 locked-safety ceilings only (not routing defaults):
 Maximum Luna Max subagents: 16
 Maximum Terra Max subagents: 2
 Maximum Ox Alpha subagents: 16
@@ -42,9 +47,9 @@ Run this yourself in Windows Terminal or an interactive PowerShell console:
 ```powershell
 & "$env:USERPROFILE\.codex\usage-guard\Enable-CodexUsage.ps1" `
   -DurationMinutes 60 `
-  -Model gpt-5.6-terra `
-  -Reasoning max `
-  -Role writer
+  -Model gpt-5.6-sol `
+  -Reasoning high `
+  -Role orchestrator
 ```
 
 The command requires an exact model, reasoning level, role, purpose, and random challenge. It refuses redirected input and
@@ -52,8 +57,25 @@ common automation parents. It creates a single-use permit but **does not start C
 After the permit is active, manually start the one approved Codex task. The first
 eligible primary process consumes the permit; a second primary process, recursive child,
 automatic retry/fallback, or later continuation is blocked. The owner-started Sol advisor
-may choose no workers or multiple useful bounded direct Luna Max, Terra Max, and Ox Alpha
-workers under A8 model ceilings and writer-lock rules. Sol is never a subagent.
+declares `solo`, `delegate`, `audit`, or `full`: solo uses zero auxiliaries and every other
+declared compiler route has one auxiliary. A8 caps remain locked safety ceilings, never
+active staffing defaults. Sol is never a subagent.
+
+The active permit includes `default_auxiliaries_max=1`,
+`fresh_sol_reviewer_allowed=true`, and `max_fresh_sol_reviewers=1`. A reviewer permit is
+only `gpt-5.6-sol` with `high` reasoning and represents the compiler's
+`requested_sol_reviewer_auxiliaries` lane, not an implementation Sol child. The retained
+Luna, Terra, Ox, and total-worker numeric caps are marked `legacy_guard_safety_caps_only`.
+
+For deterministic routing verification, `-ContractProbe` emits the same validated permit
+object without prompting, writing a permit, starting a process, or changing guard state.
+It is a test-only probe, not an approval mechanism.
+
+The guard independently enforces the same active contract at runtime and through its
+test-only `-PermitContractProbe -PermitContractProbePath <temporary-json-path>` interface.
+That probe reports only `Valid` and `Reason`, never authorizes execution, and rejects
+legacy permits missing active fields, non-Boolean security fields, non-reviewer roles,
+and reviewer model/reasoning combinations other than `gpt-5.6-sol` / `high`.
 
 When the task is finished, or whenever the permit should be withdrawn, run:
 
@@ -76,7 +98,8 @@ Automated CLI execution, recursive delegation, and background continuation remai
 
 The test never invokes the real Codex CLI. It uses a harmless copy of Windows `ping.exe`
 named `codex.exe` to prove the watcher terminates non-infrastructure processes while
-preserving the existing app-server process IDs.
+preserving the existing app-server process IDs, and validates active reviewer, legacy,
+malformed reviewer, and string-Boolean permit cases through the same contract validator.
 
 ## Rollback
 

@@ -8,6 +8,10 @@ last_reviewed: 2026-08-25
 
 # Codex Token Optimization and Context-Efficiency Rules
 
+## Active orchestration amendment
+
+`SOL-ADVISOR-GLOBAL-001` is the single active routing contract. It adopts installed upstream Sol Advisor 0.6.0: Sol / High declares `solo|delegate|audit|full` before task tools; solo is the default with at most one auxiliary; full is exceptional; depth is one; and worker work substitutes for parent work. Luna / Max handles bounded implementation, Terra / High handles judgment-heavy implementation, and fresh read-only Sol / High is the only audit/full reviewer (`ship|fix-first|rethink`). Ox is a temporary implementation-only, fail-closed overlay for exact callable `openrouter/stealth/ox-alpha` / High with verified zero input/output pricing, unambiguous billing, health, capabilities, and suitable data. When disabled, the deterministic non-dispatching selector may return the suitable native lane inside the same owner-started interactive Sol task; provider automatic fallback, silent substitution, background execution, recursive spawning, and independent retry remain prohibited. A8 is locked safety/history only; historical A1–A8 routing text is provenance where it conflicts.
+
 ## Purpose
 
 Maximize verified progress per token and per context window while preserving authority,
@@ -25,12 +29,14 @@ repositories may add stricter local rules. They may not weaken accepted specific
 security boundaries, privacy, data invariants, backup, rollback, release, migration, or
 Git safeguards.
 
-## A8 owner-started Sol execution boundary
+## Preserved A8 execution safety boundary
 
-A8 preserves A7's locked default and its prohibition on ChatGPT Web, Astral Bridge,
+`TOKEN-OPT-001-A8` remains historical safety-boundary provenance for the locked manual
+execution guard: it preserves the prohibitions on ChatGPT Web, Astral Bridge,
 automation, scheduling, watchdog, retry, fallback, and background self-authorization.
-It supersedes only A7's incorrect Sol-subagent, mandatory-zero-start, and
-undifferentiated child-cap clauses.
+`SOL-ADVISOR-GLOBAL-001` supersedes A8 wherever it would otherwise define routing,
+reviewer selection, model effort, or staffing defaults. Legacy numeric guard fields are
+safety ceilings and compatibility data, never a competing route contract.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
@@ -52,19 +58,18 @@ ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
 ```
 
 A permit-gated CLI run still requires a fresh exact interactive approval. An active
-owner-started Sol session follows the normal @sol advisor delegation guidelines and may
-use no workers or multiple useful bounded direct workers under the same task. Sol cannot
-be a subagent; Luna Max and Ox Alpha each have a ceiling of sixteen, Terra Max has a
-ceiling of two, total direct workers are capped at sixteen, and delegation cannot recurse.
-A second writer is permitted only
-in a different proven-isolated repository or worktree with a separate lock and no
-shared mutable state or incomplete dependency.
+owner-started Sol session follows the current `solo|delegate|audit|full` contract: solo
+has zero auxiliaries and each other declared route has at most one auxiliary. Sol cannot
+be a subagent; A8's Luna, Terra, Ox, and total numeric limits remain locked-safety
+ceilings only, while delegation depth remains one and cannot recurse. A second writer is
+permitted only in a different proven-isolated repository or worktree with a separate lock
+and no shared mutable state or incomplete dependency.
 
 The local scheduled `Earl Codex Usage Guard` continues to preserve only
 `codex app-server` infrastructure while locked and to terminate unpermitted primary
-`codex.exe` processes. Native children inside an authorized Sol session are governed
-by the A8 depth, model-cap, role, writer, and fallback contract. The deterministic route
-compiler validates routing metadata but is never a dispatcher.
+`codex.exe` processes. Native auxiliaries inside an authorized Sol session are governed
+by the current Sol Advisor route contract and retained A8 safety ceilings. The
+deterministic route compiler validates routing metadata but is never a dispatcher.
 
 Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
 tools, Codex Router, connector health checks, and local context tools may remain running
@@ -239,16 +244,18 @@ MAX WRITERS PER REPOSITORY OR WORKTREE: 1
 DUPLICATE ORDINARY WORK: PROHIBITED
 ```
 
-Active roles are Sol/High as top-level orchestrator and final reviewer; Ox/High as the
-preferred backend writer or a read-only role when it does not hold a writer lock;
-Terra/Max as the explicit Sol-routed fallback or integration-sensitive writer; and
-Luna/Max as read-only. HAU frontend work overrides the writer role to exactly one
-Terra/Max writer and keeps Ox and Luna read-only. DeepSeek aliases are disabled from
-active and fallback routes while credentials and historical proof remain inactive.
+Active roles are Sol / High as primary architect, route selector, verifier, and final
+acceptance authority; Luna / Max for bounded implementation; Terra / High for
+judgment-heavy, high-risk, context-heavy, or wide-blast-radius implementation; and
+fresh read-only Sol / High for audit/full review. Ox / High is temporary,
+implementation-only, and eligible only through its exact fail-closed gate. DeepSeek
+aliases remain disabled from active routes while credentials and historical proof stay
+inactive.
 
-When Ox is unavailable or fails, record that state and stop. A Terra route is a new
-explicit Sol decision, never automatic fallback. The compiler may return `STOP` for a
-green no-execution check while the usage lock is closed; every `ROUTE` result remains
+When Ox is unavailable or ineligible, record `OX_OVERLAY_DISABLED` and choose the
+suitable native lane before dispatch within the declared owner-started Sol route. This
+is not automatic provider fallback. The compiler may return `STOP` for a green
+no-execution check while the usage lock is closed; every `ROUTE` result remains
 non-dispatching.
 
 ## Context envelope
@@ -464,7 +471,9 @@ over artificial future-action lists.
 ## Current/Next Slice Pipeline
 
 The accepted [`TOKEN-OPT-001-A1`](../governance/agents/specs/TOKEN-OPT-001-A1.md)
-amendment defines one optional read-only scout-ahead lane:
+amendment defines one historical optional read-only scout-ahead lane. It applies only
+when a current accepted project task explicitly invokes it; it is not a general Sol
+Advisor routing default:
 
 ```text
 CURRENT WRITER FINISHES CURRENT SLICE
@@ -572,20 +581,22 @@ ROLLBACK / REVERSION
 
 ## Deterministic anti-drift defaults
 
-The global parent remains `gpt-5.6-sol` at `high`. Native Codex direct-worker capacity
-is sixteen, with no mandatory zero-worker startup; delegation depth is one and recursive
-spawning is disabled. The routing profile—not this Markdown policy—selects live child
-models and efforts. Sol is disabled as a child. Luna/Max and Ox/High each have a ceiling
-of sixteen, while Terra/Max has a ceiling of two. These ceilings are not staffing targets.
-Ox/High, Terra/Max, and Luna/Max are eligible only
-through their contracts and project overrides. DeepSeek aliases remain disabled from
-active and fallback routes.
+The global parent is `gpt-5.6-sol` at `high`. The active profile encodes the exact
+Sol Advisor modes, `solo` default, one auxiliary default maximum, Luna / Max bounded
+implementation, Terra / High higher-risk implementation, fresh Sol / High audit/full
+review, and the fail-closed Ox implementation overlay. Sol is never an implementation
+child; the fresh reviewer is permitted only after parent verification in `audit` or
+`full`. Delegation depth is one and recursive spawning is disabled.
+
+The retained A8-shaped numeric fields in the manual guard remain compatibility safety
+ceilings. They do not authorize multiple scouts, Terra / Max, Ox review work, or any
+other default topology. DeepSeek aliases remain disabled from active routes.
 
 The machine-readable current profile, contracts, compiler, redacted telemetry,
 verification-receipt tool, observed-only benchmark command, unchanged historical
-fixtures, and focused A8 validator live under `automation/codex-model-routing/`.
-The A1 one-scout pipeline remains a specialized current/next-slice rule; it does not
-increase the model-specific worker ceilings or authorize the next slice.
+fixtures, and focused routing/token verifier live under `automation/codex-model-routing/`.
+The A1 one-scout pipeline remains historical task-specific provenance and never
+authorizes the next slice.
 
 ## Stop condition
 

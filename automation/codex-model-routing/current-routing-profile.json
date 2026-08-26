@@ -1,10 +1,10 @@
 {
-  "schema_version": 3,
-  "profile_id": "TOKEN-OPT-001-A8-current",
+  "schema_version": 5,
+  "profile_id": "SOL-ADVISOR-GLOBAL-001-current",
   "policy_id": "TOKEN-OPT-001",
-  "accepted_amendment": "TOKEN-OPT-001-A8",
-  "governance_revision": "TOKEN-OPT-001-A8",
-  "last_reviewed": "2026-08-25",
+  "accepted_amendment": "SOL-ADVISOR-GLOBAL-001",
+  "governance_revision": "SOL-ADVISOR-GLOBAL-001",
+  "last_reviewed": "2026-08-26",
   "catalog": {
     "required_models": [
       {
@@ -13,19 +13,21 @@
         "role": "orchestrator"
       },
       {
-        "id": "openrouter/stealth/ox-alpha",
-        "effort": "high",
-        "role": "backend_primary_writer_or_read_only_worker"
-      },
-      {
         "id": "gpt-5.6-terra",
-        "effort": "max",
-        "role": "fallback_integration_or_frontend_writer"
+        "effort": "high",
+        "role": "high_risk_implementation"
       },
       {
         "id": "gpt-5.6-luna",
         "effort": "max",
-        "role": "read_only_worker"
+        "role": "bounded_implementation"
+      }
+    ],
+    "optional_overlay_models": [
+      {
+        "id": "openrouter/stealth/ox-alpha",
+        "effort": "high",
+        "role": "temporary_implementation_overlay"
       }
     ],
     "disabled_models": [
@@ -35,7 +37,7 @@
       "deepseek/deepseek-v4-flash-vision-exp"
     ]
   },
-  "roles": {
+  "historical_roles": {
     "orchestrator": {
       "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
@@ -63,7 +65,7 @@
       "status": "HISTORICAL_A4_A6_COMPATIBILITY"
     }
   },
-  "active_roles": {
+  "historical_active_roles": {
     "orchestrator": {
       "model": "gpt-5.6-sol",
       "reasoning_effort": "high",
@@ -103,7 +105,7 @@
       }
     }
   },
-  "fallbacks": {
+  "historical_fallbacks": {
     "active": [],
     "automatic": false,
     "explicit_sol_only": [
@@ -138,25 +140,30 @@
     "failure_behavior": "mark_ineligible_then_stop_for_explicit_sol_reroute"
   },
   "concurrency": {
+    "default_auxiliaries_max": 1,
+    "max_active_auxiliaries": 1,
     "sol_subagents_allowed": false,
-    "max_luna_max_subagents": 16,
-    "max_terra_max_subagents": 2,
-    "max_ox_alpha_subagents": 16,
-    "max_total_direct_subagents": 16,
-    "advisor_selects_smallest_useful_topology": true,
+    "fresh_sol_reviewer_allowed": true,
+    "max_fresh_sol_reviewers": 1,
     "max_delegation_depth": 1,
-    "max_active_children": 16,
+    "max_active_children": 1,
     "max_active_writers_account_wide": 2,
     "max_writers_per_repository_or_worktree": 1,
     "max_overlapping_writers": 1,
     "default_read_only_workers": 0,
     "adaptive_read_only_workers_min": 0,
-    "adaptive_read_only_workers_max": 16,
-    "independent_burst_total_workers_max": 16,
+    "adaptive_read_only_workers_max": 1,
+    "independent_burst_total_workers_max": 1,
     "recursive_worker_spawning": false,
     "ordinary_duplicate_work": "prohibited",
     "stop_when_green": true,
-    "isolation_required_for_second_writer": true
+    "isolation_required_for_second_writer": true,
+    "legacy_guard_safety_caps": {
+      "max_luna_max_subagents": 16,
+      "max_terra_max_subagents": 2,
+      "max_ox_alpha_subagents": 16,
+      "max_total_direct_subagents": 16
+    }
   },
   "context_envelope": {
     "dispatch_seed_tokens_max": 12000,
@@ -195,15 +202,42 @@
     "quality_claim_rule": "compare_only_observed_quality_evidence",
     "quota_metric": "native_weighted_quota"
   },
-  "role_catalog_status": "ACTIVE_A8_SELECTION_ONLY",
+  "sol_advisor": {
+    "version": "0.6.0",
+    "upstream_main_sha": "37b75cad535abdd46531f0227483a8842d045ab8",
+    "modes": ["solo", "delegate", "audit", "full"],
+    "route_declaration_required": true,
+    "solo_default": true,
+    "default_auxiliaries_max": 1,
+    "delegation_depth": 1,
+    "recursive_spawning": false,
+    "native_roles": {
+      "luna_implementer": { "role": "sol_advisor_luna_implementer", "model": "gpt-5.6-luna", "reasoning_effort": "max" },
+      "terra_implementer": { "role": "sol_advisor_terra_implementer", "model": "gpt-5.6-terra", "reasoning_effort": "high" },
+      "sol_reviewer": { "role": "sol_advisor_sol_reviewer", "model": "gpt-5.6-sol", "reasoning_effort": "high", "read_only": true, "fresh_context_required": true }
+    }
+  },
+  "ox_overlay": {
+    "role": "sol_advisor_ox_implementer",
+    "model": "openrouter/stealth/ox-alpha",
+    "reasoning_effort": "high",
+    "status": "OX_OVERLAY_DISABLED",
+    "implementation_only": true,
+    "allowed_route_modes": ["delegate", "full"],
+    "eligibility_requirements": ["exact_callable_runtime_identity", "zero_input_and_output_pricing", "unambiguous_billing", "acceptable_health", "required_capabilities", "suitable_data_classification"],
+    "failure_behavior": "mark_overlay_disabled_then_select_native_lane_before_dispatch"
+  },
+  "role_catalog_status": "ACTIVE_SOL_ADVISOR_GLOBAL_001",
   "execution_boundary": {
-    "policy_id": "TOKEN-OPT-001-A8",
+    "policy_id": "SOL-ADVISOR-GLOBAL-001",
     "gate_path": "manual-codex-execution-gate.json",
     "default_state": "LOCKED",
     "manual_only": true,
     "owner_started_sol_session": true,
     "max_processes": 1,
+    "default_auxiliaries_max": 1,
     "sol_subagents_allowed": false,
+    "fresh_sol_reviewer_allowed": true,
     "max_luna_max_subagents": 16,
     "max_terra_max_subagents": 2,
     "max_ox_alpha_subagents": 16,
@@ -215,6 +249,7 @@
     "max_writers_per_repository_or_worktree": 1,
     "background_continuation": false,
     "automatic_fallback": false,
-    "route_compiler_is_dispatcher": false
+    "route_compiler_is_dispatcher": false,
+    "legacy_guard_safety_caps_only": true
   }
 }

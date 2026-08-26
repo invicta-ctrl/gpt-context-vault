@@ -15,6 +15,10 @@ This extension preserves Odysseus-specific injection, inheritance, memory, provi
 
 It is not active merely because this file exists. The Odysseus runtime must explicitly load this extension after the universal root `AGENTS.md`. Until that is proven, the current `D:\AI_Workspace\AGENTS.md` remains unchanged and this extension is a prepared source only.
 
+## Sol Advisor inheritance when activated
+
+When this prepared extension is proven loaded, it inherits `SOL-ADVISOR-GLOBAL-001`: Sol / High four-mode routing with solo default, temporary fail-closed implementation-only Ox, native Luna / Max and Terra / High implementation lanes, and fresh Sol / High audit/full review. Runtime/provider safety may tighten this contract but may not silently replace it.
+
 ## Governance canary
 
 When this extension is actually present in a model's effective instruction context and Earl asks, without permitting a filesystem search:
