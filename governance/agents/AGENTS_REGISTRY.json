@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "spec_id": "AGENTS-CONSOLIDATION-002",
-  "updated_at": "2026-08-26T00:00:00Z",
+  "updated_at": "2026-09-01T00:00:00Z",
   "policy": {
     "one_editable_general_authority": true,
     "replicas_byte_identical": true,
@@ -78,25 +78,39 @@
       "sync_allowed": true,
       "gate_status": "ACTIVE_VERIFIED_MATCH",
       "prechange_sha256": "4caa83de99e226a1a9146c42505afbaa0af516f8a3f23b421e7e3c69dbcf75b6",
-      "allowed_prechange_sha256": [
-        "9134072db442fc8e838b07434849701f4885a9c831d0b50a747103bc24f437b6",
-        "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
+    "allowed_prechange_sha256": [
+      "9134072db442fc8e838b07434849701f4885a9c831d0b50a747103bc24f437b6",
+      "301b9e665b4a54ecb1fd4a294dea651f368cec116a8779ff673bf2738e628a28",
+      "d44fdbe573e08179ebb454898c61cb6bae18583cd4a8f691e400346ff3322dbb",
         "b1437c4cab8dd3997da838b255aa185f1f3335c64d6b12fadb2ff8025376f459",
-        "53c40a2d3948a096f2e652745fb0109e6033f23af68f5c7ffd6a06b5b3210efa"
+        "53c40a2d3948a096f2e652745fb0109e6033f23af68f5c7ffd6a06b5b3210efa",
+        "dd35c3e6d0a61f3580d4766c1f9dd4695620d393f8cdb678af074e4fe93b6ed3",
+        "d0b70e03f8d210183af5b5b79d62a65d740349a3f235c86bb5888e793fed2de6",
+        "21d028f6403a305f96143553e7ac35ecc5495eae3a4ce389ed9d070d49ed445b"
       ],
       "rollback": "C:\\Users\\adria\\.codex\\backups\\TOKEN-OPT-001-A5-<timestamp>\\AGENTS.md",
       "backup_required": true,
       "inventory_classification_when_drift": "MANAGED_REPLICA_DRIFT",
-      "notes": "Global Codex root, extension, and deterministic developer-instructions activation are active and verified. Recurring known managed-root drift was backup-protected and repaired during Astral adoption verification.",
+      "notes": "Global Codex root and extension are managed replicas. MAEOS-v1 requires dry-run, scoped apply, and verification; DD35C3E6D0A61F3580D4766C1F9DD4695620D393F8CDB678AF074E4FE93B6ED3 is a one-time observed managed-replica drift hash whose complete diff was only the LeanCTX session-start block. Its injector is backup-protected and disabled before this scoped synchronization; all other listed hashes remain backup-protected synchronization receipts.",
       "prechange_extension_exists": true,
-      "prechange_extension_sha256": "e6df33fffada56437f183c34a9177726df53d9390b6d94bf856f21f06abe4b47",
+      "prechange_extension_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61fdfda7b4ce6c5375a86692ad875ae",
+      "allowed_prechange_extension_sha256": [
+        "4ac66b8cb8809d8d6a152f3eade556da6dd40ae02bc7687146032d2e4c38f132",
+        "a8753cb2ee50294f4ed8684e352ddd00c08030cc15db514342226002c4e0429d",
+        "e1c9794ed0b325faa7517f8c208172fa263fcd6e84aabc2898bcf311754a0469"
+      ],
       "extension_activation": {
         "kind": "codex_developer_instructions",
         "config_path": "C:\\Users\\adria\\.codex\\config.toml",
         "begin_marker": "# BEGIN MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "end_marker": "# END MANAGED AGENTS-CONSOLIDATION-001 GLOBAL CODEX PROJECT POLICY",
         "prechange_config_sha256": "a20536ab1a21e9c948f19dd59175f4f07eb80c2576a767b9ffcd915c3679764c",
-        "deployed_value_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61dfda7b4ce6c5375a86692ad875ae",
+         "deployed_value_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61fdfda7b4ce6c5375a86692ad875ae",
+         "allowed_prechange_deployed_value_sha256": [
+           "4ac66b8cb8809d8d6a152f3eade556da6dd40ae02bc7687146032d2e4c38f132",
+           "a8753cb2ee50294f4ed8684e352ddd00c08030cc15db514342226002c4e0429d",
+           "e1c9794ed0b325faa7517f8c208172fa263fcd6e84aabc2898bcf311754a0469"
+         ],
         "rollback": "C:\\Users\\adria\\.codex\\backups\\agents-consolidation-001\\<timestamp>\\config.toml"
       },
       "original_prechange_sha256": "076191b522646c02896c7b31901f918a0db1cd5e855dd5b6c20ee3e3901e7c42",
@@ -112,7 +126,7 @@
         "config_validation": "PASS"
       },
       "active_root_sha256": "ea1b32a7a1baa28a4845c970a7178603b7fc9e98d80667a1c4baa747f31a4d87",
-      "active_extension_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61dfda7b4ce6c5375a86692ad875ae",
+      "active_extension_sha256": "5a3dd6e710cca1251e8b706c5087fac0a61fdfda7b4ce6c5375a86692ad875ae",
       "last_drift_repair": {
         "observed_at": "2026-08-19T15:59:19.830132Z",
         "observed_sha256": "667edea5b9e4f73dc29308c682f424f82bf3d83040233de9e8e2b4ff9feabc3e",

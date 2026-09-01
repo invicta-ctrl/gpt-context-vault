@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "contract_id": "MAEOS-v1-role-contracts",
+  "semantic_roles": {
+    "ROOT_ORCHESTRATOR": { "model": "gpt-5.6-sol", "reasoning_effort": "high", "child_eligible": false, "read_only": true },
+    "FAST_LEAF": { "status": "REFERENCE_ONLY_OR_RUNTIME_VALIDATED" },
+    "READER": { "model": "gpt-5.6-luna", "reasoning_effort": "max", "read_only": true, "child_eligible": true },
+    "DOCS_RESEARCH": { "maps_to": "READER" },
+    "PLANNER": { "maps_to": "READER" },
+    "ENGINEER": { "requires": "single_explicit_writer" },
+    "WRITER": { "requires": "single_explicit_writer" },
+    "TESTER": { "maps_to": "READER_UNLESS_EXPLICIT_WRITE" },
+    "REVIEWER": { "model": "gpt-5.6-sol", "reasoning_effort": "high", "read_only": true, "fresh_context_required": true },
+    "BRANCH_COORDINATOR": { "model": "gpt-5.6-terra", "reasoning_effort": "high", "requires": "root_authorization" }
+  },
+  "prohibitions": ["recursive_spawning", "automatic_fallback", "sol_child", "overlapping_target_writers"]
+}

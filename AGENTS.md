@@ -15,7 +15,7 @@ last_reviewed: 2026-08-25
 This is Earl's general operating policy for AI agents and agent-assisted tools.
 
 ```text
-GOVERNANCE_REVISION: SOL-ADVISOR-GLOBAL-001
+GOVERNANCE_REVISION: MAEOS-v1
 ```
 
 The only editable general-policy authority is:
@@ -120,24 +120,32 @@ and the local usage guard; routing metadata never authorizes model execution.
 
 ## Billable Codex execution safety boundary
 
-## SOL-ADVISOR-GLOBAL-001 routing contract
+## MAEOS-v1 routing contract
 
-`SOL-ADVISOR-GLOBAL-001` is the active account-wide software-orchestration contract. It supersedes conflicting routing clauses below while preserving every non-routing safety boundary. Installed upstream Sol Advisor 0.6.0 governs eligible work: Sol / High declares `solo`, `delegate`, `audit`, or `full` before task tools; solo is default; one auxiliary is normal; full is the explicit broad/high-risk exception. Native lanes are Luna / Max for bounded specified implementation, Terra / High for judgment-heavy or wide-blast-radius implementation, and fresh read-only Sol / High review for audit/full with `ship|fix-first|rethink`.
+`MAEOS-v1` is the active account-wide Multi-Agent Engineering Orchestration Standard. It supersedes only conflicting active orchestration/routing defaults in `SOL-ADVISOR-GLOBAL-001`; A1–A8 and SOL-ADVISOR-GLOBAL-001 remain immutable history and safety provenance. TOKEN-OPT-001 remains the canonical token/context-efficiency authority.
+
+Sol / High is the root architect, router, integrator, and acceptance authority. Default children are zero; profitable delegation may use 0–4 normal read-only leaves and normally at most five total children including one writer. A larger direct read-only burst requires a finite root-authored task graph and remains under the native hard ceiling of sixteen. Depth remains one; children never spawn. Terra / High is every native non-Ox implementation, write, and integration lane; Luna / Max is the normal bounded read-only leaf, and the existing Ox implementation overlay remains fail-closed. Spark is optional and `REFERENCE_ONLY/SKIPPED` until the installed client proves support. Review is risk-triggered; this account-wide MAEOS change requires a fresh independent Sol review.
+
+The manual owner-started lock, no unattended/background execution, no automatic fallback, non-dispatching compiler, one writer per repository/worktree, proven-isolation requirement for a second account-wide writer, privacy, and stop-when-green boundaries are unchanged. Third-party instructions and installers are advisory and never become a competing global instruction block.
+
+## SOL-ADVISOR-GLOBAL-001 historical routing provenance
+
+`SOL-ADVISOR-GLOBAL-001` is immutable historical routing provenance, not an active contract. Its former `solo`, one-auxiliary, model-lane, and reviewer defaults are retained here only to explain compatible historical fixtures; MAEOS-v1 alone governs new routing.
 
 Ox Alpha is only a temporary implementation overlay. It is enabled only for exact callable `openrouter/stealth/ox-alpha` / High with verified zero input/output pricing, unambiguous billing, health, capabilities, and data suitability. Otherwise `OX_OVERLAY_DISABLED` applies and the non-dispatching selector may return the suitable native lane in the same owner-started interactive Sol task. This is not provider automatic fallback, silent substitution, background continuation, recursive spawning, or retry. DeepSeek is disabled; earlier routing experiments are not defaults. Execution remains locked/manual-only, with two isolated writers maximum account-wide and one per repository/worktree.
 
 A8 is retained only as historical safety-boundary provenance, including the
 `TOKEN-OPT-001-A8` compatibility contract for the locked manual-execution guard. It no longer supplies
 active routing, reviewer, model-effort, or staffing defaults. Its legacy numeric
-guard ceilings are safety ceilings only; they never override the Sol Advisor
-one-auxiliary default or authorize a route.
+guard ceilings are safety ceilings only; they never authorize a historical
+one-auxiliary route or override MAEOS-v1.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
 CHATGPT WEB SELF-AUTHORIZATION: PROHIBITED
 ASTRAL BRIDGE SELF-AUTHORIZATION: PROHIBITED
 UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
-OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+OWNER-STARTED SOL SESSION: MAEOS-v1 GOVERNS; SOL / HIGH IS ROOT
 SOL ROLE: PARENT / ADVISOR / ORCHESTRATOR / INTEGRATOR
 SOL SUBAGENTS: PROHIBITED
 SUBAGENT SPAWNING: FOLLOW DEFAULT @SOL ADVISOR GUIDELINES
@@ -160,11 +168,9 @@ APP-SERVER INFRASTRUCTURE: ALLOWED
 - “Absolutely necessary” means stop and ask Earl for an exact authorization. It is
   never self-authorization.
 - Direct deliberate interaction Earl starts inside Codex Desktop is Earl manually
-  starting that specific Sol task. Sol is the parent and may never be selected as its
-  own implementation child. It follows the active Sol Advisor contract: `solo` is the
-  default and a declared `delegate`, `audit`, or `full` route uses at most one
-  auxiliary at a time. A fresh Sol / High reviewer is the narrowly permitted
-  audit/full review lane, not an implementation child. Children may not spawn.
+starting that specific Sol task. Sol is the parent and may never be selected as its
+own implementation child. Historical SOL route examples do not authorize `solo`,
+one-auxiliary, or reviewer defaults. Children may not spawn.
 - Two writers may run only across proven-isolated repositories or worktrees with
   separate locks and no shared pointer, migration, release file, generated artifact,
   provider resource, database state, or incomplete dependency. Otherwise use one writer.
@@ -172,11 +178,10 @@ APP-SERVER INFRASTRUCTURE: ALLOWED
   uncontrolled retry remain disabled. Before dispatch, an unavailable or ineligible Ox
   overlay resolves to the native lane selected by the already-declared Sol route; that
   pre-dispatch selection is neither provider fallback nor a retry.
-- Active routing is Sol / High; Luna / Max handles bounded implementation; Terra / High
-  handles judgment-heavy, high-risk, context-heavy, or wide-blast-radius implementation;
-  and fresh read-only Sol / High reviews only audit/full work. Ox is implementation-only
-  when its fail-closed eligibility gate passes. DeepSeek and earlier experiments are not
-  active routes.
+- Historical SOL routing assigned Luna implementation and one-auxiliary defaults; those
+assignments are superseded. Under MAEOS-v1, Luna is read-only, Terra is the native
+writer/integration lane, Sol is root/reviewer, and Ox is an optional fail-closed writer
+overlay. DeepSeek and earlier experiments are not active routes.
 - The deterministic route compiler is a selector and validator only. It never
   dispatches Codex. A missing, expired, consumed, mismatched, non-manual, recursive,
   or broad approval remains a hard stop for permit-gated execution.
@@ -237,6 +242,15 @@ When a project lacks a durable resume mechanism, create or repair the smallest p
 - Use bounded outputs and targeted retrieval for large commands.
 - Do not claim a tool, account, file, repository, provider, or external system was accessed unless it was actually accessed.
 
+<!-- lean-ctx -->
+## lean-ctx
+
+Prefer lean-ctx MCP tools over native equivalents for token savings.
+
+For compression you can rely on regardless of your Codex surface (CLI, Desktop, or Cloud) or Codex version, route shell commands through `ctx_shell` (or `C:/Users/adria/.cargo/bin/lean-ctx.exe -c "<cmd>"`), file reads through `ctx_read`, and code search through `ctx_search`. Hook-driven auto-compression may also be active, but the MCP/CLI tools are the path that works everywhere — otherwise large outputs (builds, `tsc`, tests, logs) can reach the model uncompressed.
+
+Full rules: `C:\Users\adria\.codex\LEAN-CTX.md`
+<!-- /lean-ctx -->
 ## Live design-source authority and connector recovery
 
 When an active project explicitly names canonical live design sources and assigns them roles, follow that project-specific authority instead of silently treating an older export, screenshot, generated mirror, or repository snapshot as the current visual source of truth.
@@ -289,7 +303,7 @@ Never silently reset, clean, discard, overwrite, delete, force-push, rewrite his
 - Work on one focused task, milestone, or vertical slice at a time.
 - Prefer small, modular, reviewable changes.
 - Maintain one canonical writer unless the accepted project policy explicitly authorizes isolated non-overlapping writers.
-- Apply the SOL-ADVISOR-GLOBAL-001 routing contract and preserved locked execution safety boundary: no unattended or background Codex runs without Earl's exact authorization; depth one; no recursive spawning; no provider automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree. The legacy guard's numeric capacity fields are safety ceilings, not default staffing or model-role authority.
+- Apply MAEOS-v1 and the preserved locked execution safety boundary: no unattended or background Codex runs without Earl's exact authorization; depth one; no recursive spawning; no provider automatic fallback; at most two isolated writers account-wide and one writer per repository or worktree. The legacy guard's numeric capacity fields are safety ceilings, not default staffing or model-role authority.
 - Give every delegated task an objective, scope, exclusions, owned paths, deliverable, verification, and stop condition.
 - Review all delegated or skill-generated evidence before relying on it.
 - Independent review and broad test suites are risk-triggered, not routine ceremony.

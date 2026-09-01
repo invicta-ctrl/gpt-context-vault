@@ -61,8 +61,8 @@ function Get-ManualExecutionGate {
     param([string]$Path)
     $gate = Read-JsonRequired -Path $Path -Label 'manual Codex execution gate'
     $policyId = [string](Get-OptionalProperty $gate 'policy_id' '')
-    Assert-Route ($policyId -in @('TOKEN-OPT-001-A6', 'TOKEN-OPT-001-A7', 'TOKEN-OPT-001-A8', 'SOL-ADVISOR-GLOBAL-001')) 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
-    Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -in @(1, 2)) 'MANUAL_EXECUTION_GATE_INVALID'
+    Assert-Route ($policyId -in @('TOKEN-OPT-001-A6', 'TOKEN-OPT-001-A7', 'TOKEN-OPT-001-A8', 'SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) 'MANUAL_EXECUTION_GATE_POLICY_MISMATCH'
+    Assert-Route ([int](Get-OptionalProperty $gate 'schema_version' 0) -in @(1, 2, 3)) 'MANUAL_EXECUTION_GATE_INVALID'
     Assert-Route ([string](Get-OptionalProperty $gate 'default_state' '') -eq 'LOCKED') 'MANUAL_EXECUTION_GATE_NOT_LOCKED'
     Assert-Route ([bool](Get-OptionalProperty $gate 'manual_only' $false)) 'MANUAL_EXECUTION_GATE_NOT_MANUAL_ONLY'
     Assert-Route ([int](Get-OptionalProperty $gate 'max_processes' 0) -eq 1) 'MANUAL_EXECUTION_GATE_PROCESS_LIMIT_INVALID'
@@ -96,6 +96,13 @@ function Get-ManualExecutionGate {
             Assert-Route ([int](Get-OptionalProperty $gate 'default_auxiliaries_max' 0) -eq 1) 'SOL_ADVISOR_DEFAULT_AUXILIARY_LIMIT_INVALID'
             Assert-Route ([bool](Get-OptionalProperty $gate 'fresh_sol_reviewer_allowed' $false)) 'SOL_ADVISOR_FRESH_REVIEWER_REQUIRED'
             Assert-Route ([int](Get-OptionalProperty $gate 'max_fresh_sol_reviewers' 0) -eq 1) 'SOL_ADVISOR_FRESH_REVIEWER_LIMIT_INVALID'
+        }
+        elseif ($policyId -eq 'MAEOS-v1') {
+            Assert-Route ([int](Get-OptionalProperty $gate 'default_children' -1) -eq 0) 'MAEOS_DEFAULT_CHILDREN_INVALID'
+            Assert-Route ([int](Get-OptionalProperty $gate 'normal_read_only_workers_max' 0) -eq 4) 'MAEOS_NORMAL_READER_LIMIT_INVALID'
+            Assert-Route ([int](Get-OptionalProperty $gate 'normal_total_children_max' 0) -eq 5) 'MAEOS_NORMAL_TOTAL_LIMIT_INVALID'
+            Assert-Route ([int](Get-OptionalProperty $gate 'native_burst_ceiling' 0) -eq 16) 'MAEOS_NATIVE_BURST_LIMIT_INVALID'
+            Assert-Route ([bool](Get-OptionalProperty $gate 'burst_requires_finite_task_graph' $false)) 'MAEOS_TASK_GRAPH_REQUIRED'
         }
     }
     Assert-Route (-not [bool](Get-OptionalProperty $gate 'background_continuation' $true)) 'BACKGROUND_CONTINUATION_DISABLED'
@@ -173,7 +180,7 @@ function Assert-ManualExecutionPreconditions {
         $requestedTerra = Get-Integer -Value (Get-OptionalProperty $Request 'requested_terra_max_subagents' 0) -Label 'requested_terra_max_subagents'
         $requestedOx = Get-Integer -Value (Get-OptionalProperty $Request 'requested_ox_alpha_subagents' 0) -Label 'requested_ox_alpha_subagents'
         $requestedSol = Get-Integer -Value (Get-OptionalProperty $Request 'requested_sol_subagents' 0) -Label 'requested_sol_subagents'
-        $requestedReviewer = if ($policyId -eq 'SOL-ADVISOR-GLOBAL-001') { Get-Integer -Value (Get-OptionalProperty $Request 'requested_sol_reviewer_auxiliaries' 0) -Label 'requested_sol_reviewer_auxiliaries' } else { 0 }
+        $requestedReviewer = if ($policyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) { Get-Integer -Value (Get-OptionalProperty $Request 'requested_sol_reviewer_auxiliaries' 0) -Label 'requested_sol_reviewer_auxiliaries' } else { 0 }
         $requestedTotal = $requestedLuna + $requestedTerra + $requestedOx + $requestedSol + $requestedReviewer
         Assert-Route ($requestedSol -eq 0) 'SOL_SUBAGENTS_PROHIBITED'
         Assert-Route ($requestedLuna -le 16) 'LUNA_MAX_SUBAGENT_LIMIT_EXCEEDED'
@@ -190,6 +197,21 @@ function Assert-ManualExecutionPreconditions {
                 Assert-Route ($requestedReviewer -eq 0) 'SOL_ADVISOR_REVIEWER_REQUEST_INVALID'
             }
         }
+        elseif ($policyId -eq 'MAEOS-v1') {
+            Assert-Route ($requestedReviewer -le 1) 'MAEOS_REVIEWER_LIMIT_INVALID'
+            $normalTotal = [int](Get-OptionalProperty $Gate 'normal_total_children_max' 5)
+            if ($requestedTotal -gt $normalTotal) {
+                Assert-Route ($Role -eq 'read_only_worker') 'MAEOS_BURST_READ_ONLY_ONLY'
+                Assert-Route ($requestedTerra -eq 0 -and $requestedOx -eq 0 -and $requestedSol -eq 0 -and $requestedReviewer -eq 0) 'MAEOS_BURST_LUNA_READ_ONLY_AGGREGATE_REQUIRED'
+                Assert-Route ([bool](Get-OptionalProperty $Request 'finite_task_graph' $false)) 'MAEOS_FINITE_TASK_GRAPH_REQUIRED'
+                Assert-Route (-not [string]::IsNullOrWhiteSpace([string](Get-OptionalProperty $Request 'task_graph_node_id' ''))) 'MAEOS_TASK_GRAPH_NODE_REQUIRED'
+            }
+            if ($Role -eq 'read_only_worker' -and $requestedTotal -gt 4) {
+                Assert-Route ([bool](Get-OptionalProperty $Request 'finite_task_graph' $false)) 'MAEOS_FINITE_TASK_GRAPH_REQUIRED'
+            }
+            if ($Role -eq 'reviewer') { Assert-Route ($requestedReviewer -eq 1 -and $requestedTotal -eq 1) 'MAEOS_REVIEWER_REQUEST_INVALID' }
+            else { Assert-Route ($requestedReviewer -eq 0) 'MAEOS_REVIEWER_REQUEST_INVALID' }
+        }
         $subagentRequested = [bool](Get-OptionalProperty $Request 'subagent_requested' ($requestedTotal -gt 0))
         Assert-Route (($requestedTotal -gt 0) -eq $subagentRequested) 'SUBAGENT_REQUEST_COUNT_MISMATCH'
         $requestedModel = [string](Get-OptionalProperty $Request 'requested_model' '')
@@ -205,7 +227,7 @@ function Assert-ManualExecutionPreconditions {
     }
 
     $permit = Read-ManualPermit -Path $PermitPath
-    if ($policyId -eq 'SOL-ADVISOR-GLOBAL-001') {
+    if ($policyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) {
         $activeBooleanValues = [ordered]@{
             manual_interactive = $true
             allow_subagents = $true
@@ -222,7 +244,16 @@ function Assert-ManualExecutionPreconditions {
             Assert-Route ($actual -eq [bool]$entry.Value) ('MANUAL_PERMIT_' + $entry.Key.ToUpperInvariant() + '_INVALID')
         }
         Assert-Route ([int](Get-OptionalProperty $permit 'schema_version' 0) -eq 2) 'MANUAL_PERMIT_SCHEMA_INVALID'
-        Assert-Route ([int](Get-OptionalProperty $permit 'default_auxiliaries_max' 0) -eq 1) 'SOL_ADVISOR_DEFAULT_AUXILIARY_LIMIT_INVALID'
+        # Permit issuance preserves the legacy safety field. It is compatibility metadata,
+        # never MAEOS topology authority; only the SOL branch invokes its one-auxiliary guard.
+        $permitDefaultValid = [int](Get-OptionalProperty $permit 'default_auxiliaries_max' 0) -eq 1
+        if ($policyId -eq 'SOL-ADVISOR-GLOBAL-001') { Assert-Route $permitDefaultValid 'SOL_ADVISOR_DEFAULT_AUXILIARY_LIMIT_INVALID' }
+        else {
+            # MAEOS does not invoke the Sol topology guard.  The issuer-owned legacy
+            # field remains mandatory only for contract compatibility, so retain the
+            # historical error token as an alias for the immutable Sol regression.
+            Assert-Route $permitDefaultValid 'MAEOS_PERMIT_LEGACY_COMPAT_INVALID; SOL_ADVISOR_DEFAULT_AUXILIARY_LIMIT_INVALID'
+        }
         Assert-Route ([int](Get-OptionalProperty $permit 'max_fresh_sol_reviewers' 0) -eq 1) 'SOL_ADVISOR_FRESH_REVIEWER_LIMIT_INVALID'
     }
     Assert-Route ([string](Get-OptionalProperty $permit 'state' '') -eq 'ACTIVE') 'CODEX_USAGE_LOCKED'
@@ -264,13 +295,14 @@ function Assert-ManualExecutionPreconditions {
     if ($policyId -eq 'SOL-ADVISOR-GLOBAL-001') {
         Assert-Route ($allowedRoles.Count -eq 1 -and $allowedRoles[0] -in @('orchestrator','writer','reviewer')) 'MANUAL_PERMIT_ROLE_MISMATCH'
     }
+    elseif ($policyId -eq 'MAEOS-v1') { Assert-Route ($allowedRoles.Count -eq 1 -and $allowedRoles[0] -in @('orchestrator','writer','reviewer','read_only_worker')) 'MANUAL_PERMIT_ROLE_MISMATCH' }
     Assert-Route ($allowedRoles -contains $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
     Assert-Route ([string](Get-OptionalProperty $permit 'allowed_role' '') -eq $Role) 'MANUAL_PERMIT_ROLE_MISMATCH'
     $allowedModel = [string](Get-OptionalProperty $permit 'allowed_model' '')
     $allowedReasoning = [string](Get-OptionalProperty $permit 'allowed_reasoning' '')
     Assert-Route ($allowedModel -notin @('', 'default', '*')) 'MANUAL_PERMIT_MODEL_MISMATCH'
     Assert-Route ($allowedReasoning -notin @('', 'default', '*')) 'MANUAL_PERMIT_REASONING_MISMATCH'
-    if ($policyId -eq 'SOL-ADVISOR-GLOBAL-001' -and $Role -eq 'reviewer') {
+    if ($policyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1') -and $Role -eq 'reviewer') {
         Assert-Route ($allowedModel -eq 'gpt-5.6-sol' -and $allowedReasoning -eq 'high') 'MANUAL_PERMIT_REVIEWER_CONTRACT_INVALID'
     }
     $expiresText = [string](Get-OptionalProperty $permit 'expires_at' '')
@@ -425,7 +457,7 @@ function Get-HistoricalCompatibility {
 
 function Assert-CatalogContract {
     param($Profile, $Catalog, [string]$ExecutionPolicyId)
-    $requiredModels = if ($ExecutionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') {
+    $requiredModels = if ($ExecutionPolicyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) {
         @($Profile.catalog.required_models)
     }
     else {
@@ -445,7 +477,7 @@ function Assert-CatalogContract {
     }
 
     $disabled = @($Profile.catalog.disabled_models | ForEach-Object { [string]$_ })
-    if ($ExecutionPolicyId -ne 'SOL-ADVISOR-GLOBAL-001') {
+    if ($ExecutionPolicyId -notin @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) {
         $historical = Get-HistoricalCompatibility -Profile $Profile
         if ([int]$Profile.schema_version -ge 3) {
             $activeModels = @(
@@ -545,7 +577,7 @@ function Test-FreshOxCache {
 function Get-OxEligibility {
     param($Profile, $Request, $State, [string]$ExecutionPolicyId)
     $oxState = $State.ox
-    $isCurrentSolPolicy = $ExecutionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001'
+    $isCurrentSolPolicy = $ExecutionPolicyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')
     if (-not $isCurrentSolPolicy) {
         if ([bool](Get-OptionalProperty $oxState 'failed' $false)) {
             return [pscustomobject]@{ Eligible = $false; Reason = 'OX_PREVIOUS_FAILURE'; Cached = $true }
@@ -682,14 +714,15 @@ $catalog = Read-JsonRequired -Path $CatalogPath -Label 'model catalog'
 $executionGate = Get-ManualExecutionGate -Path $ExecutionGatePath
 $executionPolicyId = [string](Get-OptionalProperty $executionGate 'policy_id' '')
 $request = Read-JsonRequired -Path $RequestPath -Label 'route request'
-Assert-Route ([int]$profile.schema_version -in @(1, 2, 3, 4, 5)) 'unsupported routing profile schema'
+Assert-Route ([int]$profile.schema_version -in @(1, 2, 3, 4, 5, 6)) 'unsupported routing profile schema'
+if ($executionPolicyId -eq 'MAEOS-v1') { Assert-Route ([string](Get-OptionalProperty $profile 'governance_revision' '') -eq 'MAEOS-v1') 'STALE_GOVERNANCE' }
 Assert-CatalogContract -Profile $profile -Catalog $catalog -ExecutionPolicyId $executionPolicyId
 
 $role = [string](Get-OptionalProperty $request 'role' '')
 Assert-Route ($role -in @('orchestrator', 'writer', 'reviewer', 'read_only_worker')) 'role must be orchestrator, writer, reviewer, or read_only_worker'
 $requestedModel = [string](Get-OptionalProperty $request 'requested_model' '')
-$routeMode = if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') { [string](Get-OptionalProperty $request 'route_mode' '') } else { 'historical' }
-    if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') {
+$routeMode = if ($executionPolicyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) { [string](Get-OptionalProperty $request 'route_mode' '') } else { 'historical' }
+if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') {
         Assert-Route ($routeMode -in @($profile.sol_advisor.modes | ForEach-Object { [string]$_ })) 'SOL_ADVISOR_ROUTE_MODE_INVALID'
         if ($routeMode -eq 'solo') { Assert-Route ($role -eq 'orchestrator') 'SOL_ADVISOR_SOLO_ROLE_INVALID' }
         elseif ($routeMode -eq 'delegate') { Assert-Route ($role -eq 'writer') 'SOL_ADVISOR_DELEGATE_ROLE_INVALID' }
@@ -697,6 +730,14 @@ $routeMode = if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') { [string](Get
         else { Assert-Route ($role -in @('writer', 'reviewer')) 'SOL_ADVISOR_FULL_ROLE_INVALID' }
         Assert-SolAdvisorRouteTopology -Request $request -Role $role -RouteMode $routeMode
     }
+elseif ($executionPolicyId -eq 'MAEOS-v1') {
+    Assert-Route ([string]$profile.maeos_roles.status -eq 'ACTIVE_MAEOS_V1') 'MAEOS_ROLE_CATALOG_INACTIVE'
+    Assert-Route ($routeMode -in @($profile.maeos_roles.route_modes | ForEach-Object { [string]$_ })) 'MAEOS_ROUTE_MODE_INVALID'
+    if ($routeMode -eq 'solo') { Assert-Route ($role -eq 'orchestrator') 'MAEOS_SOLO_ROLE_INVALID' }
+    elseif ($routeMode -eq 'delegate') { Assert-Route ($role -in @('writer','read_only_worker')) 'MAEOS_DELEGATE_ROLE_INVALID' }
+    elseif ($routeMode -eq 'audit') { Assert-Route ($role -eq 'reviewer') 'MAEOS_AUDIT_ROLE_INVALID' }
+    else { Assert-Route ($role -in @('writer','reviewer','read_only_worker')) 'MAEOS_FULL_ROLE_INVALID' }
+}
 $acceptanceGreen = [bool](Get-OptionalProperty $request 'acceptance_green' $false)
 Assert-Route ($requestedModel -notin @($profile.catalog.disabled_models | ForEach-Object { [string]$_ })) "requested model is disabled: $requestedModel"
 
@@ -825,7 +866,7 @@ if ($executionPolicyId -eq 'TOKEN-OPT-001-A6') {
     }
 }
 else {
-    if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') {
+    if ($executionPolicyId -in @('SOL-ADVISOR-GLOBAL-001', 'MAEOS-v1')) {
         if ($role -eq 'orchestrator') {
             Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq 'gpt-5.6-sol') 'SOL_ADVISOR_ORCHESTRATOR_MODEL_INVALID'
             $selectedModel = 'gpt-5.6-sol'
@@ -834,10 +875,17 @@ else {
         }
         elseif ($role -eq 'reviewer') {
             Assert-Route ([bool]$profile.concurrency.fresh_sol_reviewer_allowed) 'SOL_ADVISOR_FRESH_REVIEWER_REQUIRED'
-            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.sol_advisor.native_roles.sol_reviewer.model) 'SOL_ADVISOR_REVIEWER_MODEL_INVALID'
-            $selectedModel = [string]$profile.sol_advisor.native_roles.sol_reviewer.model
-            $selectedEffort = [string]$profile.sol_advisor.native_roles.sol_reviewer.reasoning_effort
-            $contract = [string]$profile.sol_advisor.native_roles.sol_reviewer.role
+            $reviewerRole = if ($executionPolicyId -eq 'MAEOS-v1') { $profile.maeos_roles.reviewer } else { $profile.sol_advisor.native_roles.sol_reviewer }
+            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$reviewerRole.model) 'SOL_ADVISOR_REVIEWER_MODEL_INVALID'
+            $selectedModel = [string]$reviewerRole.model
+            $selectedEffort = [string]$reviewerRole.reasoning_effort
+            $contract = [string]$(if ($executionPolicyId -eq 'MAEOS-v1') { $reviewerRole.contract } else { $reviewerRole.role })
+        }
+        elseif ($role -eq 'read_only_worker' -and $executionPolicyId -eq 'MAEOS-v1') {
+            Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.maeos_roles.read_only_leaf.model) 'MAEOS_READER_MODEL_INVALID'
+            $selectedModel = [string]$profile.maeos_roles.read_only_leaf.model
+            $selectedEffort = [string]$profile.maeos_roles.read_only_leaf.reasoning_effort
+            $contract = [string]$profile.maeos_roles.read_only_leaf.contract
         }
         elseif ($role -eq 'writer') {
             $shape = [string](Get-OptionalProperty $request 'implementation_shape' 'bounded')
@@ -850,6 +898,12 @@ else {
                 $selectedModel = [string]$profile.ox_overlay.model
                 $selectedEffort = [string]$profile.ox_overlay.reasoning_effort
                 $contract = [string]$profile.ox_overlay.role
+            }
+            elseif ($executionPolicyId -eq 'MAEOS-v1') {
+                Assert-Route ([string]::IsNullOrWhiteSpace($requestedModel) -or $requestedModel -eq [string]$profile.maeos_roles.writer.model) 'MAEOS_WRITER_MODEL_INVALID'
+                $selectedModel = [string]$profile.maeos_roles.writer.model
+                $selectedEffort = [string]$profile.maeos_roles.writer.reasoning_effort
+                $contract = [string]$profile.maeos_roles.writer.contract
             }
             elseif ($shape -eq 'bounded') {
                 $selectedModel = [string]$profile.sol_advisor.native_roles.luna_implementer.model
@@ -984,16 +1038,16 @@ $result = [ordered]@{
         approval_id = [string]$manualPermit.approval_id
         manual_only = $true
         max_processes = 1
-        default_children = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { 0 } else { $null }
+        default_children = if ($executionPolicyId -in @('TOKEN-OPT-001-A7','MAEOS-v1')) { 0 } else { $null }
         max_children = if ($executionPolicyId -eq 'TOKEN-OPT-001-A7') { [int](Get-OptionalProperty $executionGate 'max_children' 0) } else { 0 }
-        default_auxiliaries_max = if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') { [int](Get-OptionalProperty $executionGate 'default_auxiliaries_max' 1) } else { $null }
-        fresh_sol_reviewer_allowed = if ($executionPolicyId -eq 'SOL-ADVISOR-GLOBAL-001') { [bool](Get-OptionalProperty $executionGate 'fresh_sol_reviewer_allowed' $false) } else { $null }
-        sol_subagents_allowed = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { [bool](Get-OptionalProperty $executionGate 'sol_subagents_allowed' $false) } else { $null }
-        max_luna_max_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { [int](Get-OptionalProperty $executionGate 'max_luna_max_subagents' 0) } else { 0 }
-        max_terra_max_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { [int](Get-OptionalProperty $executionGate 'max_terra_max_subagents' 0) } else { 0 }
-        max_ox_alpha_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { [int](Get-OptionalProperty $executionGate 'max_ox_alpha_subagents' 0) } else { 0 }
-        max_total_direct_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { [int](Get-OptionalProperty $executionGate 'max_total_direct_subagents' 0) } else { 0 }
-        max_delegation_depth = if ($executionPolicyId -in @('TOKEN-OPT-001-A7','TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001')) { 1 } else { 0 }
+        default_auxiliaries_max = if ($executionPolicyId -in @('SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [int](Get-OptionalProperty $executionGate 'default_auxiliaries_max' 1) } else { $null }
+        fresh_sol_reviewer_allowed = if ($executionPolicyId -in @('SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [bool](Get-OptionalProperty $executionGate 'fresh_sol_reviewer_allowed' $false) } else { $null }
+        sol_subagents_allowed = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [bool](Get-OptionalProperty $executionGate 'sol_subagents_allowed' $false) } else { $null }
+        max_luna_max_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [int](Get-OptionalProperty $executionGate 'max_luna_max_subagents' 0) } else { 0 }
+        max_terra_max_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [int](Get-OptionalProperty $executionGate 'max_terra_max_subagents' 0) } else { 0 }
+        max_ox_alpha_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [int](Get-OptionalProperty $executionGate 'max_ox_alpha_subagents' 0) } else { 0 }
+        max_total_direct_subagents = if ($executionPolicyId -in @('TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { [int](Get-OptionalProperty $executionGate 'max_total_direct_subagents' 0) } else { 0 }
+        max_delegation_depth = if ($executionPolicyId -in @('TOKEN-OPT-001-A7','TOKEN-OPT-001-A8','SOL-ADVISOR-GLOBAL-001','MAEOS-v1')) { 1 } else { 0 }
         background_continuation = $false
         automatic_fallback = $false
         dispatcher = $false

@@ -12,9 +12,9 @@ last_reviewed: 2026-08-25
 
 Read the byte-identical universal `AGENTS.md` first. This file adds only local Codex, host, skill, and tooling rules. A repository's own project extension and accepted specification override these defaults within that repository.
 
-## Sol Advisor inheritance
+## MAEOS-v1 inheritance
 
-Inherit `SOL-ADVISOR-GLOBAL-001`: Sol / High uses `solo|delegate|audit|full` with solo default; Luna / Max is bounded implementation, Terra / High is high-risk implementation, and fresh Sol / High is the only audit/full reviewer. Ox is temporary implementation-only and fail-closed; native selection after `OX_OVERLAY_DISABLED` is permitted only inside the same owner-started interactive Sol task. This extension may tighten host safety but does not replace account-wide orchestration.
+Inherit `MAEOS-v1`: Sol / High is the root; zero children is the default; 0–4 readers and normally at most five total children including one writer are the normal envelope. Larger direct read-only bursts require a finite root-authored task graph and remain capped at sixteen. Luna / Max is read-only only, Terra / High is the native writer/integration/coordination lane, fresh Sol / High is risk-triggered review, and Ox is a temporary fail-closed optional writer overlay. Depth is one; children never spawn; automatic fallback is prohibited. Task worktrees require a root permit. This extension may tighten host safety but does not replace account-wide orchestration.
 
 ## Local execution boundary
 
@@ -29,23 +29,24 @@ Inherit `SOL-ADVISOR-GLOBAL-001`: Sol / High uses `solo|delegate|audit|full` wit
 
 For every repository unless a stricter accepted project rule applies:
 
-- `SOL-ADVISOR-GLOBAL-001` is the sole routing default. Sol / High declares
-  `solo|delegate|audit|full` before task tools; solo is default and one auxiliary is
-  the normal maximum. The retained A8-shaped numeric guard fields are compatibility
-  safety ceilings, never a default staffing or role-selection pool.
+- MAEOS-v1 is the sole active routing default. The historical
+  `SOL-ADVISOR-GLOBAL-001` mode names `solo|delegate|audit|full` and its former
+  one-auxiliary convention are compatibility provenance only. The retained A8-shaped
+  numeric guard fields are compatibility safety ceilings, never a default staffing or
+  role-selection pool.
 - Unattended, background, scheduled, watchdog, ChatGPT Web, and Astral-initiated Codex
   work remains prohibited without Earl's exact authorization.
 - Direct work Earl deliberately starts inside Codex Desktop is an owner-started Sol
   session. Sol governs bounded delegation and remains the top-level integrator,
-  verifier, and acceptance authority. Fresh Sol / High review is allowed only for
-  audit/full after parent verification.
+  verifier, and acceptance authority. Fresh Sol / High review is risk-triggered;
+  the accepted MAEOS account-wide change requires an independent fresh review.
 - At most two writers may coexist account-wide only across proven-isolated repositories
   or worktrees; every repository/worktree has at most one writer and an explicit lock.
 - Automatic provider fallback, silent model substitution, recursive spawning, and
   uncontrolled retry remain disabled. An ineligible Ox overlay resolves to the native
   lane selected before dispatch by the declared Sol route.
-- Sol / High is the parent; Luna / Max is bounded implementation; Terra / High is
-  higher-risk implementation; fresh Sol / High is the audit/full reviewer; and Ox is
+- Sol / High is the parent; Luna / Max is read-only only; Terra / High is the native
+  non-Ox writer/integration lane; fresh Sol / High is risk-triggered review; and Ox is
   temporary implementation-only when eligible. DeepSeek is not an active route.
 - A permit-gated CLI run still requires a fresh exact interactive permit. The scheduled
   `Earl Codex Usage Guard` preserves app-server infrastructure and blocks unpermitted
@@ -54,7 +55,7 @@ For every repository unless a stricter accepted project rule applies:
   as execution authority.
 - After a canonical governance change, pre-existing write-capable sessions are
   `STALE_GOVERNANCE` for new mutations until a fresh session proves
-  SOL-ADVISOR-GLOBAL-001 was loaded.
+  current `MAEOS-v1` governance and repository authority were loaded.
 
 ## CodeGraph
 
@@ -116,7 +117,7 @@ After changing this extension:
 - confirm the universal root replica still matches the canonical master;
 - confirm this file remains the only registered local Codex extension;
 - run the canonical AGENTS verification script;
-- verify SOL-ADVISOR-GLOBAL-001 routing, locked manual-execution safety, depth-one delegation, writer caps, Ox fail-closed state, and DeepSeek-disabled active routes without reading or changing credential values;
+- verify historical SOL-ADVISOR-GLOBAL-001 compatibility plus MAEOS routing, locked manual-execution safety, depth-one delegation, writer caps, Ox fail-closed state, and DeepSeek-disabled active routes without reading or changing credential values;
 - report the exact local files changed and backup path.
 
 A request to change universal rules in `C:\Users\adria\.codex\AGENTS.md` must be redirected to the Context Vault canonical master.

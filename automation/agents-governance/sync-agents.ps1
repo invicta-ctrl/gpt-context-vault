@@ -295,9 +295,10 @@ foreach ($replica in $allReplicas) {
         $extensionHashProperty = if ($mode -eq 'candidate') { 'candidate_prechange_extension_sha256' } else { 'prechange_extension_sha256' }
         $expectedExtensionExists = [bool](Get-OptionalProperty -Object $replica -Name $extensionExistsProperty -Default $false)
         $expectedExtensionHash = [string](Get-OptionalProperty -Object $replica -Name $extensionHashProperty -Default '')
-        $expectedExtensionHashes = @($expectedExtensionHash)
-        $expectedExtensionHashes += @([string](Get-OptionalProperty -Object $replica -Name 'active_extension_sha256' -Default ''))
-        $expectedExtensionHashes = @($expectedExtensionHashes | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+$expectedExtensionHashes = @($expectedExtensionHash)
+$expectedExtensionHashes += @([string](Get-OptionalProperty -Object $replica -Name 'active_extension_sha256' -Default ''))
+$expectedExtensionHashes += @((Get-OptionalProperty -Object $replica -Name 'allowed_prechange_extension_sha256' -Default @()))
+$expectedExtensionHashes = @($expectedExtensionHashes | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
         if ((-not $expectedExtensionExists -and $expectedExtensionHashes.Count -eq 0) -or
             $extensionCurrentHash -notin $expectedExtensionHashes) {
             $failures.Add(

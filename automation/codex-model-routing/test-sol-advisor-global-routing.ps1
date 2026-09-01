@@ -144,6 +144,12 @@ try {
     $requestPath = Join-Path $tempRoot 'request.json'
     Write-TestJson -Path $catalogPath -Value (New-TestCatalog -Profile $baseProfile)
     $gate = Copy-TestObject $baseGate
+    # Historical SOL coverage must not read MAEOS routing state as though it were
+    # the old contract.  Build the smallest isolated legacy gate fixture instead.
+    Set-ObjectProperty -Object $gate -Name 'policy_id' -Value 'SOL-ADVISOR-GLOBAL-001'
+    Set-ObjectProperty -Object $gate -Name 'default_auxiliaries_max' -Value 1
+    Set-ObjectProperty -Object $gate -Name 'fresh_sol_reviewer_allowed' -Value $true
+    Set-ObjectProperty -Object $gate -Name 'max_fresh_sol_reviewers' -Value 1
     Set-ObjectProperty -Object $gate -Name 'permit_path' -Value $permitPath
     Write-TestJson -Path $gatePath -Value $gate
 
