@@ -4,7 +4,6 @@ CURRENT_STATUS: MAEOS-v1 PUBLISHED / MERGED / ACCEPTED
 CURRENT_TASK: MAEOS-v1 account-wide orchestration integration
 CURRENT_IMPLEMENTATION_MERGE_SHA: 2a77f1cb156d5bb2a68456dd66fcceaafc6e8ea0
 CURRENT_IMPLEMENTATION_PUBLICATION: PR #19 merged 2026-09-01 into governance/agents-consolidation-002
-CURRENT_RECEIPT_BRANCH: codex/maeos-v1-final-handoff (follow-up receipt only; uncommitted and not merged)
 CURRENT_INDEPENDENT_SOL_REVIEW: ship
 CURRENT_STARTING_HEAD: 2285cf4926df0ca56e0b2966dd605f6b5a18f365
 CURRENT_UPSTREAM_BASE: origin/governance/agents-consolidation-002 at starting parity +0/-0
