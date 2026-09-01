@@ -226,10 +226,12 @@ function Invoke-CodexDeveloperInstructionsSync {
         }
     }
     elseif ($state.ManagedContentHash -ne $source.Hash) {
-        $expectedDeployedHash = [string](Get-AeOptionalProperty -Object $Activation -Name 'deployed_value_sha256' -Default '')
-        if ([string]::IsNullOrWhiteSpace($expectedDeployedHash) -or
-            $state.ManagedContentHash -ne $expectedDeployedHash) {
-            throw "Managed instructions changed outside canonical sync; expected=$expectedDeployedHash actual=$($state.ManagedContentHash)"
+        $expectedDeployedHashes = @([string](Get-AeOptionalProperty -Object $Activation -Name 'deployed_value_sha256' -Default ''))
+        $expectedDeployedHashes += @((Get-AeOptionalProperty -Object $Activation -Name 'allowed_prechange_deployed_value_sha256' -Default @()))
+        $expectedDeployedHashes = @($expectedDeployedHashes | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        if ($expectedDeployedHashes.Count -eq 0 -or
+            $state.ManagedContentHash -notin $expectedDeployedHashes) {
+            throw "Managed instructions changed outside canonical sync; expected=$($expectedDeployedHashes -join ',') actual=$($state.ManagedContentHash)"
         }
     }
 

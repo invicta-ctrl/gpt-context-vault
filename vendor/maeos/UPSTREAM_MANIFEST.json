@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "package": "MAEOS-v1 curated managed package",
+  "local_authority": "Context Vault MAEOS-v1; third-party sources are advisory only",
+  "update_policy": "discover -> read-only audit -> exact SHA/license -> compare -> adopt unique mechanism -> deterministic verification -> pin provenance",
+  "upstreams": [
+    {
+      "repository": "https://github.com/ArcanEdge-AI/coding-agent-playbook-codex",
+      "commit": "08d5d6c14b556026657ffdb4fc217b6ba6d020b1",
+      "tree": "3eaa73dd1ef458370ddf75adb733e539fe6e103a",
+      "license": "MIT",
+      "classification": "ADAPT",
+      "rejected": ["mandatory-one-subagent", "depth-two recursion", "global instruction install", "upstream installer"],
+      "adopted": ["task graph", "bounded worker packets", "worktree lifecycle", "multi-session coordination", "reference routing", "senior review"],
+      "source_blobs": {
+        "skills/subagent-orchestration/SKILL.md": "be352b8ef66fa7f52e306b23b2d99e47b46a873e",
+        "skills/task-graph-orchestration/SKILL.md": "57ffaccf4dbfb6c3c483d7b4ef7fa9c53ec9d502",
+        "skills/worktree-lifecycle/SKILL.md": "6405c9b8422001185b37cdb6b2ab858b96751200",
+        "skills/multi-session-coordination/SKILL.md": "8c45b3d62505ea212c076047a4c26a9f514ea4d1",
+        "skills/reference-doc-routing/SKILL.md": "0b7c8ae4d36fc47461d12421d55b9646ffad9740",
+        "skills/senior-code-review/SKILL.md": "4545378add1f3da14ecb45ae92662c612dfd8b79",
+        "references/active-work-record.md": "0dec31687a997e5dbe677afbd992c15d81aec4ae",
+        "references/task-graph.md": "d51765929ec7c11b1a3bf464dee12373d1408e21",
+        "references/worktree-manifest.md": "30b8e82bc00d7e81288b608c360871e56aaa1433"
+      }
+    },
+    {
+      "repository": "https://github.com/augiefra/codex-sol-terra-orchestration",
+      "commit": "6ee3c15714b5f8d695b1a7aaa2178364d1c67346",
+      "tree": "77507cb12689060cc8668bfb5e33bbdd183783b0",
+      "license": "MIT",
+      "classification": "ADAPT",
+      "rejected": ["recursive Terra-to-leaf", "automatic Spark-to-Luna fallback", "Spark install without supported runtime", "model-catalog patch"],
+      "adopted": ["config merge", "runtime truth", "completion guard", "minimal context packet"],
+      "source_blobs": {"templates/config.fragment.toml": "a1302abe090f207ba68ffdaa7624e1f644fd3b0d", "templates/AGENTS-routing.md": "25bf7ec463f588c7cb90a7c50868ff5e3e45825f", "templates/agents/spark-fastlane.toml": "febf9b81d86f5d21b9548bb99eaea117ee4fe776"}
+    }
+  ],
+  "curated_local_sha256": {
+    "maeos-subagent-orchestration/SKILL.md": "bdfc5a8897a0cb1d8e609b56c3278395c871e4158136419915f6d4f2ae10ca4e",
+    "maeos-task-graph-orchestration/SKILL.md": "10ebe35263c7140ead3e32f16a69d2d695112433ead7f033e8896dd888480457",
+    "maeos-worktree-lifecycle/SKILL.md": "3c8a1f089271eb02cafe256d201518abbb49b171a2b21fc76003323e676daf50",
+    "maeos-multi-session-coordination/SKILL.md": "38679f2b3260e1434264414f609b8d101333d97f2f00d09fb41f43ab3664d4a9",
+    "maeos-reference-doc-routing/SKILL.md": "29cba4576c762aadd53f4a805f12bc4cdf29d4c0270f9eb6aa197fac2be4efbe",
+    "maeos-senior-code-review/SKILL.md": "2b2c2b7e6ced32228feea075343f47961739bf964d40b564002e8c42a3457706",
+    "references/active-work-record.md": "ef2eb7bb99847beb278370ef3db8a0b45e6eb59a2ae9211335e1742b886ec013",
+    "references/task-graph.md": "4af460e2daa1fe914a8e35503cc0c445e73ae4f15f8e1ae96e5c611c40dbb57e",
+    "references/worktree-manifest.md": "255566e7a5e93000af7cb984c5633c2cb45fae763c539a1d82b67d4825798369"
+  },
+  "license_texts": {
+    "ArcanEdge-AI/coding-agent-playbook-codex": "licenses/ArcanEdge-MIT.txt",
+    "augiefra/codex-sol-terra-orchestration": "licenses/augiefra-MIT.txt"
+  },
+  "local_modifications": "Every curated skill and reference adds MAEOS authority, zero-default children, depth-one/no-recursion, no automatic fallback, root-only task graphs, and one-writer/worktree safeguards."
+}

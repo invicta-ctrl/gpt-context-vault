@@ -10,7 +10,7 @@ last_reviewed: 2026-08-25
 
 ## Active orchestration amendment
 
-`SOL-ADVISOR-GLOBAL-001` is the single active routing contract. It adopts installed upstream Sol Advisor 0.6.0: Sol / High declares `solo|delegate|audit|full` before task tools; solo is the default with at most one auxiliary; full is exceptional; depth is one; and worker work substitutes for parent work. Luna / Max handles bounded implementation, Terra / High handles judgment-heavy implementation, and fresh read-only Sol / High is the only audit/full reviewer (`ship|fix-first|rethink`). Ox is a temporary implementation-only, fail-closed overlay for exact callable `openrouter/stealth/ox-alpha` / High with verified zero input/output pricing, unambiguous billing, health, capabilities, and suitable data. When disabled, the deterministic non-dispatching selector may return the suitable native lane inside the same owner-started interactive Sol task; provider automatic fallback, silent substitution, background execution, recursive spawning, and independent retry remain prohibited. A8 is locked safety/history only; historical A1–A8 routing text is provenance where it conflicts.
+`MAEOS-v1` is the single active routing contract and integrates the compatible parts of Sol Advisor, ArcanEdge, and augiefra under Context Vault authority. Sol / High declares routing before task tools; zero children is the default, 0–4 read-only leaves is the normal envelope, and a finite task graph is required for a larger direct read-only burst through the native ceiling of sixteen. Luna / Max is the normal bounded read-only leaf, Terra / High is every native non-Ox implementation, write, and integration lane, and fresh read-only Sol / High is risk-triggered review. Ox remains a temporary fail-closed implementation overlay. The locked manual execution gate, depth one, no recursion, no automatic fallback, one-writer safety, evidence reuse, and stop-when-green rules are preserved. A8 and SOL-ADVISOR-GLOBAL-001 are immutable historical/safety provenance where they conflict.
 
 ## Purpose
 
@@ -34,14 +34,15 @@ Git safeguards.
 `TOKEN-OPT-001-A8` remains historical safety-boundary provenance for the locked manual
 execution guard: it preserves the prohibitions on ChatGPT Web, Astral Bridge,
 automation, scheduling, watchdog, retry, fallback, and background self-authorization.
-`SOL-ADVISOR-GLOBAL-001` supersedes A8 wherever it would otherwise define routing,
-reviewer selection, model effort, or staffing defaults. Legacy numeric guard fields are
-safety ceilings and compatibility data, never a competing route contract.
+`MAEOS-v1` supersedes conflicting active routing, reviewer-selection, model-effort,
+and staffing defaults. `SOL-ADVISOR-GLOBAL-001` and A8 are immutable historical
+provenance; their legacy numeric guard fields are safety ceilings and compatibility
+data, never a competing route contract.
 
 ```text
 BILLABLE CODEX EXECUTION: LOCKED BY DEFAULT
 UNATTENDED OR BACKGROUND CODEX: PROHIBITED WITHOUT EARL AUTHORIZATION
-OWNER-STARTED SOL SESSION: @SOL ADVISOR GOVERNS
+OWNER-STARTED SOL SESSION: MAEOS-v1 GOVERNS; SOL / HIGH IS ROOT
 SOL SUBAGENTS: PROHIBITED
 MANDATORY ZERO-WORKER START: NONE
 MAX LUNA MAX SUBAGENTS: 16
@@ -58,8 +59,9 @@ ABSOLUTELY NECESSARY MEANS STOP AND ASK EARL
 ```
 
 A permit-gated CLI run still requires a fresh exact interactive approval. An active
-owner-started Sol session follows the current `solo|delegate|audit|full` contract: solo
-has zero auxiliaries and each other declared route has at most one auxiliary. Sol cannot
+owner-started Sol session follows current MAEOS-v1: zero default children and
+task-dependent profitable delegation; `solo|delegate|audit|full` labels and their
+former one-auxiliary SOL convention are historical fixture provenance only. Sol cannot
 be a subagent; A8's Luna, Terra, Ox, and total numeric limits remain locked-safety
 ceilings only, while delegation depth remains one and cannot recurse. A second writer is
 permitted only in a different proven-isolated repository or worktree with a separate lock
@@ -68,7 +70,7 @@ and no shared mutable state or incomplete dependency.
 The local scheduled `Earl Codex Usage Guard` continues to preserve only
 `codex app-server` infrastructure while locked and to terminate unpermitted primary
 `codex.exe` processes. Native auxiliaries inside an authorized Sol session are governed
-by the current Sol Advisor route contract and retained A8 safety ceilings. The
+by the current MAEOS-v1 contract and retained A8 safety ceilings. The
 deterministic route compiler validates routing metadata but is never a dispatcher.
 
 Always-on app-server listeners, the ChatGPT tunnel, Astral deterministic file/Git/test
@@ -245,9 +247,9 @@ DUPLICATE ORDINARY WORK: PROHIBITED
 ```
 
 Active roles are Sol / High as primary architect, route selector, verifier, and final
-acceptance authority; Luna / Max for bounded implementation; Terra / High for
-judgment-heavy, high-risk, context-heavy, or wide-blast-radius implementation; and
-fresh read-only Sol / High for audit/full review. Ox / High is temporary,
+acceptance authority; Luna / Max as read-only leaves only; Terra / High for every
+native non-Ox implementation, write, and integration task; and fresh read-only Sol /
+High risk-triggered review. Ox / High is temporary,
 implementation-only, and eligible only through its exact fail-closed gate. DeepSeek
 aliases remain disabled from active routes while credentials and historical proof stay
 inactive.
@@ -582,11 +584,11 @@ ROLLBACK / REVERSION
 ## Deterministic anti-drift defaults
 
 The global parent is `gpt-5.6-sol` at `high`. The active profile encodes the exact
-Sol Advisor modes, `solo` default, one auxiliary default maximum, Luna / Max bounded
-implementation, Terra / High higher-risk implementation, fresh Sol / High audit/full
-review, and the fail-closed Ox implementation overlay. Sol is never an implementation
-child; the fresh reviewer is permitted only after parent verification in `audit` or
-`full`. Delegation depth is one and recursive spawning is disabled.
+historical Sol Advisor modes and former one-auxiliary defaults; MAEOS-v1 is the active
+contract: Luna / Max read-only only, Terra / High the native non-Ox writer/integration
+lane, fresh Sol / High risk-triggered review, and the fail-closed Ox implementation
+overlay. Sol is never an implementation child; fresh review follows parent verification
+and is required for the accepted MAEOS account-wide change. Delegation depth is one and recursive spawning is disabled.
 
 The retained A8-shaped numeric fields in the manual guard remain compatibility safety
 ceilings. They do not authorize multiple scouts, Terra / Max, Ox review work, or any

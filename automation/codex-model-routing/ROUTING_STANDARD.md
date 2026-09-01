@@ -8,21 +8,22 @@ largest model is always better.
 
 ## Manual execution boundary
 
-Routing is selection metadata, not permission to spend Codex allowance.
-`SOL-ADVISOR-GLOBAL-001` defines `solo|delegate|audit|full`: solo is the default with at
-most one auxiliary; Luna / Max and Terra / High are native implementation lanes; Ox is
-implementation-only and fail-closed. A8 is locked safety/history only. ChatGPT Web,
+Routing is selection metadata, not permission to spend Codex allowance. `MAEOS-v1` is
+the active routing standard: Sol / High is root; zero children is default; Luna / Max
+is read-only only; Terra / High handles every native non-Ox implementation, writer, and
+integration task; Ox is implementation-only and fail-closed. Historical
+`SOL-ADVISOR-GLOBAL-001` labels are fixture provenance only. A8 is locked safety/history only. ChatGPT Web,
 Astral Bridge, automation, scheduling, prior prompts, and accepted autonomous
 continuations may not start or resume Codex. Only an explicit owner-started Sol session
 may route billable work.
 
-One permit names one exact purpose, model, reasoning level, and role. The active Sol
-route uses zero auxiliaries for `solo`, one native implementer for `delegate`, one fresh
-Sol reviewer for `audit`, and one implementer or one reviewer per `full` compiler
-invocation. Retained A8 numeric caps are safety ceilings; they do not authorize a larger
-default topology. Delegation depth remains one, Sol subagents and recursive spawning are
-prohibited, and automatic fallback or background continuation is disabled. The route
-compiler never dispatches.
+One permit names one exact purpose, model, reasoning level, and role. MAEOS topology
+starts with zero children; permits may authorize 0–4 normal read-only Luna leaves and
+normally at most five total children including at most one Terra/Ox writer. A finite
+root-authored graph may authorize a read-only burst through sixteen; it never authorizes
+another writer. Retained A8 numeric caps are safety ceilings, not staffing defaults.
+Delegation depth remains one, Sol subagents and recursive spawning are prohibited, and
+automatic fallback or background continuation is disabled. The route compiler never dispatches.
 
 ## Dimensions
 
@@ -44,10 +45,9 @@ catalog:
 | `deep_review` | High-risk work, release blockers, or a lower tier failed with evidence |
 
 Reasoning should be `low` or `medium` for fast work and may use `high` for
-ordinary implementation, exploration, or consequential judgment. The active
-`SOL-ADVISOR-GLOBAL-001` profile is the role-specific exception: Sol uses `high`, Luna
-bounded implementation uses `max`, Terra high-risk implementation uses `high`, and
-eligible Ox implementation uses `high`. Never use an unsupported value or substitute a
+ordinary implementation, exploration, or consequential judgment. MAEOS-v1 assigns Sol
+`high` root/review, Luna `max` read-only leaves, Terra `high` native non-Ox writing and
+integration, and eligible Ox implementation `high`. Never use an unsupported value or substitute a
 model outside the current profile.
 
 ## Current Codex compatibility rule
@@ -71,11 +71,11 @@ UI label as a CLI value or silently substitute another model.
 ## Current execution capacity
 
 ```text
-DEFAULT PROCESSES: 0
-MANUALLY PERMITTED OWNER-STARTED SOL PROCESSES: 1
-CURRENT MODES: solo | delegate | audit | full
-SOLO DEFAULT: TRUE
-MAXIMUM AUXILIARIES PER DECLARED ROUTE: 1
+DEFAULT CHILDREN: 0
+NORMAL READ-ONLY LUNA LEAVES: 0..4
+NORMAL TOTAL CHILDREN: 5 INCLUDING AT MOST ONE TERRA/OX WRITER
+GRAPH-GATED READ-ONLY BURST CEILING: 16
+HISTORICAL SOL MODE LABELS: FIXTURE PROVENANCE ONLY
 SOL SUBAGENTS: 0
 RETAINED A8 LUNA MAX SAFETY CEILING: 16
 RETAINED A8 TERRA MAX SAFETY CEILING: 2
@@ -89,12 +89,14 @@ AUTOMATIC FALLBACK: 0
 ```
 
 Sol / High is the parent planner, router, integrator, and final acceptance authority and
-is never child-eligible. `solo` has zero auxiliaries; `delegate` has one Luna / Max or
-Terra / High implementer; `audit` has one fresh read-only Sol / High reviewer; and each
-`full` invocation has exactly one implementer or one reviewer. Ox / High is
-implementation-only when its exact gate passes; otherwise the selector chooses the native
-lane before dispatch. A8 is locked safety/history only. DeepSeek is disabled. A second
-writer requires proven isolation and no target may have more than one writer.
+is never child-eligible. MAEOS starts with zero children; 0–4 normal Luna / Max leaves
+are read-only, while a graph-gated read-only burst may reach sixteen. Terra / High is
+the native non-Ox writer/integration lane. Fresh read-only Sol / High review is
+risk-triggered. Ox / High is implementation-only when its exact gate passes; otherwise
+the selector chooses Terra before dispatch. Depth is one; recursion, background
+continuation, and automatic fallback are disabled. A8 is locked safety/history only.
+DeepSeek is disabled. A second writer requires proven isolation and no target may have
+more than one writer.
 
 ## Historical current/next-slice scouting
 

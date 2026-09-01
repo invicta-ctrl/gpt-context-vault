@@ -1,10 +1,10 @@
 {
-  "schema_version": 5,
-  "profile_id": "SOL-ADVISOR-GLOBAL-001-current",
+  "schema_version": 6,
+  "profile_id": "MAEOS-v1-current",
   "policy_id": "TOKEN-OPT-001",
-  "accepted_amendment": "SOL-ADVISOR-GLOBAL-001",
-  "governance_revision": "SOL-ADVISOR-GLOBAL-001",
-  "last_reviewed": "2026-08-26",
+  "accepted_amendment": "MAEOS-v1",
+  "governance_revision": "MAEOS-v1",
+  "last_reviewed": "2026-09-01",
   "catalog": {
     "required_models": [
       {
@@ -15,12 +15,12 @@
       {
         "id": "gpt-5.6-terra",
         "effort": "high",
-        "role": "high_risk_implementation"
+        "role": "maeos_native_writer_integration_coordination"
       },
       {
         "id": "gpt-5.6-luna",
         "effort": "max",
-        "role": "bounded_implementation"
+        "role": "maeos_read_only_leaf"
       }
     ],
     "optional_overlay_models": [
@@ -36,6 +36,15 @@
       "deepseek/deepseek-v4-flash",
       "deepseek/deepseek-v4-flash-vision-exp"
     ]
+  },
+  "maeos_roles": {
+    "status": "ACTIVE_MAEOS_V1",
+    "route_modes": ["solo", "delegate", "audit", "full"],
+    "root_orchestrator": { "model": "gpt-5.6-sol", "reasoning_effort": "high", "read_only": true, "child_eligible": false },
+    "read_only_leaf": { "model": "gpt-5.6-luna", "reasoning_effort": "max", "read_only": true, "child_eligible": true, "contract": "maeos_luna_read_only_leaf" },
+    "writer": { "model": "gpt-5.6-terra", "reasoning_effort": "high", "read_only": false, "child_eligible": true, "contract": "maeos_terra_writer" },
+    "reviewer": { "model": "gpt-5.6-sol", "reasoning_effort": "high", "read_only": true, "fresh_context_required": true, "contract": "maeos_sol_reviewer" },
+    "ox_writer_overlay": { "model": "openrouter/stealth/ox-alpha", "reasoning_effort": "high", "status": "OX_OVERLAY_DISABLED", "fail_closed": true, "contract": "maeos_ox_writer_overlay" }
   },
   "historical_roles": {
     "orchestrator": {
@@ -140,20 +149,22 @@
     "failure_behavior": "mark_ineligible_then_stop_for_explicit_sol_reroute"
   },
   "concurrency": {
-    "default_auxiliaries_max": 1,
-    "max_active_auxiliaries": 1,
+    "default_auxiliaries_max": 0,
+    "max_active_auxiliaries": 16,
     "sol_subagents_allowed": false,
     "fresh_sol_reviewer_allowed": true,
     "max_fresh_sol_reviewers": 1,
     "max_delegation_depth": 1,
-    "max_active_children": 1,
+    "max_active_children": 16,
     "max_active_writers_account_wide": 2,
     "max_writers_per_repository_or_worktree": 1,
     "max_overlapping_writers": 1,
     "default_read_only_workers": 0,
     "adaptive_read_only_workers_min": 0,
-    "adaptive_read_only_workers_max": 1,
-    "independent_burst_total_workers_max": 1,
+    "adaptive_read_only_workers_max": 4,
+    "independent_burst_total_workers_max": 16,
+    "normal_total_children_max": 5,
+    "burst_requires_finite_task_graph": true,
     "recursive_worker_spawning": false,
     "ordinary_duplicate_work": "prohibited",
     "stop_when_green": true,
@@ -203,6 +214,7 @@
     "quota_metric": "native_weighted_quota"
   },
   "sol_advisor": {
+    "status": "HISTORICAL_COMPATIBILITY_ONLY",
     "version": "0.6.0",
     "upstream_main_sha": "37b75cad535abdd46531f0227483a8842d045ab8",
     "modes": ["solo", "delegate", "audit", "full"],
@@ -227,15 +239,15 @@
     "eligibility_requirements": ["exact_callable_runtime_identity", "zero_input_and_output_pricing", "unambiguous_billing", "acceptable_health", "required_capabilities", "suitable_data_classification"],
     "failure_behavior": "mark_overlay_disabled_then_select_native_lane_before_dispatch"
   },
-  "role_catalog_status": "ACTIVE_SOL_ADVISOR_GLOBAL_001",
+  "role_catalog_status": "ACTIVE_MAEOS_V1",
   "execution_boundary": {
-    "policy_id": "SOL-ADVISOR-GLOBAL-001",
+    "policy_id": "MAEOS-v1",
     "gate_path": "manual-codex-execution-gate.json",
     "default_state": "LOCKED",
     "manual_only": true,
     "owner_started_sol_session": true,
     "max_processes": 1,
-    "default_auxiliaries_max": 1,
+    "default_auxiliaries_max": 0,
     "sol_subagents_allowed": false,
     "fresh_sol_reviewer_allowed": true,
     "max_luna_max_subagents": 16,
