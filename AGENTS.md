@@ -157,9 +157,7 @@ APP-SERVER INFRASTRUCTURE: ALLOWED
   use zero or multiple useful bounded direct workers at depth one. Luna Max and Ox Alpha
   each have a ceiling of sixteen; Terra Max has a ceiling of two; total direct workers
   remain bounded by the native session ceiling of sixteen. Children may not spawn.
-- Two writers may run only across proven-isolated repositories or worktrees with
-  separate locks and no shared pointer, migration, release file, generated artifact,
-  provider resource, database state, or incomplete dependency. Otherwise use one writer.
+- Two writers may run only on **different authoritative projects** with individually authorized tasks, separate writer ownership, and no shared mutable state or unresolved dependency. A project's branches, worktrees, mirrors and repositories are one project: never let multiple agents write the same project concurrently. Independent read-only research/review may run concurrently. Shared artifacts, pointers, databases, provider/deployment controls, credentials, migrations or release dependencies across distinct projects require serialized affected writes. Preserve the maximum of two writers account-wide, stricter project-level locks, and all manual model-execution gates. See `governance/agents/specs/CROSS-PROJECT-CONCURRENCY-001.md`.
 - Fallback is an explicit Sol routing decision. Automatic provider fallback, silent
   model substitution, background continuation, and uncontrolled retry remain disabled.
 - Active routing is Sol High; Ox Alpha is preferred for backend implementation and may
