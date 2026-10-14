@@ -56,9 +56,7 @@ owner-started Sol session follows the normal @sol advisor delegation guidelines 
 use no workers or multiple useful bounded direct workers under the same task. Sol cannot
 be a subagent; Luna Max and Ox Alpha each have a ceiling of sixteen, Terra Max has a
 ceiling of two, total direct workers are capped at sixteen, and delegation cannot recurse.
-A second writer is permitted only
-in a different proven-isolated repository or worktree with a separate lock and no
-shared mutable state or incomplete dependency.
+A second writer is permitted only in a **different authoritative project** with a separate writer lock, owner-authorized task, and no shared mutable state or incomplete dependency. Different repositories, worktrees, branches or folders of the same product still count as the **same project** and must serialize writes. Read-only planning and review may run concurrently. Shared provider/database/deployment resources across otherwise different projects require the affected writes to serialize. The account-wide maximum remains two writers and existing manual model-execution gates remain unchanged (`governance/agents/specs/CROSS-PROJECT-CONCURRENCY-001.md`).
 
 The local scheduled `Earl Codex Usage Guard` continues to preserve only
 `codex app-server` infrastructure while locked and to terminate unpermitted primary
