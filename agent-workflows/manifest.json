@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "review-candidate",
+  "review_date": "2026-11-06",
+  "source": "invicta-ctrl/gpt-context-vault",
+  "rules": "Canonical AGENTS and accepted project specs take precedence; no new hooks or permissions",
+  "skills": [
+    {
+      "name": "contract-first",
+      "origin": "ECC",
+      "npm_package": "ecc-universal@2.2.3",
+      "package_path": "skills/contract-first/SKILL.md",
+      "sha256": "3eaacf16a9bbd92888659e9c1e15b0fa4eb96a41c257dd9e08f2e63b824f0cea",
+      "distribution": "external-pinned"
+    },
+    {
+      "name": "frontend-a11y",
+      "origin": "ECC-community",
+      "npm_package": "ecc-universal@2.2.3",
+      "package_path": "skills/frontend-a11y/SKILL.md",
+      "sha256": "e00991a3f4d47fcf1529dd74a080afcf46137dc5061e70dc6e3da7b27f2ae3f3",
+      "distribution": "external-pinned"
+    },
+    {
+      "name": "security-review",
+      "origin": "ECC",
+      "npm_package": "ecc-universal@2.2.3",
+      "package_path": "skills/security-review/SKILL.md",
+      "sha256": "b9eb6416eebc8dda046674f0a2dbb3be88aff526d182b60a0f55998d3d6d0d8d",
+      "distribution": "external-pinned",
+      "supporting_files": [
+        {
+          "package_path": "skills/security-review/cloud-infrastructure-security.md",
+          "sha256": "7d9a83852475a9396e04c59c73df84ac24ee0f41322016de7c11c62138c2a8ca",
+          "claude_destination": "%USERPROFILE%\\.claude\\skills\\security-review\\cloud-infrastructure-security.md",
+          "codex_destination": "%USERPROFILE%\\.agents\\skills\\security-review\\cloud-infrastructure-security.md"
+        }
+      ]
+    },
+    {
+      "name": "lean-verification",
+      "origin": "owner-custom",
+      "repository_path": "agent-workflows/skills/lean-verification/SKILL.md",
+      "sha256": "d2d3762b518ee302e257a65bb7c38dcac764eb742da1605e52cde65cc73c0ba4",
+      "distribution": "included",
+      "source_provenance": {
+        "origin": "owner-custom Windows Claude Code skill copied without modification",
+        "source_path": "%USERPROFILE%\\.claude\\skills\\lean-verification\\SKILL.md",
+        "verified_on": "2026-11-06",
+        "comparison": "SHA-256 equality with installed Claude Code and Codex copies; see file sha256"
+      }
+    },
+    {
+      "name": "leanrea-scout",
+      "origin": "owner-custom",
+      "repository_path": "agent-workflows/skills/leanrea-scout/SKILL.md",
+      "sha256": "67eada3bf47dce0a322d4e12c1649ec19b972c40015ed0efc63c895af378c628",
+      "distribution": "included",
+      "source_provenance": {
+        "origin": "owner-custom Windows Claude Code skill copied without modification",
+        "source_path": "%USERPROFILE%\\.claude\\skills\\leanrea-scout\\SKILL.md",
+        "verified_on": "2026-11-06",
+        "comparison": "SHA-256 equality with installed Claude Code and Codex copies; see file sha256"
+      }
+    }
+  ]
+}
